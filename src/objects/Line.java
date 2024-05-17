@@ -42,58 +42,66 @@ public class Line {
 
     // Returns true if the lines intersect, false otherwise
     public boolean isIntersecting(Line other) {
-        boolean isVertical = false;
-        boolean isHorizontal = false; // Maybe use this later
-        // First, calculate m (slope) and b (intercept)
-//        if (...) {
-//            // TODO: handle case of vertical/horizontal line
-//        }
+        boolean isThisVertical = this.start.getX() == this.end.getX();
+        boolean isOtherVertical = other.start.getX() == other.end.getX();
+        boolean isVertical = isThisVertical || isOtherVertical;
 
-        double m1 = this.calculateSlope();
-        double m2 = other.calculateSlope();
-        double b1 = this.calculateIntercept();
-        double b2 = other.calculateIntercept();
+        boolean isThisHorizontal = this.start.getY() == this.end.getY();
+        boolean isOtherHorizontal = other.start.getY() == other.end.getY();
+        boolean isHorizontal = isThisHorizontal || isOtherHorizontal;
 
-        double s1X = this.start.getX();
-        double s1Y = this.start.getY();
-        double s2X = other.start.getX();
-        double s2Y = other.start.getY();
+        if (!isVertical && !isHorizontal) {
+            // First, calculate m (slope) and b (intercept)
+            double m1 = this.calculateSlope();
+            double m2 = other.calculateSlope();
+            double b1 = this.calculateIntercept();
+            double b2 = other.calculateIntercept();
 
+            double s1X = this.start.getX();
+            double s1Y = this.start.getY();
+            double s2X = other.start.getX();
+            double s2Y = other.start.getY();
 
-        double e1X = this.end.getX();
-        double e1Y = this.end.getY();
-        double e2X = other.end.getX();
-        double e2Y = other.end.getY();
+            double e1X = this.end.getX();
+            double e1Y = this.end.getY();
+            double e2X = other.end.getX();
+            double e2Y = other.end.getY();
 
-        // TODO Make this look better and enhance calculations (use a function)
-        if ((m1 == m2) && (b1 == b2)) { // same line - need to check if lines overlap
-            if (((s1X < s2X) && (s2X < e1X)) && ((s1Y < s2Y) && (s2Y < e1Y))) { // check out 'notes and edge cases', start and end are commutative
-                // infinite intersections
-                return true;
+            // TODO Make this look better and enhance calculations (use a function)
+            if (m1 == m2) { // Parallel
+                if (b1 == b2) { // Same line
+                    return (((isInRange(this.start().getX(), other.start.getX(), this.end.getX()))  &&
+                            (isInRange(this.start().getY(), other.start.getY(), this.end.getY())))) ||
+                            (((isInRange(this.start.getX(), other.end.getX(), this.end.getX()))     &&
+                            (isInRange(this.start.getY(), other.end.getY(), this.end.getY()))));
+                }
+                return false;
             }
-
-            if ((s2X == e1X) && (s2Y == e1Y)) {
-                // one intersection (at point s1 or e2)
-                return true;
-            }
-
-            if (((s1X < e2X) && (e2X < e1X)) && ((s1Y < e2Y) && (e2Y < e1Y))) {
-                // infinite intersections
-                return true;
-            }
-
-            if ((e2X == s1X) && (e2Y == s1Y)) {
-                // one intersection
-                return true;
-            }
-
-            return false;
+            // Calculate POI and check if it's on both lines segments
+            double pointOfIntersectionX = (b2 - b1) / (m1 - m2);
+            double pointOfIntersectionY = m1 * pointOfIntersectionX + b1;
+            return ((isInRange(this.start.getX(), pointOfIntersectionX, this.end.getX())) &&
+                    (isInRange(this.start.getY(), pointOfIntersectionY, this.end.getY())));
         }
-        return false;
+        if (isVertical) {
+            if (isThisVertical && isOtherVertical) { // Both are vertical
+                if ()
+            }
+        }
     }
 
+    private boolean isInRange(double start, double num, double end) {
+        return ((start <= num) && (num <= end)) || ((end <= num) && (num <= start));
+    }
+
+    // NOTE!!! This function assumes input of lines that are NOT vertical or horizontal!!!! (there is no check for this case)
     private double calculateSlope() {
-        return (this.end.getY() - this.start.getY()) / (this.end.getX() - this.start.getX());
+        double startX = this.start.getX();
+        double startY = this.start.getY();
+        double endX = this.end.getX();
+        double endY = this.end.getY();
+
+        return (endY - startY) / (endX - startX);
     }
 
     private double calculateIntercept() {
@@ -116,5 +124,4 @@ public class Line {
     public boolean equals(Line other) {
         return false;
     }
-
 }
