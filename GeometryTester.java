@@ -1,5 +1,5 @@
 /**
- * This class does some simple tessting of the Point and Line classes.
+ * This class does some simple testing of the Point and Line classes.
  */
 import objects.*;
 public class GeometryTester {
@@ -13,13 +13,13 @@ public class GeometryTester {
      * @return
      */
     public static boolean doubleEquals(double a, double b) {
-        return  Math.abs(a - b) < GeometryTester.Comparison_threshold;
+        return Math.abs(a - b) < GeometryTester.Comparison_threshold;
     }
 
     /**
      * The method is in charge of testing the Point class.
      *
-     * @return true if not mistakes were found, false otherwise.
+     * @return true if no mistakes were found, false otherwise.
      */
     public boolean testPoint() {
         boolean mistake = false;
