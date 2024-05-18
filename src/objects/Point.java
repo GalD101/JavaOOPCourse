@@ -1,6 +1,8 @@
 package objects;
 
 public class Point {
+    private static final double TOLERANCE = 0.0000001;
+
     private double x;
     private double y;
 
@@ -15,6 +17,7 @@ public class Point {
         if (other == null) {
             throw new IllegalArgumentException("Other point cannot be null");
 //            return 0;
+//            return -1;
         }
 
         return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
@@ -31,7 +34,7 @@ public class Point {
     }
 
     private boolean compareNumbers(double a, double b) {
-        return Math.abs(a - b) <= 0.0000001;
+        return Math.abs(a - b) <= TOLERANCE;
     }
     // Return the x and y values of this point
     public double getX() {
