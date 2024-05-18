@@ -69,10 +69,10 @@ public class Line {
             // TODO Make this look better and enhance calculations (use a function)
             if (m1 == m2) { // Parallel
                 if (b1 == b2) { // Same line
-                    return (((isInRange(this.start().getX(), other.start.getX(), this.end.getX()))  &&
+                    return (((isInRange(this.start().getX(), other.start.getX(), this.end.getX())) &&
                             (isInRange(this.start().getY(), other.start.getY(), this.end.getY())))) ||
-                            (((isInRange(this.start.getX(), other.end.getX(), this.end.getX()))     &&
-                            (isInRange(this.start.getY(), other.end.getY(), this.end.getY()))));
+                            (((isInRange(this.start.getX(), other.end.getX(), this.end.getX())) &&
+                                    (isInRange(this.start.getY(), other.end.getY(), this.end.getY()))));
                 }
                 return false;
             }
@@ -82,6 +82,7 @@ public class Line {
             return ((isInRange(this.start.getX(), pointOfIntersection.getX(), this.end.getX())) &&
                     (isInRange(this.start.getY(), pointOfIntersection.getY(), this.end.getY())));
         }
+
         if (isThisVertical && isOtherVertical) { // Both are vertical
             if ((this.start.getX() == other.start.getX())) { // Same line, check y range
                 return isInRange(this.start.getY(), other.start().getY(), this.end.getY());
@@ -93,20 +94,23 @@ public class Line {
         // TODO: Change this! you are using the trinary operator too many times!
         if ((isThisVertical && !isOtherVertical) || (!isThisVertical && isOtherVertical)) { // One is vertical, the other is not
             double pointOfIntersectionX = isThisVertical ? this.start.getX() : other.end.getX();
-            double m                    = isThisVertical ? other.calculateSlope() : this.calculateSlope();
-            double b                    = isThisVertical ? other.calculateIntercept() : this.calculateIntercept();
+            double m = isThisVertical ? other.calculateSlope() : this.calculateSlope();
+            double b = isThisVertical ? other.calculateIntercept() : this.calculateIntercept();
             double pointOfIntersectionY = isThisVertical ? m * other.end.getY() + b : m * this.end.getY() + b;
 
             return (((isInRange(this.start.getX(), pointOfIntersectionX, this.end.getX())) &&
                     (isInRange(this.start.getY(), pointOfIntersectionY, this.end.getY()))) &&
                     ((isInRange(other.start.getX(), pointOfIntersectionX, other.end.getX())) &&
-                    (isInRange(other.start.getY(), pointOfIntersectionY, other.end.getY()))));
+                            (isInRange(other.start.getY(), pointOfIntersectionY, other.end.getY()))));
         }
 
         return false;
     }
 
     private boolean isInRange(double start, double num, double end) {
+        if (end < start) {
+            return ((end <= num) && (num <= start)) || ((start <= num) && (num <= end));
+        }
         return ((start <= num) && (num <= end)) || ((end <= num) && (num <= start));
     }
 
@@ -139,6 +143,7 @@ public class Line {
 
     // equals -- return true is the lines are equal, false otherwise
     public boolean equals(Line other) {
-        return false;
+        return this.start.equals(other.start()) && this.end.equals(other.end()) ||
+                this.start.equals(other.end()) && this.end.equals(other.start());
     }
 }

@@ -25,9 +25,14 @@ public class Point {
         if (other == null) {
             return false;
         }
-        return this.x == other.x && this.y == other.y;
+
+        // tolerance = 0.0000001
+        return compareNumbers(this.x,other.x) && compareNumbers(this.y, other.y);
     }
 
+    private boolean compareNumbers(double a, double b) {
+        return Math.abs(a - b) <= 0.0000001;
+    }
     // Return the x and y values of this point
     public double getX() {
         return this.x;

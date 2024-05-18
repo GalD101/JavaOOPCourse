@@ -12,8 +12,8 @@ class LineTest {
     private Line line2;
     private Line line3;
     private Line line4;
-//    private Line verticalLine;
-//    private Line horizontalLine;
+    private Line verticalLine;
+    private Line horizontalLine;
 
     @BeforeEach
     void setUp() {//TODO ADD TESTS TO MAKE SURE THAT CHANGING POINT AFTER USING IT TO CREATE A LINE WON'T CHANGE THE LINE (ENCAPSULATION)
@@ -34,14 +34,14 @@ class LineTest {
         line2 = new Line(start2, end2);
         line3 = new Line(start3, end3);
         line4 = new Line(start4, end4);
-//        verticalLine = new Line(start5, end5);
-//        horizontalLine = new Line(start6, end6);
+        verticalLine = new Line(start5, end5);
+        horizontalLine = new Line(start6, end6);
     }
 
     @Test
     void length() {
         assertEquals(5.0, line1.length(), 0.0001, "The length of line1 should be 5.0");
-        assertEquals(4.0, line3.length(), 0.0001, "The length of verticalLine should be 4.0");
+        assertEquals(4.0, line3.length(), 0.0001, "The length of line3 should be 4.0");
     }
 
     @Test
