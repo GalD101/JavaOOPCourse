@@ -6,11 +6,17 @@ public class Line {
     private Point start;
     private Point end;
 
+    private double A;
+    private double B;
+    private double C;
+
     // constructors
     public Line(Point start, Point end) {
         this.start = new Point(start.getX(), start.getY());
         this.end = new Point(end.getX(), end.getY());
+        calculateLineEquation();
     }
+
     public Line(double x1, double y1, double x2, double y2) {
         this(new Point(x1, y1), new Point(x2, y2));
     }
@@ -39,6 +45,48 @@ public class Line {
     public Point end() {
         return new Point(this.end.getX(), this.end.getY());
     }
+
+    private void calculateLineEquation() {
+        A = end.getY() - start.getY();
+        B = start.getX() - end.getX();
+        C = A * start.getX() + B * start.getY();
+    }
+
+    private boolean isPointInRange(Point point, Point rangeStart, Point rangeEnd) {
+        return isInRange(rangeStart.getX(), point.getX(), rangeEnd.getX()) &&
+                isInRange(rangeStart.getY(), point.getY(), rangeEnd.getY());
+    }
+
+    public boolean isIntersecting(Line other) {
+        // Using Cramer's rule to solve the system of linear equations.
+        double determinant = A * other.B - other.A * B;
+
+        // Determinant is zero --> infinite/zero solutions --> the lines are parallel.
+        if (Math.abs(determinant) < TOLERANCE) {
+            if (Math.abs(C - other.C) <= TOLERANCE) {
+                // Check if the lines have common segments:
+                return isPointInRange(this.start(), other.start(), this.end()) ||
+                        isPointInRange(this.start(), other.end(), this.end());
+            }
+        }
+
+        // The lines intersect at a single point.
+        double x = (other.B * C - B * other.C) / determinant;
+        double y = (A * other.C - other.A * C) / determinant;
+        Point pointOfIntersection = new Point(x, y);
+
+        return isPointOnLine(this, pointOfIntersection) && isPointOnLine(other, pointOfIntersection);
+    }
+
+    private boolean isPointOnLine(Line line, Point point) {
+        return isInRange(line.start.getX(), point.getX(), line.end.getX()) &&
+                isInRange(line.start.getY(), point.getY(), line.end.getY());
+    }
+
+    private boolean isInRange(double start, double num, double end) {
+        return (start <= num && num <= end) || (end <= num && num <= start);
+    }
+}
 
     //MY VERSION
     // Returns true if the lines intersect, false otherwise
@@ -102,75 +150,78 @@ public class Line {
 //    }
 
     // CoPilot VERSION
-    public boolean isIntersecting(Line other) {
-        if (other == null) {
-            return false;
-        }
+//    public boolean isIntersecting(Line other) {
+//        if (other == null) {
+//            return false;
+//        }
+//
+//        // Handle Vertical lines
+//        boolean isThisVertical = this.start.getX() == this.end.getX();
+//        boolean isOtherVertical = other.start.getX() == other.end.getX();
+//
+//        if (isThisVertical && isOtherVertical) {
+//            if (compareNumbers(this.start.getX(), other.start.getX())) { // Same line, check y range
+//                return isInRange(this.start.getY(), other.start.getY(), this.end.getY());
+//            }
+//            return false;
+//        }
+//
+//        if (isThisVertical || isOtherVertical) { // One of the lines is vertical
+//            Line verticalLine = isThisVertical ? this : other;
+//            Line nonVerticalLine = isThisVertical ? other : this;
+//
+//            double pointOfIntersectionX = verticalLine.start.getX();
+//            double slope = nonVerticalLine.calculateSlope();
+//            double intercept = nonVerticalLine.calculateIntercept();
+//            double pointOfIntersectionY = slope * pointOfIntersectionX + intercept;
+//
+//            return isPointOnLine(verticalLine, pointOfIntersectionX, pointOfIntersectionY) &&
+//                    isPointOnLine(nonVerticalLine, pointOfIntersectionX, pointOfIntersectionY);
+//        }
+//
+//        // Neither line is vertical
+//        double thisSlope = this.calculateSlope();
+//        double otherSlope = other.calculateSlope();
+//
+//        if (compareNumbers(thisSlope, otherSlope)) { // Lines are parallel
+//            double thisIntercept = this.calculateIntercept();
+//            double otherIntercept = other.calculateIntercept();
+//
+//            if (compareNumbers(thisIntercept, otherIntercept)) { // Lines are the same
+//                return isPointOnLine(this, other.start.getX(), other.start.getY()) ||
+//                        isPointOnLine(this, other.end.getX(), other.end.getY());
+//            }
+//            return false;
+//        }
+//
+//        // Lines intersect at a single point
+//        Point pointOfIntersection = this.calculateIntersectionPoint(other);
+//        return isPointOnLine(this, pointOfIntersection.getX(), pointOfIntersection.getY()) &&
+//                isPointOnLine(other, pointOfIntersection.getX(), pointOfIntersection.getY());
+//    }
 
-        boolean isThisVertical = this.start.getX() == this.end.getX();
-        boolean isOtherVertical = other.start.getX() == other.end.getX();
 
-        if (isThisVertical && isOtherVertical) { // Both lines are vertical
-            if (compareNumbers(this.start.getX(), other.start.getX())) { // Same line, check y range
-                return isInRange(this.start.getY(), other.start.getY(), this.end.getY());
-            }
-            return false;
-        }
-
-        if (isThisVertical || isOtherVertical) { // One of the lines is vertical
-            Line verticalLine = isThisVertical ? this : other;
-            Line nonVerticalLine = isThisVertical ? other : this;
-
-            double pointOfIntersectionX = verticalLine.start.getX();
-            double slope = nonVerticalLine.calculateSlope();
-            double intercept = nonVerticalLine.calculateIntercept();
-            double pointOfIntersectionY = slope * pointOfIntersectionX + intercept;
-
-            return isPointOnLine(verticalLine, pointOfIntersectionX, pointOfIntersectionY) &&
-                    isPointOnLine(nonVerticalLine, pointOfIntersectionX, pointOfIntersectionY);
-        }
-
-        // Neither line is vertical
-        double thisSlope = this.calculateSlope();
-        double otherSlope = other.calculateSlope();
-
-        if (compareNumbers(thisSlope, otherSlope)) { // Lines are parallel
-            double thisIntercept = this.calculateIntercept();
-            double otherIntercept = other.calculateIntercept();
-
-            if (compareNumbers(thisIntercept, otherIntercept)) { // Lines are the same
-                return isPointOnLine(this, other.start.getX(), other.start.getY()) ||
-                        isPointOnLine(this, other.end.getX(), other.end.getY());
-            }
-            return false;
-        }
-
-        // Lines intersect at a single point
-        Point pointOfIntersection = this.calculateIntersectionPoint(other);
-        return isPointOnLine(this, pointOfIntersection.getX(), pointOfIntersection.getY()) &&
-                isPointOnLine(other, pointOfIntersection.getX(), pointOfIntersection.getY());
-    }
 
     private boolean isPointOnLine(Line line, double x, double y) {
         return isInRange(line.start.getX(), x, line.end.getX()) &&
                 isInRange(line.start.getY(), y, line.end.getY());
     }
 
-    // Returns true if this 2 lines intersect with this line, false otherwise
-    public boolean isIntersecting(Line other1, Line other2) {
-        return false;
-    }
+//    // Returns true if this 2 lines intersect with this line, false otherwise
+//    public boolean isIntersecting(Line other1, Line other2) {
+//        return false;
+//    }
 
     // Returns the intersection point if the lines intersect,
     // and null otherwise.
-    public Point intersectionWith(Line other) {
-        if (!this.isIntersecting(other)) {
-            return null;
-        }
-        // Lines intersect!
-
-        return null;
-    }
+//    public Point intersectionWith(Line other) {
+//        if (!this.isIntersecting(other)) {
+//            return null;
+//        }
+//        // Lines intersect!
+//
+//        return null;
+//    }
 
     // equals -- return true is the lines are equal, false otherwise
     public boolean equals(Line other) {
@@ -181,13 +232,13 @@ public class Line {
 
 
 
-//    private boolean isPointInRange(Point p1, )
-    private boolean isInRange(double start, double num, double end) {
-        if (end < start) {
-            return ((end <= num) && (num <= start)) || ((start <= num) && (num <= end));
-        }
-        return ((start <= num) && (num <= end)) || ((end <= num) && (num <= start));
-    }
+////    private boolean isPointInRange(Point p1, )
+//    private boolean isInRange(double start, double num, double end) {
+//        if (end < start) {
+//            return ((end <= num) && (num <= start)) || ((start <= num) && (num <= end));
+//        }
+//        return ((start <= num) && (num <= end)) || ((end <= num) && (num <= start));
+//    }
 
 
     // NOTE!!! This function assumes input of lines that are NOT vertical or horizontal!!!! (there is no check for this case)
@@ -217,8 +268,8 @@ public class Line {
 
         return new Point(x, y);
     }
-
-    private boolean compareNumbers(double a, double b) {
-        return Math.abs(a - b) <= 0.0000001;
-    }
-}
+//
+//    private boolean compareNumbers(double a, double b) {
+//        return Math.abs(a - b) <= 0.0000001;
+//    }
+//}
