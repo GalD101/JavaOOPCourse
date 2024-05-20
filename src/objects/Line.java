@@ -6,16 +6,19 @@ public class Line {
     private Point start;
     private Point end;
 
+    // Ax + By = C
     private double A;
     private double B;
     private double C;
 
     // constructors
     public Line(Point start, Point end) {
-        double startX = start == null ? DEFAULT_POINT : start.getX();
-        double startY = start == null ? DEFAULT_POINT : start.getY();
-        double endX = end == null ? DEFAULT_POINT : end.getX();
-        double endY = end == null ? DEFAULT_POINT : end.getY();
+        boolean startIsNull = start == null;
+        boolean endIsNull = end == null;
+        double startX = startIsNull ? DEFAULT_POINT : start.getX();
+        double startY = startIsNull ? DEFAULT_POINT : start.getY();
+        double endX = endIsNull ? DEFAULT_POINT : end.getX();
+        double endY = endIsNull ? DEFAULT_POINT : end.getY();
 
         this.start = new Point(startX, startY);
         this.end = new Point(endX, endY);
@@ -46,20 +49,6 @@ public class Line {
         midY = computeAverage(this.start.getY(), this.end.getY());
 
         return new Point(midX, midY);
-    }
-    private double computeAverage(double a, double b) {
-        // Don't use intuitive way to calculate the midpoint since it may cause overflow.
-        // i.e. (start + end) / 2.
-        // Instead, use the following formula: assume (without lose of generality) that a < b so that means:
-        // (a - b) / 2 + b = (a - b + 2*b) / 2 = (a + b) / 2 == midPoint!
-        // This formula will prevent overflow.
-        if (a < b) {
-            return ((b - a) / 2) + b;
-        }
-        if (a > b) {
-            return ((a - b) / 2) + a;
-        }
-        return 0;
     }
 
     // Returns the start point of the line
@@ -92,16 +81,13 @@ public class Line {
         return isPointOnLine(this, intersection) && isPointOnLine(other, intersection);
     }
 
-    private boolean isInRange(double start, double num, double end) {
-        return (start <= num && num <= end) || (end <= num && num <= start);
-    }
 
     // Returns true if this 2 lines intersect with this line, false otherwise
     public boolean isIntersecting(Line other1, Line other2) {
         if (other1 == null || other2 == null) {
             return false;
         }
-        return false;
+        return this.isIntersecting(other1) && this.isIntersecting(other2);
     }
 
     // Returns the intersection point if the lines intersect,
@@ -127,6 +113,25 @@ public class Line {
         }
         return this.start().equals(other.start()) && this.end.equals(other.end()) ||
                 this.start().equals(other.end()) && this.end.equals(other.start());
+    }
+
+    private double computeAverage(double a, double b) {
+        // Don't use intuitive way to calculate the midpoint since it may cause overflow.
+        // i.e. (start + end) / 2.
+        // Instead, use the following formula: assume (without lose of generality) that a < b so that means:
+        // (a - b) / 2 + b = (a - b + 2*b) / 2 = (a + b) / 2 === midPoint!
+        // This formula will prevent overflow.
+        if (a < b) {
+            return ((b - a) / 2) + b;
+        }
+        if (a > b) {
+            return ((a - b) / 2) + a;
+        }
+        return 0;
+    }
+
+    private boolean isInRange(double start, double num, double end) {
+        return (start <= num && num <= end) || (end <= num && num <= start);
     }
 
     private boolean isPointOnLine(Line line, Point point) {
