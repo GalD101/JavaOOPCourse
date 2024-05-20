@@ -30,7 +30,6 @@ public class Point {
             return false;
         }
 
-        // tolerance = 0.0000001
         return compareNumbers(this.x, other.x) && compareNumbers(this.y, other.y);
     }
 
