@@ -33,12 +33,33 @@ public class Line {
 
     // Returns the middle point of the line
     public Point middle() {
+        // TODO: Remove this check in case it really is redundant
+        if (this.start == null || this.end == null) {
+            return null;
+        }
         double midX;
         double midY;
+        if (this.start.equals(this.end)) {
+            return new Point(this.start.getX(), this.start.getY());
+        }
+        midX = computeAverage(this.start.getX(), this.end.getX());
+        midY = computeAverage(this.start.getY(), this.end.getY());
 
-        midX = (this.start.getX() + this.end.getX()) / 2;
-        midY = (this.start.getY() + this.end.getY()) / 2;
         return new Point(midX, midY);
+    }
+    private double computeAverage(double a, double b) {
+        // Don't use intuitive way to calculate the midpoint since it may cause overflow.
+        // i.e. (start + end) / 2.
+        // Instead, use the following formula: assume (without lose of generality) that a < b so that means:
+        // (a - b) / 2 + b = (a - b + 2*b) / 2 = (a + b) / 2 == midPoint!
+        // This formula will prevent overflow.
+        if (a < b) {
+            return ((b - a) / 2) + b;
+        }
+        if (a > b) {
+            return ((a - b) / 2) + a;
+        }
+        return 0;
     }
 
     // Returns the start point of the line
