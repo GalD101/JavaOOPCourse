@@ -31,7 +31,7 @@ public class Point {
         }
 
         // tolerance = 0.0000001
-        return compareNumbers(this.x,other.x) && compareNumbers(this.y, other.y);
+        return compareNumbers(this.x, other.x) && compareNumbers(this.y, other.y);
     }
 
     // Return the x and y values of this point
@@ -48,7 +48,7 @@ public class Point {
     }
 
     private double truncateToTolerance(double number) {
-    double scale = Math.pow(10, 7); // 7 decimal places
-    return Math.floor(number * scale) / scale;
-}
+        double scale = Math.pow(10, 7); // 7 decimal places
+        return Math.floor(number * scale) / scale;
+    }
 }
