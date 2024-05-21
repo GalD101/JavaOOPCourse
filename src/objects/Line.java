@@ -118,20 +118,29 @@ public class Line {
     private double computeAverage(double a, double b) {
         // Don't use intuitive way to calculate the midpoint since it may cause overflow.
         // i.e. (start + end) / 2.
-        // Instead, use the following formula: assume (without lose of generality) that a < b so that means:
+        // Instead, use the following formula: assume (without lose of generality) that a > b so that means:
         // (a - b) / 2 + b = (a - b + 2*b) / 2 = (a + b) / 2 === midPoint!
         // This formula will prevent overflow.
-        if (a < b) {
-            return ((b - a) / 2) + b;
-        }
         if (a > b) {
-            return ((a - b) / 2) + a;
+            return ((a - b) / 2) + b;
         }
-        return 0;
+        if (a < b) {
+            return ((b - a) / 2) + a;
+        }
+        return a;
     }
 
-    private boolean isInRange(double start, double num, double end) {
-        return (start <= num && num <= end) || (end <= num && num <= start);
+    private boolean isInRange(double val1, double num, double val2) {
+        double truncatedStart = truncateToTolerance(val1);
+        double truncatedNum = truncateToTolerance(num);
+        double truncatedEnd = truncateToTolerance(val2);
+        return ((truncatedStart - Constants.TOLERANCE <= truncatedNum && truncatedNum <= truncatedEnd + Constants.TOLERANCE) ||
+                (truncatedEnd - Constants.TOLERANCE <= truncatedNum && truncatedNum <= truncatedStart + Constants.TOLERANCE));
+    }
+
+    private double truncateToTolerance(double number) {
+        double scale = Math.pow(10, 7); // 7 decimal places
+        return Math.floor(number * scale) / scale;
     }
 
     private boolean isPointOnLine(Line line, Point point) {
@@ -159,6 +168,14 @@ public class Line {
     private Point calculateIntersectionPoint(Line other) {
         if (other == null) {
             return null;
+        }
+
+        // Check for common edge point
+        if ((this.start().equals(other.start())) || (this.start().equals(other.end()))) {
+            return this.start();
+        }
+        if ((this.end().equals(other.start())) || (this.end().equals(other.end()))) {
+            return this.end();
         }
         // Using Cramer's rule to solve the system of linear equations.
         double determinant = A * other.B - other.A * B;
