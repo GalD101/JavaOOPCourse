@@ -1,5 +1,12 @@
 package objects;
 
+/**
+ * The Line class represents a line in a two-dimensional space.
+ * Each line is defined by its start and end points, represented by Point objects.
+ * The class provides methods to calculate the length of the line, find the middle point of the line,
+ * check if the line intersects with another line, find the intersection point with another line,
+ * and check if two lines are equal.
+ */
 public class Line {
 
     private static final double DEFAULT_POINT = 0;
@@ -11,7 +18,15 @@ public class Line {
     private double B;
     private double C;
 
-    // constructors
+    /**
+     * Constructor for Line class.
+     * Initializes the start and end points of the line.
+     * If the start or end point is null, it is initialized to (0,0).
+     * Also calculates the line equation coefficients A, B and C.
+     *
+     * @param start The start point of the line.
+     * @param end   The end point of the line.
+     */
     public Line(Point start, Point end) {
         boolean startIsNull = start == null;
         boolean endIsNull = end == null;
@@ -25,16 +40,36 @@ public class Line {
         calculateLineEquation();
     }
 
+    /**
+     * Constructor for Line class.
+     * Initializes the start and end points of the line using the provided coordinates.
+     * Also calculates the line equation coefficients A, B and C.
+     *
+     * @param x1 The x-coordinate of the start point.
+     * @param y1 The y-coordinate of the start point.
+     * @param x2 The x-coordinate of the end point.
+     * @param y2 The y-coordinate of the end point.
+     */
     public Line(double x1, double y1, double x2, double y2) {
         this(new Point(x1, y1), new Point(x2, y2));
     }
 
-    // Return the length of the line
+    /**
+     * Calculates and returns the length of the line.
+     *
+     * @return The length of the line.
+     */
     public double length() {
         return this.start.distance(this.end);
     }
 
-    // Returns the middle point of the line
+    /**
+     * Calculates and returns the middle point of the line.
+     * If the start and end points are the same, returns the start point.
+     * If either the start or end point is null, returns null.
+     *
+     * @return The middle point of the line.
+     */
     public Point middle() {
         // TODO: Remove this check in case it really is redundant
         if (this.start == null || this.end == null) {
@@ -51,16 +86,33 @@ public class Line {
         return new Point(midX, midY);
     }
 
-    // Returns the start point of the line
+    /**
+     * Returns a new Point object with the same coordinates as the start point of the line.
+     *
+     * @return The start point of the line.
+     */
     public Point start() {
         return new Point(this.start.getX(), this.start.getY());
     }
 
-    // Returns the end point of the line
+    /**
+     * Returns a new Point object with the same coordinates as the end point of the line.
+     *
+     * @return The end point of the line.
+     */
     public Point end() {
         return new Point(this.end.getX(), this.end.getY());
     }
 
+    /**
+     * Checks if the line intersects with another line.
+     * If the other line is null, returns false.
+     * If the lines intersect at a single point, returns true.
+     * If the lines coincide or are parallel, checks if they have a common segment and returns true if they do.
+     *
+     * @param other The other line to check for intersection.
+     * @return true if the lines intersect, false otherwise.
+     */
     public boolean isIntersecting(Line other) {
         if (other == null) {
             return false;
@@ -81,8 +133,15 @@ public class Line {
         return isPointOnLine(this, intersection) && isPointOnLine(other, intersection);
     }
 
-
-    // Returns true if this 2 lines intersect with this line, false otherwise
+    /**
+     * Checks if the line intersects with two other lines.
+     * If either of the other lines is null, returns false.
+     * Returns true if the line intersects with both other lines.
+     *
+     * @param other1 The first other line to check for intersection.
+     * @param other2 The second other line to check for intersection.
+     * @return true if the line intersects with both other lines, false otherwise.
+     */
     public boolean isIntersecting(Line other1, Line other2) {
         if (other1 == null || other2 == null) {
             return false;
@@ -90,9 +149,15 @@ public class Line {
         return this.isIntersecting(other1) && this.isIntersecting(other2);
     }
 
-    // Returns the intersection point if the lines intersect,
-    // and null otherwise.
-    // return null if there are infinite intersection points.
+    /**
+     * Calculates and returns the intersection point of the line with another line.
+     * If the other line is null, returns null.
+     * If the lines do not intersect, returns null.
+     * If the lines coincide or are parallel, returns null.
+     *
+     * @param other The other line to calculate the intersection point with.
+     * @return The intersection point if the lines intersect, null otherwise.
+     */
     public Point intersectionWith(Line other) {
         if (other == null) {
             return null;
@@ -106,7 +171,14 @@ public class Line {
         return intersection;
     }
 
-    // equals -- return true if the lines are equal, false otherwise
+    /**
+     * Checks if the line is equal to another line.
+     * Two lines are considered equal if they have the same start and end points, or if one line's start point is the other line's end point and vice versa.
+     * If the other line is null, returns false.
+     *
+     * @param other The other line to check for equality.
+     * @return true if the lines are equal, false otherwise.
+     */
     public boolean equals(Line other) {
         if (other == null) {
             return false;
@@ -115,6 +187,16 @@ public class Line {
                 this.start().equals(other.end()) && this.end.equals(other.start());
     }
 
+    /**
+     * Calculates the average of two numbers in a way that prevents overflow.
+     * If a > b, calculates (a - b) / 2 + b.
+     * If a < b, calculates (b - a) / 2 + a.
+     * If a = b, returns a.
+     *
+     * @param a The first number.
+     * @param b The second number.
+     * @return The average of the two numbers.
+     */
     private double computeAverage(double a, double b) {
         // Don't use intuitive way to calculate the midpoint since it may cause overflow.
         // i.e. (start + end) / 2.
@@ -130,6 +212,16 @@ public class Line {
         return a;
     }
 
+    /**
+     * Checks if a number is in the range between two other numbers.
+     * The comparison is done after truncating each number to a precision of 7 decimal places using the truncateToTolerance method.
+     * The range is considered to be inclusive, and a tolerance is added to the range to account for rounding errors.
+     *
+     * @param val1 The start of the range.
+     * @param num  The number to check.
+     * @param val2 The end of the range.
+     * @return true if the number is in the range, false otherwise.
+     */
     private boolean isInRange(double val1, double num, double val2) {
         double truncatedStart = truncateToTolerance(val1);
         double truncatedNum = truncateToTolerance(num);
@@ -138,11 +230,26 @@ public class Line {
                 (truncatedEnd - Constants.TOLERANCE <= truncatedNum && truncatedNum <= truncatedStart + Constants.TOLERANCE));
     }
 
+    /**
+     * Truncates a number to a precision of 7 decimal places.
+     *
+     * @param number The number to be truncated.
+     * @return The truncated number.
+     */
     private double truncateToTolerance(double number) {
         double scale = Math.pow(10, 7); // 7 decimal places
         return Math.floor(number * scale) / scale;
     }
 
+    /**
+     * Checks if a point is on a line.
+     * If the line or the point is null, returns false.
+     * Checks if the x and y coordinates of the point are in the range between the x and y coordinates of the start and end points of the line.
+     *
+     * @param line  The line to check.
+     * @param point The point to check.
+     * @return true if the point is on the line, false otherwise.
+     */
     private boolean isPointOnLine(Line line, Point point) {
         if (line == null || point == null) {
             return false;
@@ -151,12 +258,28 @@ public class Line {
                 isInRange(line.start.getY(), point.getY(), line.end.getY());
     }
 
+    /**
+     * Calculates the coefficients A, B and C of the line equation Ax + By = C using the start and end points of the line.
+     * A is calculated as the difference in y-coordinates of the end and start points.
+     * B is calculated as the difference in x-coordinates of the start and end points.
+     * C is calculated as A times the x-coordinate of the start point plus B times the y-coordinate of the start point.
+     */
     private void calculateLineEquation() {
         A = end.getY() - start.getY();
         B = start.getX() - end.getX();
         C = A * start.getX() + B * start.getY();
     }
 
+    /**
+     * Checks if a point is in the range between two other points.
+     * If any of the points is null, returns false.
+     * Checks if the x and y coordinates of the point are in the range between the x and y coordinates of the start and end points.
+     *
+     * @param point      The point to check.
+     * @param rangeStart The start of the range.
+     * @param rangeEnd   The end of the range.
+     * @return true if the point is in the range, false otherwise.
+     */
     private boolean isPointInRange(Point point, Point rangeStart, Point rangeEnd) {
         if (point == null || rangeStart == null || rangeEnd == null) {
             return false;
@@ -165,6 +288,16 @@ public class Line {
                 isInRange(rangeStart.getY(), point.getY(), rangeEnd.getY());
     }
 
+    /**
+     * Calculates the intersection point of the line with another line using Cramer's rule.
+     * If the other line is null, returns null.
+     * If the lines have a common edge point, returns that point.
+     * If the determinant of the system of linear equations is zero (indicating that the lines coincide, are parallel, or never collide), returns null.
+     * Otherwise, calculates the x and y coordinates of the intersection point and returns a new Point object with those coordinates.
+     *
+     * @param other The other line to calculate the intersection point with.
+     * @return The intersection point if the lines intersect, null otherwise.
+     */
     private Point calculateIntersectionPoint(Line other) {
         if (other == null) {
             return null;
