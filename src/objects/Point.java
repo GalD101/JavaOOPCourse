@@ -95,7 +95,7 @@ public class Point {
      * The result is then rounded down to the nearest whole number using the Math.floor method and finally divided by the scale factor to get the truncated number.
      */
     private double truncateToTolerance(double number) {
-        double scale = Math.pow(10, 7); // 7 decimal places
+        double scale = Math.pow(10, 1/Constants.TOLERANCE);
         return Math.floor(number * scale) / scale;
     }
 }
