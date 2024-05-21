@@ -20,6 +20,7 @@ class PointTest {
     private Point point13;
     private Point point14;
     private Point origin;
+    private Point point15;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
@@ -38,6 +39,7 @@ class PointTest {
         point13 = new Point(-23, -4.9999999);
         point14 = new Point(-23, -5);
         origin = new Point(0, 0);
+        point15 = new Point(Constants.TOLERANCE, Constants.TOLERANCE);
     }
 
     @org.junit.jupiter.api.AfterEach
@@ -64,6 +66,8 @@ class PointTest {
 //            point1.distance(null);
 //        }, "Distance to a null point should throw IllegalArgumentException");
         assertEquals(-1, point1.distance(null), "Distance to a null point should return -1");
+        assertEquals(0,origin.distance(point15), Constants.TOLERANCE, "The distance between origin and point15 should be ~0.0");
+        assertEquals(0, point15.distance(origin), Constants.TOLERANCE, "The distance between point15 and origin should be ~0.0");
     }
 
     @org.junit.jupiter.api.Test
@@ -90,6 +94,8 @@ class PointTest {
         assertEquals(1.5, point7.getX(), "X coordinate of point7 should be 1.5");
         assertEquals(2.99 * 10, point8.getX(), "X coordinate of point8 should be 29.9");
         assertEquals(1.0000001, point9.getX(), "X coordinate of point9 should be 1.0000001");
+        assertEquals(1.0000001, point9.getX(), "X coordinate of point9 should be 1.0000001");
+
     }
 
     @org.junit.jupiter.api.Test
@@ -100,5 +106,77 @@ class PointTest {
         assertEquals(0, origin.getY(), "Y coordinate of origin should be 0");
         assertEquals(2.5, point7.getY(), "Y coordinate of point7 should be 2.5");
         assertEquals(0.1 + 0.7, point8.getY(), "Y coordinate of point8 should be 0.8");
+        assertEquals(1.0000001, point9.getX(), "X coordinate of point9 should be 1.0000001");
+        assertEquals(99.0000001, point9.getY(), "Y coordinate of point9 should be 99.0000001");
+
+    }
+
+    @org.junit.jupiter.api.Test
+    void distanceWithNegativeCoordinates() {
+        Point pointA = new Point(-3, -4);
+        Point pointB = new Point(-1, -1);
+        assertEquals(Math.sqrt(13), pointA.distance(pointB), Constants.TOLERANCE, "The distance between pointA and pointB should be sqrt(13)");
+    }
+
+    @org.junit.jupiter.api.Test
+    void distanceWithSameCoordinates() {
+        Point pointA = new Point(3, 4);
+        assertEquals(0.0, pointA.distance(pointA), "The distance between pointA and itself should be 0.0");
+    }
+
+    @org.junit.jupiter.api.Test
+    void equalsWithDifferentTypes() {
+        Point pointA = new Point(1, 1);
+        assertFalse(pointA.equals("Some String"), "pointA should not be equal to an object of different type");
+    }
+
+    @org.junit.jupiter.api.Test
+    void equalsWithSameCoordinates() {
+        Point pointA = new Point(1, 1);
+        Point pointB = new Point(1, 1);
+        assertTrue(pointA.equals(pointB), "pointA and pointB should be equal");
+    }
+
+    @org.junit.jupiter.api.Test
+    void getXWithNegativeCoordinate() {
+        Point pointA = new Point(-3, 4);
+        assertEquals(-3, pointA.getX(), "X coordinate of pointA should be -3");
+    }
+
+    @org.junit.jupiter.api.Test
+    void getYWithNegativeCoordinate() {
+        Point pointA = new Point(3, -4);
+        assertEquals(-4, pointA.getY(), "Y coordinate of pointA should be -4");
+    }
+
+    @org.junit.jupiter.api.Test
+    void distanceWithNullPoint() {
+        assertEquals(-1, point1.distance(null), "Distance to a null point should return -1");
+    }
+
+    @org.junit.jupiter.api.Test
+    void equalsWithNullPoint() {
+        assertFalse(point1.equals(null), "point1 should not be equal to null");
+    }
+
+    @org.junit.jupiter.api.Test
+    void equalsWithItself() {
+        assertTrue(point1.equals(point1), "point1 should be equal to itself");
+    }
+
+    @org.junit.jupiter.api.Test
+    void equalsSymmetric() {
+        assertTrue(point1.equals(point3) && point3.equals(point1), "equals should be symmetric");
+    }
+
+    @org.junit.jupiter.api.Test
+    void equalsTransitive() {
+        assertTrue(point1.equals(point3) && point3.equals(point6) && point1.equals(point6), "equals should be transitive");
+    }
+
+    @org.junit.jupiter.api.Test
+    void equalsWithinThreshold() {
+        assertTrue(point9.equals(point10), "point9 and point10 should be equal within the threshold");
     }
 }
+
