@@ -1,7 +1,8 @@
 package objects.tests;
 
-import objects.Constants;
+import objects.Threshold;
 import objects.Point;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PointTest {
@@ -39,7 +40,7 @@ class PointTest {
         point13 = new Point(-23, -4.9999999);
         point14 = new Point(-23, -5);
         origin = new Point(0, 0);
-        point15 = new Point(Constants.TOLERANCE, Constants.TOLERANCE);
+        point15 = new Point(Threshold.TOLERANCE, Threshold.TOLERANCE);
     }
 
     @org.junit.jupiter.api.AfterEach
@@ -66,18 +67,18 @@ class PointTest {
     void distance() {
         assertEquals(5.0, point1.distance(point2), "The distance between point1 and point2 should be 5.0");
         assertEquals(0.0, point1.distance(point3), "The distance between point1 and point3 should be 0.0");
-        assertEquals(Math.sqrt(2), point1.distance(origin), Constants.TOLERANCE, "The distance between point1 and origin should be sqrt(2)");
+        assertEquals(Math.sqrt(2), point1.distance(origin), Threshold.TOLERANCE, "The distance between point1 and origin should be sqrt(2)");
         assertEquals(2.0, point1.distance(point5), "The distance between point1 and point5 should be 2.0");
-        assertEquals(Math.sqrt(2), point4.distance(origin), Constants.TOLERANCE, "The distance between point4 and origin should be sqrt(2)");
+        assertEquals(Math.sqrt(2), point4.distance(origin), Threshold.TOLERANCE, "The distance between point4 and origin should be sqrt(2)");
         assertEquals(0.0, origin.distance(origin), "The distance between origin and itself should be 0.0");
-        assertEquals(0.0, point11.distance(point12), Constants.TOLERANCE, "The distance between point11 and point12 should be 0.0");
-        assertEquals(0.0, point13.distance(point14), Constants.TOLERANCE, "The distance between point13 and point14 should be 0.0");
+        assertEquals(0.0, point11.distance(point12), Threshold.TOLERANCE, "The distance between point11 and point12 should be 0.0");
+        assertEquals(0.0, point13.distance(point14), Threshold.TOLERANCE, "The distance between point13 and point14 should be 0.0");
 //        assertThrows(IllegalArgumentException.class, () -> {
 //            point1.distance(null);
 //        }, "Distance to a null point should throw IllegalArgumentException");
         assertEquals(-1, point1.distance(null), "Distance to a null point should return -1");
-        assertEquals(0,origin.distance(point15), Constants.TOLERANCE, "The distance between origin and point15 should be ~0.0");
-        assertEquals(0, point15.distance(origin), Constants.TOLERANCE, "The distance between point15 and origin should be ~0.0");
+        assertEquals(0,origin.distance(point15), Threshold.TOLERANCE, "The distance between origin and point15 should be ~0.0");
+        assertEquals(0, point15.distance(origin), Threshold.TOLERANCE, "The distance between point15 and origin should be ~0.0");
     }
 
     @org.junit.jupiter.api.Test
@@ -125,7 +126,7 @@ class PointTest {
     void distanceWithNegativeCoordinates() {
         Point pointA = new Point(-3, -4);
         Point pointB = new Point(-1, -1);
-        assertEquals(Math.sqrt(13), pointA.distance(pointB), Constants.TOLERANCE, "The distance between pointA and pointB should be sqrt(13)");
+        assertEquals(Math.sqrt(13), pointA.distance(pointB), Threshold.TOLERANCE, "The distance between pointA and pointB should be sqrt(13)");
     }
 
     @org.junit.jupiter.api.Test

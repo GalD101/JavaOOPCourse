@@ -120,7 +120,7 @@ public class Line {
         Point intersection = calculateIntersectionPoint(other);
 
         if (intersection == null) {
-            if (Math.abs(C - other.C) <= Constants.TOLERANCE) {
+            if (Math.abs(C - other.C) <= Threshold.TOLERANCE) {
                 // Check if the lines have common segments:
                 // 1. If the start point of 'other' line is in the range of 'this' line.
                 // 2. If the end point of 'other' line is in the range of 'this' line.
@@ -223,22 +223,11 @@ public class Line {
      * @return true if the number is in the range, false otherwise.
      */
     private boolean isInRange(double val1, double num, double val2) {
-        double truncatedStart = truncateToTolerance(val1);
-        double truncatedNum = truncateToTolerance(num);
-        double truncatedEnd = truncateToTolerance(val2);
-        return ((truncatedStart - Constants.TOLERANCE <= truncatedNum && truncatedNum <= truncatedEnd + Constants.TOLERANCE) ||
-                (truncatedEnd - Constants.TOLERANCE <= truncatedNum && truncatedNum <= truncatedStart + Constants.TOLERANCE));
-    }
-
-    /**
-     * Truncates a number to a precision of 7 decimal places.
-     *
-     * @param number The number to be truncated.
-     * @return The truncated number.
-     */
-    private double truncateToTolerance(double number) {
-        double scale = Math.pow(10, 7); // 7 decimal places
-        return Math.floor(number * scale) / scale;
+        double truncatedStart = Threshold.truncateToTolerance(val1);
+        double truncatedNum = Threshold.truncateToTolerance(num);
+        double truncatedEnd = Threshold.truncateToTolerance(val2);
+        return ((truncatedStart - Threshold.TOLERANCE <= truncatedNum && truncatedNum <= truncatedEnd + Threshold.TOLERANCE) ||
+                (truncatedEnd - Threshold.TOLERANCE <= truncatedNum && truncatedNum <= truncatedStart + Threshold.TOLERANCE));
     }
 
     /**
@@ -314,7 +303,7 @@ public class Line {
         double determinant = A * other.B - other.A * B;
 
         // Determinant is zero --> infinite/zero solutions --> the lines coincide/parallel/never collide.
-        if (Math.abs(determinant) < Constants.TOLERANCE) {
+        if (Math.abs(determinant) < Threshold.TOLERANCE) {
             return null;
         }
 

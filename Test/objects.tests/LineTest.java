@@ -1,11 +1,10 @@
 package objects.tests;
 
-import objects.Constants;
+import objects.Threshold;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import objects.Point;
 import objects.Line;
-import objects.Constants.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,14 +64,14 @@ class LineTest {
 
     @Test
     void testLength() {
-        assertEquals(5.0, line1.length(), Constants.TOLERANCE, "The length of line1 should be 5.0");
-        assertEquals(4.0, line3.length(), Constants.TOLERANCE, "The length of line3 should be 4.0");
-        assertEquals(5.656854249492381, line4.length(), Constants.TOLERANCE, "The length of line4 should be 5.656854249492381");
-        assertEquals(2*Math.sqrt(2), line10.length(), Constants.TOLERANCE, "The length of line5 should be 2*sqrt(2)");
-        assertEquals(0.2828427125, line11.length(), Constants.TOLERANCE, "The length of line11 should be 0.28284271247461906");
-        assertEquals(0.0, line12.length(), Constants.TOLERANCE, "The length of line12 should be 0.0");
-        assertEquals(4.0, verticalLine.length(), Constants.TOLERANCE, "The length of verticalLine should be 4.0");
-        assertEquals(4.0, horizontalLine.length(), Constants.TOLERANCE, "The length of horizontalLine should be 4.0");
+        assertEquals(5.0, line1.length(), Threshold.TOLERANCE, "The length of line1 should be 5.0");
+        assertEquals(4.0, line3.length(), Threshold.TOLERANCE, "The length of line3 should be 4.0");
+        assertEquals(5.656854249492381, line4.length(), Threshold.TOLERANCE, "The length of line4 should be 5.656854249492381");
+        assertEquals(2*Math.sqrt(2), line10.length(), Threshold.TOLERANCE, "The length of line5 should be 2*sqrt(2)");
+        assertEquals(0.2828427125, line11.length(), Threshold.TOLERANCE, "The length of line11 should be 0.28284271247461906");
+        assertEquals(0.0, line12.length(), Threshold.TOLERANCE, "The length of line12 should be 0.0");
+        assertEquals(4.0, verticalLine.length(), Threshold.TOLERANCE, "The length of verticalLine should be 4.0");
+        assertEquals(4.0, horizontalLine.length(), Threshold.TOLERANCE, "The length of horizontalLine should be 4.0");
     }
 
     @Test
@@ -82,73 +81,73 @@ class LineTest {
 
         expected = new Point(2.5, 3.0);
         actual = line1.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of line1 should be 2.5");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of line1 should be 3.0");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of line1 should be 2.5");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of line1 should be 3.0");
 
         expected = new Point(0.0, 2.0);
         actual = line3.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of line3 should be 0.0");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of line3 should be 2.0");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of line3 should be 0.0");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of line3 should be 2.0");
 
         expected = new Point(2.0, 2.0);
         actual = line4.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of line4 should be 2.0");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of line4 should be 2.0");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of line4 should be 2.0");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of line4 should be 2.0");
 
         expected = new Point(2.5, 3.0);
         actual = line5.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of line5 should be 1.0");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of line5 should be 3.0");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of line5 should be 1.0");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of line5 should be 3.0");
 
         expected = new Point(0.0, 2.0);
         actual = line6.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of line6 should be 0.0");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of line6 should be 2.0");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of line6 should be 0.0");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of line6 should be 2.0");
 
         expected = new Point(2.0, 2.0);
         actual = line7.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of line7 should be 2.5");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of line7 should be 1.0");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of line7 should be 2.5");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of line7 should be 1.0");
 
         expected = new Point(1.0, 3.0);
         actual = line8.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of line8 should be 1.0");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of line8 should be 3.0");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of line8 should be 1.0");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of line8 should be 3.0");
 
         expected = new Point(3.0, 1.0);
         actual = line9.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of line9 should be 3.0");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of line9 should be 1.0");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of line9 should be 3.0");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of line9 should be 1.0");
 
         expected = new Point(2.5, 3.5);
         actual = line10.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of line10 should be 2.5");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of line10 should be 3.5");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of line10 should be 2.5");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of line10 should be 3.5");
 
         expected = new Point(0.2, 0.3);
         actual = line11.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of line11 should be 0.2");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of line11 should be 0.3");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of line11 should be 0.2");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of line11 should be 0.3");
 
         expected = new Point(0.93, 557.92);
         actual = line12.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of line12 should be 0.93");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of line12 should be 557.92");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of line12 should be 0.93");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of line12 should be 557.92");
 
         expected = new Point(1.0, 3.0);
         actual = verticalLine.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of verticalLine should be 1.0");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of verticalLine should be 3.0");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of verticalLine should be 1.0");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of verticalLine should be 3.0");
 
         expected = new Point(3.0, 1.0);
         actual = horizontalLine.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of horizontalLine should be 3.0");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of horizontalLine should be 1.0");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of horizontalLine should be 3.0");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of horizontalLine should be 1.0");
 
         expected = new Point(0.0, 0.0);
         actual = linepoint.middle();
-        assertEquals(expected.getX(), actual.getX(), Constants.TOLERANCE, "The X coordinate of the middle point of linepoint should be 0.0");
-        assertEquals(expected.getY(), actual.getY(), Constants.TOLERANCE, "The Y coordinate of the middle point of linepoint should be 0.0");
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of linepoint should be 0.0");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of linepoint should be 0.0");
     }
 
     @Test
@@ -213,7 +212,7 @@ class LineTest {
         Line intersectAtStart = new Line(new Point(1, 1), new Point(2, 2));
         assertTrue(line1.isIntersecting(intersectAtStart), "line1 should intersect with intersectAtStart");
 
-        Line barelyIntersectingLine = new Line(new Point(8, -6), new Point(1+Constants.TOLERANCE, 1));
+        Line barelyIntersectingLine = new Line(new Point(8, -6), new Point(1+ Threshold.TOLERANCE, 1));
         assertTrue(line1.isIntersecting(barelyIntersectingLine), "line1 should intersect with barelyIntersectingLine");
     }
 
@@ -222,8 +221,8 @@ class LineTest {
         Line intersectingLine = new Line(new Point(1, 5), new Point(5, 1));
         Point intersection = line1.intersectionWith(intersectingLine);
         assertNotNull(intersection, "line1 should intersect with intersectingLine");
-        assertEquals(19.0/7.0, intersection.getX(), Constants.TOLERANCE, "The X coordinate of the intersection should be 3");
-        assertEquals(23.0/7.0, intersection.getY(), Constants.TOLERANCE, "The Y coordinate of the intersection should be 3");
+        assertEquals(19.0/7.0, intersection.getX(), Threshold.TOLERANCE, "The X coordinate of the intersection should be 3");
+        assertEquals(23.0/7.0, intersection.getY(), Threshold.TOLERANCE, "The Y coordinate of the intersection should be 3");
         Line nonIntersectingLine = new Line(new Point(5, 5), new Point(6, 6));
         assertNull(line1.intersectionWith(nonIntersectingLine), "line1 should not intersect with nonIntersectingLine");
         assertNull(line1.intersectionWith(null), "line1 should not intersect with null");
