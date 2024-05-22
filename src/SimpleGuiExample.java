@@ -71,25 +71,25 @@ public class SimpleGuiExample {
                             (lines[k].isIntersecting(lines[i], lines[j]))) {
                         d.setColor(Color.GREEN);
 
-                        Point intersectionStart1 = lines[i].intersectionWith(lines[j]);
-                        Point intersectionEnd1 = lines[i].intersectionWith(lines[k]);
-                        Line triangleLine1 = new Line(intersectionStart1, intersectionEnd1);
+                        Line triangleLine1 = createLineFromIntersections(lines[i], lines[j], lines[k]);
                         drawLine(triangleLine1, d);
 
-                        Point intersectionStart2 = lines[j].intersectionWith(lines[i]);
-                        Point intersectionEnd2 = lines[j].intersectionWith(lines[k]);
-                        Line triangleLine2 = new Line(intersectionStart2, intersectionEnd2);
+                        Line triangleLine2 = createLineFromIntersections(lines[j], lines[i], lines[k]);
                         drawLine(triangleLine2, d);
 
-                        Point intersectionStart3 = lines[k].intersectionWith(lines[i]);
-                        Point intersectionEnd3 = lines[k].intersectionWith(lines[j]);
-                        Line triangleLine3 = new Line(intersectionStart3, intersectionEnd3);
+                        Line triangleLine3 = createLineFromIntersections(lines[k], lines[i], lines[j]);
                         drawLine(triangleLine3, d);
                     }
                 }
             }
         }
         gui.show(d);
+    }
+
+    private Line createLineFromIntersections(Line line1, Line line2, Line line3) {
+        Point intersectionStart = line1.intersectionWith(line2);
+        Point intersectionEnd = line1.intersectionWith(line3);
+        return new Line(intersectionStart, intersectionEnd);
     }
 
     public static void main(String[] args) {
