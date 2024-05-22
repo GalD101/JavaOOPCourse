@@ -49,7 +49,17 @@ class PointTest {
         point3 = null;
         point4 = null;
         point5 = null;
+        point6 = null;
+        point7 = null;
+        point8 = null;
+        point9 = null;
+        point10 = null;
+        point11 = null;
+        point12 = null;
+        point13 = null;
+        point14 = null;
         origin = null;
+        point15 = null;
     }
 
     @org.junit.jupiter.api.Test
