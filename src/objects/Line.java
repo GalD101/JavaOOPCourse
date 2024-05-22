@@ -198,18 +198,15 @@ public class Line {
      * @return The average of the two numbers.
      */
     private double computeAverage(double a, double b) {
-        // Don't use intuitive way to calculate the midpoint since it may cause overflow.
+        // Don't use intuitive way to calculate average since it may cause overflow.
         // i.e. (start + end) / 2.
         // Instead, use the following formula: assume (without lose of generality) that a > b so that means:
         // (a - b) / 2 + b = (a - b + 2*b) / 2 = (a + b) / 2 === midPoint!
         // This formula will prevent overflow.
-        if (a > b) {
+        if (a >= b) {
             return ((a - b) / 2) + b;
         }
-        if (a < b) {
-            return ((b - a) / 2) + a;
-        }
-        return a;
+        return ((b - a) / 2) + a;
     }
 
     /**
