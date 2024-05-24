@@ -64,7 +64,7 @@ public class SimpleGuiExample {
         // 4. Highlight the segments of lines that create triangles in green:+
         for (int i = 0; i < 10; i++) {
             for (int j = i + 1; j < 10; j++) {
-                for (int k = j+1;k<10;k++) {
+                for (int k = j + 1; k < 10; k++) {
                     // if a line intersects with two other lines, it creates a triangle
                     if ((lines[i].isIntersecting(lines[j], lines[k]))
                             && (lines[j].isIntersecting(lines[i], lines[k])) &&
