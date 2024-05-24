@@ -63,14 +63,16 @@ public class Velocity {
         // Reduce the angle to the domain of [0, 360]
         // This is done due to the inaccuracy of the Math.cos and Math.sin functions
         // for different values for the same angle plus a multiple of 360.
-        while (angle >= 360) {
-            angle -= 360;
+        while (angle >= 360.0) {
+            angle -= 360.0;
         }
 
         // TODO: Look at this comment, perhaps modify the code later to allow consistency since the trigonometric functions are inaccurate.
-        // In order to allow consistency, I will use the relation sin(x) = cos(x + 180) (maybe handle this later)
-        double dx = Math.cos(Math.toRadians(angle)) * speed;
-        double dy = Math.sin(Math.toRadians(angle)) * speed;
+        // In order to allow consistency, I will use the relation sin(x) = cos(x + 180) (canceled, it doesn't really matter)
+        boolean isCosineZero = (angle == 90.0 || angle == 270.0);
+        boolean isSineZero = (angle == 0.0 || angle == 180.0);
+        double dx = isCosineZero ? 0 : Math.cos(Math.toRadians(angle)) * speed;
+        double dy = isSineZero ? 0 : Math.sin(Math.toRadians(angle)) * speed;
         return new Velocity(dx, dy);
     }
 }
