@@ -13,6 +13,11 @@ public final class Threshold {
      */
     public static double truncateToTolerance(double number) {
         double scale = Math.pow(10, DECIMALS);
+        // FIXME: Think what to do when numbers are too big (!!!)
+        // When the number is too big (for example Double.MAX_VALUE),
+        // there are weird issues here.
+        // TODO: Maybe add if condition to check if number is small or big
+        double testing = Math.round(number * scale) / scale;
         return Math.round(number * scale) / scale;
     }
 
