@@ -143,9 +143,6 @@ public class Line {
      * @return true if the line intersects with both other lines, false otherwise.
      */
     public boolean isIntersecting(Line other1, Line other2) {
-        if (other1 == null || other2 == null) {
-            return false;
-        }
         return this.isIntersecting(other1) && this.isIntersecting(other2);
     }
 
