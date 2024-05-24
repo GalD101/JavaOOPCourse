@@ -26,6 +26,7 @@ class LineTest {
     private Line horizontalLine;
     private Line nullLine1;
     private Line nullLine2;
+    private Line longestLine;
 
     @BeforeEach
     void setUp() {//TODO ADD TESTS TO MAKE SURE THAT CHANGING POINT AFTER USING IT TO CREATE A LINE WON'T CHANGE THE LINE (ENCAPSULATION)
@@ -60,6 +61,7 @@ class LineTest {
         linepoint = new Line(new Point(0, 0), new Point(0, 0));
         verticalLine = new Line(start5, end5);
         horizontalLine = new Line(start6, end6);
+        longestLine = new Line(new Point(Double.MAX_VALUE, Double.MAX_VALUE), new Point(-Double.MAX_VALUE, -Double.MAX_VALUE));
     }
 
     @Test
@@ -72,6 +74,7 @@ class LineTest {
         assertEquals(0.0, line12.length(), Threshold.TOLERANCE, "The length of line12 should be 0.0");
         assertEquals(4.0, verticalLine.length(), Threshold.TOLERANCE, "The length of verticalLine should be 4.0");
         assertEquals(4.0, horizontalLine.length(), Threshold.TOLERANCE, "The length of horizontalLine should be 4.0");
+        assertEquals(Double.MAX_VALUE, longestLine.length(), Threshold.TOLERANCE, "The length of longestLine should be Double.MAX_VALUE");//THIS IS PROBLEMATIC
     }
 
     @Test
@@ -148,6 +151,11 @@ class LineTest {
         actual = linepoint.middle();
         assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of linepoint should be 0.0");
         assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of linepoint should be 0.0");
+
+        expected = new Point(0.0, 0.0);
+        actual = longestLine.middle();
+        assertEquals(expected.getX(), actual.getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of longestLine should be 0.0");
+        assertEquals(expected.getY(), actual.getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of longestLine should be 0.0");
     }
 
     @Test
@@ -158,6 +166,8 @@ class LineTest {
         assertEquals(0, nullLine1.start().getY(), "The start Y coordinate of nullLine1 should be 0");
         assertEquals(4, nullLine1.end().getX(), "The end X coordinate of nullLine1 should be 4");
         assertEquals(5, nullLine1.end().getY(), "The end Y coordinate of nullLine1 should be 5");
+        assertEquals(Double.MAX_VALUE, longestLine.start().getX(), "The start X coordinate of longestLine should be Double.MAX_VALUE");
+        assertEquals(Double.MAX_VALUE, longestLine.start().getY(), "The start Y coordinate of longestLine should be Double.MAX_VALUE");
     }
 
     @Test
@@ -175,6 +185,8 @@ class LineTest {
         assertEquals(5, horizontalLine.end().getX(), "The end X coordinate of horizontalLine end should be 5");
         assertEquals(1, horizontalLine.end().getY(), "The end Y coordinate of horizontalLine end should be 1");
         assertEquals(0, linepoint.end().getX(), "The end X coordinate of linePoint end should be 0");
+        assertEquals(-Double.MAX_VALUE, longestLine.end().getX(), "The end X coordinate of longestLine end should be Double.MAX_VALUE");
+        assertEquals(-Double.MAX_VALUE, longestLine.end().getY(), "The end Y coordinate of longestLine end should be -Double.MAX_VALUE");
     }
 
     @Test
@@ -227,7 +239,6 @@ class LineTest {
         assertNull(line1.intersectionWith(nonIntersectingLine), "line1 should not intersect with nonIntersectingLine");
         assertNull(line1.intersectionWith(null), "line1 should not intersect with null");
         assertNull(nullLine1.intersectionWith(null), "nullLine1 should not intersect with null");
-
     }
 
     @Test
@@ -235,11 +246,14 @@ class LineTest {
         assertTrue(line1.equals(line2), "line1 and line2 should be equal");
         assertTrue(line1.equals(line5), "line1 and line5 should be equal");
         assertTrue(line1.equals(line1), "line1 should be equal to itself");
+        assertTrue(longestLine.equals(longestLine), "longestLine should be equal to itself");
         assertFalse(line1.equals(null), "line1 should not be equal to null");
         assertFalse(line1.equals(line3), "line1 and line3 should not be equal");
         assertFalse(line1.equals(line4), "line1 and line4 should not be equal");
         assertFalse(line1.equals(line6), "line1 and line6 should not be equal");
         assertFalse(line1.equals(line7), "line1 and line7 should not be equal");
         assertFalse(line1.equals(line8), "line1 and line8 should not be equal");
+        assertFalse(longestLine.equals(line1), "longestLine and line1 should not be equal");
+        assertFalse(line1.equals(longestLine), "longestLine and line1 should not be equal");
     }
 }
