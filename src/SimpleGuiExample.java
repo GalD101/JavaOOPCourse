@@ -19,7 +19,7 @@ public class SimpleGuiExample {
     }
 
     public void drawLine(Line l, DrawSurface d) {
-        d.drawLine((int) l.start().getX(), (int) l.start().getY(), (int) l.end().getX(), (int) l.end().getY());
+        d.drawLine((int) Math.round(l.start().getX()), (int) Math.round(l.start().getY()), (int) Math.round(l.end().getX()), (int) Math.round(l.end().getY()));
     }
 
     public void drawRandomCircles() {
@@ -47,7 +47,7 @@ public class SimpleGuiExample {
         for (int i = 0; i < 10; ++i) {
             d.setColor(Color.BLUE);
             Point midpoint = lines[i].middle();
-            d.fillCircle((int) (midpoint.getX()), (int) (midpoint.getY()), POINT_RADIUS);
+            d.fillCircle((int) Math.round(midpoint.getX()), (int) Math.round(midpoint.getY()), POINT_RADIUS);
         }
 
         // 3. Draw the intersection points between the lines:
@@ -56,7 +56,7 @@ public class SimpleGuiExample {
                 Point intersection = lines[i].intersectionWith(lines[j]);
                 if (intersection != null) {
                     d.setColor(Color.RED);
-                    d.fillCircle((int) (intersection.getX()), (int) (intersection.getY()), 3);
+                    d.fillCircle((int) Math.round(intersection.getX()), (int) Math.round(intersection.getY()), 3);
                 }
             }
         }
