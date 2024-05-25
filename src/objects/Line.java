@@ -1,5 +1,7 @@
 package objects;
 
+import utils.Threshold;
+
 /**
  * The Line class represents a line in a two-dimensional space.
  * Each line is defined by its start and end points, represented by Point objects.
@@ -13,10 +15,10 @@ public class Line {
     private Point start;
     private Point end;
 
-    // Ax + By = C
-    private double A;
-    private double B;
-    private double C;
+    // ax + by = c
+    private double a;
+    private double b;
+    private double c;
 
     /**
      * Constructor for Line class.
@@ -120,12 +122,12 @@ public class Line {
         Point intersection = calculateIntersectionPoint(other);
 
         if (intersection == null) {
-            if (Math.abs(C - other.C) <= Threshold.TOLERANCE) {
+            if (Math.abs(c - other.c) <= Threshold.TOLERANCE) {
                 // Check if the lines have common segments:
                 // 1. If the start point of 'other' line is in the range of 'this' line.
                 // 2. If the end point of 'other' line is in the range of 'this' line.
-                return isPointInRange(this.start(), other.start(), this.end()) ||
-                        isPointInRange(this.start(), other.end(), this.end());
+                return isPointInRange(this.start(), other.start(), this.end())
+                        || isPointInRange(this.start(), other.end(), this.end());
             }
             return false;
         }
@@ -170,7 +172,8 @@ public class Line {
 
     /**
      * Checks if the line is equal to another line.
-     * Two lines are considered equal if they have the same start and end points, or if one line's start point is the other line's end point and vice versa.
+     * Two lines are considered equal if they have the same start and end points,
+     * or if one line's start point is the other line's end point and vice versa.
      * If the other line is null, returns false.
      *
      * @param other The other line to check for equality.
@@ -180,8 +183,8 @@ public class Line {
         if (other == null) {
             return false;
         }
-        return this.start().equals(other.start()) && this.end.equals(other.end()) ||
-                this.start().equals(other.end()) && this.end.equals(other.start());
+        return this.start().equals(other.start()) && this.end.equals(other.end())
+                || this.start().equals(other.end()) && this.end.equals(other.start());
     }
 
     /**
@@ -213,7 +216,8 @@ public class Line {
 
     /**
      * Checks if a number is in the range between two other numbers.
-     * The comparison is done after truncating each number to a precision of 7 decimal places using the truncateToTolerance method.
+     * The comparison is done after truncating each number
+     * to a certain precision using the truncateToTolerance method.
      * The range is considered to be inclusive, and a tolerance is added to the range to account for rounding errors.
      *
      * @param val1 The start of the range.
@@ -225,14 +229,17 @@ public class Line {
         double truncatedStart = Threshold.truncateToTolerance(val1);
         double truncatedNum = Threshold.truncateToTolerance(num);
         double truncatedEnd = Threshold.truncateToTolerance(val2);
-        return ((truncatedStart - Threshold.TOLERANCE <= truncatedNum && truncatedNum <= truncatedEnd + Threshold.TOLERANCE) ||
-                (truncatedEnd - Threshold.TOLERANCE <= truncatedNum && truncatedNum <= truncatedStart + Threshold.TOLERANCE));
+        return ((truncatedStart - Threshold.TOLERANCE <= truncatedNum
+                && truncatedNum <= truncatedEnd + Threshold.TOLERANCE)
+                || (truncatedEnd - Threshold.TOLERANCE <= truncatedNum
+                && truncatedNum <= truncatedStart + Threshold.TOLERANCE));
     }
 
     /**
      * Checks if a point is on a line.
      * If the line or the point is null, returns false.
-     * Checks if the x and y coordinates of the point are in the range between the x and y coordinates of the start and end points of the line.
+     * Checks if the x and y coordinates of the point are in the range
+     * between the x and y coordinates of the start and end points of the line.
      *
      * @param line  The line to check.
      * @param point The point to check.
@@ -242,26 +249,29 @@ public class Line {
         if (line == null || point == null) {
             return false;
         }
-        return isInRange(line.start.getX(), point.getX(), line.end.getX()) &&
-                isInRange(line.start.getY(), point.getY(), line.end.getY());
+        return isInRange(line.start.getX(), point.getX(), line.end.getX())
+                && isInRange(line.start.getY(), point.getY(), line.end.getY());
     }
 
     /**
-     * Calculates the coefficients A, B and C of the line equation Ax + By = C using the start and end points of the line.
-     * A is calculated as the difference in y-coordinates of the end and start points.
-     * B is calculated as the difference in x-coordinates of the start and end points.
-     * C is calculated as A times the x-coordinate of the start point plus B times the y-coordinate of the start point.
+     * Calculates the coefficients a, b and c of the line equation
+     * ax + by = c using the start and end points of the line.
+     * 'a' is calculated as the difference in y-coordinates of the end and start points.
+     * 'b' is calculated as the difference in x-coordinates of the start and end points.
+     * 'c' is calculated as 'a' times the x-coordinate of the start point
+     * plus 'b' times the y-coordinate of the start point.
      */
     private void calculateLineEquation() {
-        A = end.getY() - start.getY();
-        B = start.getX() - end.getX();
-        C = A * start.getX() + B * start.getY();
+        a = end.getY() - start.getY();
+        b = start.getX() - end.getX();
+        c = a * start.getX() + b * start.getY();
     }
 
     /**
      * Checks if a point is in the range between two other points.
      * If any of the points is null, returns false.
-     * Checks if the x and y coordinates of the point are in the range between the x and y coordinates of the start and end points.
+     * Checks if the x and y coordinates of the point are in the range
+     * between the x and y coordinates of the start and end points.
      *
      * @param point      The point to check.
      * @param rangeStart The start of the range.
@@ -272,16 +282,18 @@ public class Line {
         if (point == null || rangeStart == null || rangeEnd == null) {
             return false;
         }
-        return isInRange(rangeStart.getX(), point.getX(), rangeEnd.getX()) &&
-                isInRange(rangeStart.getY(), point.getY(), rangeEnd.getY());
+        return isInRange(rangeStart.getX(), point.getX(), rangeEnd.getX())
+                && isInRange(rangeStart.getY(), point.getY(), rangeEnd.getY());
     }
 
     /**
      * Calculates the intersection point of the line with another line using Cramer's rule.
      * If the other line is null, returns null.
      * If the lines have a common edge point, returns that point.
-     * If the determinant of the system of linear equations is zero (indicating that the lines coincide, are parallel, or never collide), returns null.
-     * Otherwise, calculates the x and y coordinates of the intersection point and returns a new Point object with those coordinates.
+     * If the determinant of the system of linear equations is zero
+     * (indicating that the lines coincide, are parallel, or never collide), returns null.
+     * Otherwise, calculates the x and y coordinates
+     * of the intersection point and returns a new Point object with those coordinates.
      *
      * @param other The other line to calculate the intersection point with.
      * @return The intersection point if the lines intersect, null otherwise.
@@ -299,15 +311,15 @@ public class Line {
             return this.end();
         }
         // Using Cramer's rule to solve the system of linear equations.
-        double determinant = A * other.B - other.A * B;
+        double determinant = a * other.b - other.a * b;
 
         // Determinant is zero --> infinite/zero solutions --> the lines coincide/parallel/never collide.
         if (Math.abs(determinant) < Threshold.TOLERANCE) {
             return null;
         }
 
-        double x = (other.B * C - B * other.C) / determinant;
-        double y = (A * other.C - other.A * C) / determinant;
+        double x = (other.b * c - b * other.c) / determinant;
+        double y = (a * other.c - other.a * c) / determinant;
 
         return new Point(x, y);
     }

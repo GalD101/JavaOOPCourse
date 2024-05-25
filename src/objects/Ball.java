@@ -20,7 +20,7 @@ public class Ball {
      * @param color The color of the ball
      */
     public Ball(Point center, int r, java.awt.Color color) {
-        this.center = new Point(center.getX(), center.getY());
+        this.center = (center == null) ? new Point(0, 0) : new Point(center.getX(), center.getY());
         this.r = r;
         this.color = color;
         this.velocity = new Velocity(0, 0);

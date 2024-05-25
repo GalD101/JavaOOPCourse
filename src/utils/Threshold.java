@@ -1,4 +1,4 @@
-package objects;
+package utils;
 
 public final class Threshold {
     private static final int DECIMALS = 7;
@@ -17,6 +17,9 @@ public final class Threshold {
         // When the number is too big (for example Double.MAX_VALUE),
         // there are weird issues here.
         // TODO: Maybe add if condition to check if number is small or big
+        if (number > Double.MAX_VALUE / scale) {
+            return number;
+        }
         double testing = Math.round(number * scale) / scale;
         return Math.round(number * scale) / scale;
     }
