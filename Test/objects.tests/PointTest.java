@@ -1,6 +1,6 @@
 package objects.tests;
 
-import objects.Threshold;
+import utils.Threshold;
 import objects.Point;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +24,9 @@ class PointTest {
     private Point point15;
     private Point point16;
     private Point point17;
+    private Point point18;
+    private Point point19;
+    private Point point20;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
@@ -45,6 +48,9 @@ class PointTest {
         point15 = new Point(Threshold.TOLERANCE, Threshold.TOLERANCE);
         point16 = new Point(1000.0, 1000.0);
         point17 = new Point(92.23372036854776, 92.23372036854776);
+        point18 = new Point(0, Double.MAX_VALUE);
+        point19 = new Point(Double.MAX_VALUE, 0);
+        point20 = new Point(Double.MAX_VALUE, Double.MAX_VALUE);
     }
 
     @org.junit.jupiter.api.AfterEach
@@ -86,6 +92,11 @@ class PointTest {
         assertEquals(0,origin.distance(point15), Threshold.TOLERANCE, "The distance between origin and point15 should be ~0.0");
         assertEquals(0, point15.distance(origin), Threshold.TOLERANCE, "The distance between point15 and origin should be ~0.0");
         assertEquals(1283.7753841197672, point16.distance(point17), Threshold.TOLERANCE, "The distance between point16 and point17 should be ~1283.7753841197672");
+        assertEquals(0, point17.distance(point17), Threshold.TOLERANCE, "The distance between point17 and itself should be 0.0");
+        assertEquals(0, point18.distance(point18), Threshold.TOLERANCE, "The distance between point18 and itself should be 0.0");
+        assertEquals(Double.MAX_VALUE, point18.distance(origin), Threshold.TOLERANCE, "The distance between point18 and origin should be Double.MAX_VALUE");
+        assertEquals(Double.MAX_VALUE, point19.distance(origin), Threshold.TOLERANCE, "The distance between point18 and origin should be Double.MAX_VALUE");
+        assertEquals(origin.distance(point18), origin.distance(point19), Threshold.TOLERANCE, "The distance between origin and point18 should be the same as the distance between the origin and point19");
     }
 
     @org.junit.jupiter.api.Test

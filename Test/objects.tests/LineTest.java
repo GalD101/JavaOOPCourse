@@ -1,6 +1,6 @@
 package objects.tests;
 
-import objects.Threshold;
+import utils.Threshold;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import objects.Point;
