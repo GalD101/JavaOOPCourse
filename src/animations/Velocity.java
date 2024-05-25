@@ -67,13 +67,14 @@ public class Velocity {
             angle -= 360.0;
         }
 
-        // TODO: Look at this comment, perhaps modify the code later to allow consistency since the trigonometric functions are inaccurate.
-        // In order to allow consistency, I will use the relation sin(x) = cos(x + 180) (canceled, it doesn't really matter)
+        // NOTE: There are slight inaccuracies in the Math.cos and Math.sin functions.
+        // (the identity cos(90-x)= sin(x) is not exact here but will almost be equal).
+        // This won't matter for the purposes of this project
+        // since the inaccuracies are very small, and we use a threshold regardless.
+        // The inaccuracies grow larger for larger angles.
+        // This is another reason why I will reduce the angle to the domain of [0, 360].
         boolean isCosineZero = (angle == 90.0 || angle == 270.0);
         boolean isSineZero = (angle == 0.0 || angle == 180.0);
-        // NOTE: There are slight inaccuracies in the Math.cos and Math.sin functions (the identity cos(90-x)= sin(x) is not exact here but will almost be equal).
-        // This won't matter for the purposes of this project since the inaccuracies are very small, and we use a threshold regardless.
-        // The inaccuracies grow larger for larger angles and this is another reason why I will reduce the angle to the domain of [0, 360].
         double dx = isCosineZero ? 0 : Math.cos(Math.toRadians(angle)) * speed;
         double dy = isSineZero ? 0 : Math.sin(Math.toRadians(angle)) * speed;
         return new Velocity(dx, dy);

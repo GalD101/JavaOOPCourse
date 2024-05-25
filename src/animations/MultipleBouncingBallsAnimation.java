@@ -4,34 +4,45 @@ import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
 import objects.Ball;
-
+import utils.RandomSingleton;
 import java.awt.Color;
 import java.util.Random;
 
+import static utils.InputValidator.stringToInteger;
+
 public class MultipleBouncingBallsAnimation {
     public static void main(String[] args) {
-        // TODO: Make the size of screen a constant! (remove hard coded values)
-        GUI gui = new GUI("title",500,500);
+        final int WIDTH = 1000;
+        final int HEIGHT = 1000;
+        final int EDGES = 0;
+        final double P = 1000.0; // Momentum of each ball.
+        GUI gui = new GUI("Multiple bouncing balls animations", WIDTH, HEIGHT);
         Sleeper sleeper = new Sleeper();
 
-        Random rand = new Random(); // TODO: Use a constant random object for the ENTIRE project.
+        Random rand = RandomSingleton.getInstance();
         int[] sizeOfBalls = new int[args.length];
         Ball[] balls = new Ball[args.length];
-//        if (convertToInt(args)) {
-//            // TODO: check input args
-//        }
         for (int i = 0; i < args.length; i++) {
-            sizeOfBalls[i] = Integer.parseInt(args[i]);
-            balls[i] = new Ball(250, 250, sizeOfBalls[i], Color.BLACK); // TODO: Make the initial center point random (according to instructions)
+            // Strings that do not represent positive integers will be replaced with 0
+            sizeOfBalls[i] = stringToInteger(args[i]);
+
+            // Make each ball with a random color from the Color class.
+            Color randomColor = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+
+            // Create a ball with random position inside the frame.
+            balls[i] = new Ball(rand.nextDouble(sizeOfBalls[i], WIDTH - sizeOfBalls[i]), rand.nextDouble(sizeOfBalls[i], HEIGHT - sizeOfBalls[i]), sizeOfBalls[i], randomColor);
         }
 
         for (Ball ball : balls) {
-            // TODO: Change this because I don't need else and I also plan to make this cooler by injecting some physics and the conservation of momentum! (inelastic collisions)
-            if (ball.getSize() > 50) { // The numbers here are random, I will probably modify this later
-                ball.setVelocity(rand.nextInt(10), rand.nextInt(10));
-            } else {
-                ball.setVelocity(9 * ball.getSize() / 10, 7 * ball.getSize() / 10);
-            }
+            // Suppose each ball has a mass such that mass = size for simplicity.
+            // Now each ball has the same momentum p = mass * velocity.
+            // We can calculate the speed of each ball.
+            double speed = P / ball.getSize();
+
+            // Randomize the direction of the velocity.
+            double angle = rand.nextDouble(360);
+            Velocity v = Velocity.fromAngleAndSpeed(angle, speed);
+            ball.setVelocity(v);
         }
 
         while (true) {
@@ -39,11 +50,10 @@ public class MultipleBouncingBallsAnimation {
             for (Ball ball : balls) {
                 double dx = ball.getVelocity().getDx();
                 double dy = ball.getVelocity().getDy();
-                // TODO: Change hard coded values to constant values
-                if ((ball.getX() + (ball.getSize() + dx) > 500) || (ball.getX() - (ball.getSize() - dx) < 0)) {
+                if ((ball.getX() + (ball.getSize() + dx) > WIDTH) || (ball.getX() - (ball.getSize() - dx) < EDGES)) {
                     dx = -dx;
                 }
-                if ((ball.getY() + (ball.getSize() + dy) > 500) || (ball.getY() - (ball.getSize() - dy) < 0)) {
+                if ((ball.getY() + (ball.getSize() + dy) > HEIGHT) || (ball.getY() - (ball.getSize() - dy) < EDGES)) {
                     dy = -dy;
                 }
                 ball.setVelocity(dx, dy);
