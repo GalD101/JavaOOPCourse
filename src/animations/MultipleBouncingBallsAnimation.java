@@ -1,33 +1,57 @@
 package animations;
 
+import biuoop.DrawSurface;
 import biuoop.GUI;
+import biuoop.Sleeper;
 import objects.Ball;
 
-import java.util.Random; // TODO: Use A constant Random object for the ENTIRE project.
+import java.awt.Color;
+import java.util.Random;
 
 public class MultipleBouncingBallsAnimation {
     public static void main(String[] args) {
-        GUI gui = new GUI("title",200,200);
-        biuoop.Sleeper sleeper = new biuoop.Sleeper();
+        // TODO: Make the size of screen a constant! (remove hard coded values)
+        GUI gui = new GUI("title",500,500);
+        Sleeper sleeper = new Sleeper();
 
-        Random rand = new Random();
+        Random rand = new Random(); // TODO: Use a constant random object for the ENTIRE project.
         int[] sizeOfBalls = new int[args.length];
         Ball[] balls = new Ball[args.length];
-        //        if (convertToInt(args)) {
+//        if (convertToInt(args)) {
 //            // TODO: check input args
 //        }
         for (int i = 0; i < args.length; i++) {
             sizeOfBalls[i] = Integer.parseInt(args[i]);
+            balls[i] = new Ball(250, 250, sizeOfBalls[i], Color.BLACK); // TODO: Make the initial center point random (according to instructions)
         }
-        for (int i = 0; i < sizeOfBalls.length; i++) {
-            balls[i] = new Ball(sizeOfBalls[i], rand.nextInt(200), rand.nextInt(200), java.awt.Color.BLACK);
-            // TODO: Change this cause I dont need else and in general I plan to make this a bit cooler using physics and the conservation of momentum! (inelastic collisions)
-            if (balls[i].getSize() > 50) {
-                balls[i].setVelocity(25, 25);
+
+        for (Ball ball : balls) {
+            // TODO: Change this because I don't need else and I also plan to make this cooler by injecting some physics and the conservation of momentum! (inelastic collisions)
+            if (ball.getSize() > 50) { // The numbers here are random, I will probably modify this later
+                ball.setVelocity(rand.nextInt(10), rand.nextInt(10));
             } else {
-                balls[i].setVelocity(50, 50);
+                ball.setVelocity(9 * ball.getSize() / 10, 7 * ball.getSize() / 10);
             }
-            balls[i].setVelocity(rand.nextInt(50), rand.nextInt(50));
+        }
+
+        while (true) {
+            DrawSurface d = gui.getDrawSurface();
+            for (Ball ball : balls) {
+                double dx = ball.getVelocity().getDx();
+                double dy = ball.getVelocity().getDy();
+                // TODO: Change hard coded values to constant values
+                if ((ball.getX() + (ball.getSize() + dx) > 500) || (ball.getX() - (ball.getSize() - dx) < 0)) {
+                    dx = -dx;
+                }
+                if ((ball.getY() + (ball.getSize() + dy) > 500) || (ball.getY() - (ball.getSize() - dy) < 0)) {
+                    dy = -dy;
+                }
+                ball.setVelocity(dx, dy);
+                ball.moveOneStep();
+                ball.drawOn(d);
+            }
+            gui.show(d);
+            sleeper.sleepFor(50);
         }
     }
 }
