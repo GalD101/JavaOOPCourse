@@ -18,7 +18,7 @@ public final class Threshold {
         // there are weird issues here.
         // TODO: Maybe add if condition to check if number is small or big
         if (number > Double.MAX_VALUE / scale) {
-            return number;
+            return Double.MAX_VALUE;
         }
         double testing = Math.round(number * scale) / scale;
         return Math.round(number * scale) / scale;
