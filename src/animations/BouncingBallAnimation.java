@@ -27,6 +27,7 @@ public class BouncingBallAnimation {
         return true;
     }
 
+
     static private void drawAnimation(Point start, double dx, double dy) {
         GUI gui = new GUI("title",200,200);
         biuoop.Sleeper sleeper = new biuoop.Sleeper();
@@ -50,6 +51,7 @@ public class BouncingBallAnimation {
         }
     }
     public static void main(String[] args) {
+//        int[] nums = new int[args.length];
 //        if (convertToInt(args)) {
 //            // TODO: check input args
 //        }
