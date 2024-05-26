@@ -54,12 +54,15 @@ public class MultipleFramesBouncingBallsAnimation {
 
         // Second half
         for (int i = (int) (sizeOfBalls.length / 2); i < sizeOfBalls.length; i++) {
-            double x = rand.nextDouble(0, width);
+            // generate random points such that they won't be inside the frames
+            double randomX;
+            double randomY;
             do {
-                // generate random number on the screen
-                x = rand.nextDouble(0, width);
-            } while (/*x is not inside the two rectangles*/false);//TODO: Do the same for y coordinate
-            balls[i] = new Ball(rand.nextDouble(frame2Start.getX() + sizeOfBalls[i], frame2End.getX() - sizeOfBalls[i]), rand.nextDouble(frame2Start.getY() + sizeOfBalls[i], frame2End.getY() - sizeOfBalls[i]), sizeOfBalls[i], Color.BLACK);
+                randomX = rand.nextDouble(0, width - sizeOfBalls[i]);
+                randomY = rand.nextDouble(0, height - sizeOfBalls[i]);
+            } while ((randomX + sizeOfBalls[i] > frame1Start.getX() && randomX < frame1End.getX()) && (randomY + sizeOfBalls[i] > frame1Start.getY() && randomY < frame1End.getY()) ||
+                    (randomX + sizeOfBalls[i] > frame2Start.getX() && randomY + sizeOfBalls[i] > frame2Start.getY()));
+            balls[i] = new Ball(randomX, randomY, sizeOfBalls[i], Color.RED);
         }
 
         for (Ball ball : balls) {
@@ -114,12 +117,19 @@ public class MultipleFramesBouncingBallsAnimation {
                 double dx = balls[i].getVelocity().getDx();
                 double dy = balls[i].getVelocity().getDy();
 
+                // Make the balls bounce off the sides:
                 if ((balls[i].getX() + (balls[i].getSize() + dx) > width) || (balls[i].getX() - (balls[i].getSize() - dx) < 0)) {
                     dx = -dx;
                 }
                 if ((balls[i].getY() + (balls[i].getSize() + dy) > height) || (balls[i].getY() - (balls[i].getSize() - dy) < 0)) {
                     dy = -dy;
                 }
+                //Make the balls bounce off the 2 frames:
+                if ((balls[i].getX() + (balls[i].getSize() + dx) > frame1Start.getX()) && (balls[i].getX() - (balls[i].getSize() - dx) < frame1End.getX()) &&
+                        (balls[i].getY() + (balls[i].getSize() + dy) > frame1Start.getY()) && (balls[i].getY() - (balls[i].getSize() - dy) < frame1End.getY())) {
+                    dx = -dx;
+                    dy = -dy;
+                }// FIXME
                 balls[i].setVelocity(dx, dy);
                 balls[i].moveOneStep();
                 balls[i].drawOn(d);
