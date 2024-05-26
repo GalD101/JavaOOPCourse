@@ -47,10 +47,10 @@ public class Point {
 
         // If one wants to improve accuracy and precision for far-flung points,
         // one can use the hypot method from the Math class instead i.e. distance = Math.hypot(dx, dy).
-        // double distance = Math.sqrt(dx * dx + dy * dy);
-        double distance = Math.hypot(dx, dy); // TODO
+         double distance = Math.sqrt(dx * dx + dy * dy);
+//        double distance = Math.hypot(dx, dy); // TODO
 
-        return truncateToTolerance(distance);
+        return distance;
     }
 
     /**
@@ -100,6 +100,6 @@ public class Point {
      * defined by the reciprocal of the tolerance using the truncateToTolerance method.
      */
     private boolean compareNumbers(double a, double b) {
-        return truncateToTolerance(Math.abs(truncateToTolerance(a) - truncateToTolerance(b))) <= Threshold.TOLERANCE;
+        return truncateToTolerance(Math.abs(a - b)) <= Threshold.TOLERANCE;
     }
 }

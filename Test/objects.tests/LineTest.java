@@ -1,5 +1,6 @@
 package objects.tests;
 
+import org.junit.jupiter.api.Disabled;
 import utils.Threshold;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,7 +75,6 @@ class LineTest {
         assertEquals(0.0, line12.length(), Threshold.TOLERANCE, "The length of line12 should be 0.0");
         assertEquals(4.0, verticalLine.length(), Threshold.TOLERANCE, "The length of verticalLine should be 4.0");
         assertEquals(4.0, horizontalLine.length(), Threshold.TOLERANCE, "The length of horizontalLine should be 4.0");
-//        assertEquals(Double.MAX_VALUE, longestLine.length(), Threshold.TOLERANCE, "The length of longestLine should be Double.MAX_VALUE");//THIS IS PROBLEMATIC
     }
 
     @Test
@@ -255,5 +255,13 @@ class LineTest {
         assertFalse(line1.equals(line8), "line1 and line8 should not be equal");
         assertFalse(longestLine.equals(line1), "longestLine and line1 should not be equal");
         assertFalse(line1.equals(longestLine), "longestLine and line1 should not be equal");
+    }
+
+    @Test
+    @Disabled("Line will not deal with very big numbers.")
+    void testEqualsBigNumbers() {
+        assertEquals(Double.MAX_VALUE, longestLine.length(), Threshold.TOLERANCE, "The length of longestLine should be Double.MAX_VALUE");
+        assertEquals(0, longestLine.middle().getX(), Threshold.TOLERANCE, "The X coordinate of the middle point of longestLine should be 0");
+        assertEquals(0, longestLine.middle().getY(), Threshold.TOLERANCE, "The Y coordinate of the middle point of longestLine should be 0");
     }
 }

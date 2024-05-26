@@ -226,13 +226,10 @@ public class Line {
      * @return true if the number is in the range, false otherwise.
      */
     private boolean isInRange(double val1, double num, double val2) {
-        double truncatedStart = Threshold.truncateToTolerance(val1);
-        double truncatedNum = Threshold.truncateToTolerance(num);
-        double truncatedEnd = Threshold.truncateToTolerance(val2);
-        return ((truncatedStart - Threshold.TOLERANCE <= truncatedNum
-                && truncatedNum <= truncatedEnd + Threshold.TOLERANCE)
-                || (truncatedEnd - Threshold.TOLERANCE <= truncatedNum
-                && truncatedNum <= truncatedStart + Threshold.TOLERANCE));
+        return ((val1 - Threshold.TOLERANCE <= num
+                && num <= val2 + Threshold.TOLERANCE)
+                || (val2 - Threshold.TOLERANCE <= num
+                && num <= val1 + Threshold.TOLERANCE));
     }
 
     /**
