@@ -8,28 +8,6 @@ import objects.Point;
 import static utils.InputValidator.stringToInteger;
 
 public class BouncingBallAnimation {
-    /**
-     * Checks if the string str is in a valid integer representation.
-     *
-     * @param str the string representing the number.
-     * @return true iff the string is an integer.
-     */
-    private boolean isValidInteger(String str) {
-        while ((str.charAt(0) == '-') || (str.charAt(0) == '+')) {
-            if (str.length() == 1) {
-                return false;
-            }
-            str = str.substring(1, str.length());
-        }
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) < '0' || str.charAt(i) > '9') {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
     static private void drawAnimation(Point start, double dx, double dy) {
         final int WIDTH = 200;
         final int HEIGHT = 200;
