@@ -43,7 +43,7 @@ public class Ball {
      */
     public int getX() {
         if (this.center == null) {
-            return 0; // TODO: handle this
+            throw new NullPointerException("Center point of the ball is not initialized.");
         }
         return (int) Math.round(this.center.getX());
     }
@@ -54,7 +54,7 @@ public class Ball {
      */
     public int getY() {
         if (this.center == null) {
-            return 0; // TODO: handle this
+            throw new NullPointerException("Center point of the ball is not initialized.");
         }
         return (int) Math.round(this.center.getY());
     }
