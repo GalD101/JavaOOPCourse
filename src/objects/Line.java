@@ -283,6 +283,17 @@ public class Line {
                 && isInRange(rangeStart.getY(), point.getY(), rangeEnd.getY());
     }
 
+    public boolean isVertical() {
+        return Math.abs(this.start.getX() - this.end.getX()) <= Threshold.TOLERANCE;
+    }
+
+    public boolean isParallel(Line other) {
+        if (other == null) {
+            return false;
+        }
+        return Math.abs(this.a * other.b - other.a * this.b) <= Threshold.TOLERANCE;
+    }
+
     /**
      * Calculates the intersection point of the line with another line using Cramer's rule.
      * If the other line is null, returns null.
