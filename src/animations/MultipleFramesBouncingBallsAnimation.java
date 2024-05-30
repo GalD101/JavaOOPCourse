@@ -60,7 +60,14 @@ public class MultipleFramesBouncingBallsAnimation {
             // I WORKED FOR SO LONG FOR NOTHING, JUST LIKE EVERYTHING IN LIFE
             Color randomColor = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
             Rectangle fuckScreen = new Rectangle(new Point(sizeOfBalls[i], 0), new Point(width, height), Color.WHITE);
-            Point randomPoint = screen.generateRandomPointInside(frame1, sizeOfBalls[i]);
+            Point randomPoint = screen.generateRandomPointInside(sizeOfBalls[i]);
+//            if (frame1.getUpperLeft().getX() <= randomPoint.getX() && randomPoint.getX() <= frame1.getLowerRight().getX()) {
+//                randomPoint.setX((randomPoint.getX() + frame1.getWidth()) % screen.getWidth());
+//            }
+//            if (frame1.getUpperLeft().getY() <= randomPoint.getX() && randomPoint.getX() <= frame1.getLowerRight().getX()) {
+//                randomPoint.setX((randomPoint.getX() + frame1.getWidth()) % screen.getWidth());
+//            }
+//            Point randomPoint = screen.generateRandomPointInside(frame1, sizeOfBalls[i]);
             balls[i] = new Ball(650  , 210, sizeOfBalls[i], randomColor);
         }
 
@@ -88,12 +95,10 @@ public class MultipleFramesBouncingBallsAnimation {
 
             for (int i = firstHalf.length; i < balls.length; i++) {
                 balls[i].collideWithFrameInside(screen);
-                // UGLY NASTY FIX I HATE THIS
-                Rectangle frame3 = new Rectangle(new Point(50 + sizeOfBalls[i], 50 + sizeOfBalls[i]), new Point(500 + sizeOfBalls[i], 500 + sizeOfBalls[i]), Color.GRAY);
-                Rectangle frame4 = new Rectangle(new Point(450 + sizeOfBalls[i], 450 + sizeOfBalls[i]), new Point(600 + sizeOfBalls[i], 600 + sizeOfBalls[i]), Color.GRAY);
-
-//                balls[i].collideWithFrameOutside(frame1);
-                balls[i].collideWithFrameOutside(frame2);
+                Rectangle fuckFrame1 = new Rectangle(new Point(50- sizeOfBalls[i], 50 - sizeOfBalls[i]), new Point(500, 500), Color.GRAY);
+                Rectangle fuckFrame2 = new Rectangle(new Point(450 - sizeOfBalls[i], 450 - sizeOfBalls[i]), new Point(600, 600), Color.YELLOW);
+                balls[i].collideWithFrameOutside(fuckFrame1);
+                balls[i].collideWithFrameOutside(fuckFrame2);
 
                 balls[i].moveOneStep();
                 balls[i].drawOn(d);

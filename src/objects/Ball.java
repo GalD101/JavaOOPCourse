@@ -169,26 +169,60 @@ public class Ball {
         double nextPosX2 = prevPosX2 + dx;
         double nextPosY2 = prevPosY2 + dy;
 
-        if (prevPosX2 <= frame.getUpperLeft().getX() && nextPosX2 >= frame.getUpperLeft().getX()) {
-            if (!(prevPosY2 <= frame.getUpperLeft().getY() || prevPosY2 >= frame.getLowerRight().getY())) {
-                dx = -dx;
+        // moving right
+        if (dx > 0) {
+            if (prevPosX1 <= frame.getUpperLeft().getX() && nextPosX1 >= frame.getUpperLeft().getX()) {
+                if (frame.getUpperLeft().getY() <= nextPosY1 && nextPosY1 <= frame.getLowerRight().getY()) {
+                    dx = -dx;
+                }
+            }
+        } else { // moving left
+            if (prevPosX1 >= frame.getLowerRight().getX() && nextPosX1 <= frame.getLowerRight().getX()) {
+                if (frame.getUpperLeft().getY() <= nextPosY1 && nextPosY1 <= frame.getLowerRight().getY()) {
+                    dx = -dx;
+                }
             }
         }
-        if (prevPosX1 >= frame.getLowerRight().getX() && nextPosX1 <= frame.getLowerRight().getX()) {
-            if (!(prevPosY1 <= frame.getUpperLeft().getY() || prevPosY1 >= frame.getLowerRight().getY())) {
-                dx = -dx;
+
+        // moving down
+        if (dy > 0) {
+            if (prevPosY1 <= frame.getUpperLeft().getY() && nextPosY1 >= frame.getUpperLeft().getY()) {
+                if (frame.getUpperLeft().getX() <= nextPosX1 && nextPosX1 <= frame.getLowerRight().getX()) {
+                    dy = -dy;
+                }
+            }
+        } else { // moving up
+            if (prevPosY1 >= frame.getLowerRight().getY() && nextPosY1 <= frame.getLowerRight().getY()) {
+                if (frame.getUpperLeft().getX() <= nextPosX1 && nextPosX1 <= frame.getLowerRight().getX()) {
+                    dy = -dy;
+                }
             }
         }
-        if (prevPosY2 <= frame.getUpperLeft().getY() && nextPosY2 >= frame.getUpperLeft().getY()) {
-            if (!(prevPosX2 <= frame.getUpperLeft().getX() || prevPosX2 >= frame.getLowerRight().getX())) {
-                dy = -dy;
-            }
-        }
-        if (prevPosY1 >= frame.getLowerRight().getY() && nextPosY1 <= frame.getLowerRight().getY()) {
-            if (!(prevPosX1 <= frame.getUpperLeft().getX() || prevPosX1 >= frame.getLowerRight().getX())) {
-                dy = -dy;
-            }
-        }
+        // The following code needs to first detect where the ball is coming from
+        // i.e. from the left side of the wall, right side, top or bottom.
+        // Then, change the velocity of the ball accordingly (flip the corresponding velocity component).
+
+
+//        if (prevPosX2 <= frame.getUpperLeft().getX() && nextPosX2 >= frame.getUpperLeft().getX()) {
+//            if (!(prevPosY2 <= frame.getUpperLeft().getY() || prevPosY2 >= frame.getLowerRight().getY())) {
+//                dx = -dx;
+//            }
+//        }
+//        else if (prevPosX1 >= frame.getLowerRight().getX() && nextPosX1 <= frame.getLowerRight().getX()) {
+//            if (!(prevPosY1 <= frame.getUpperLeft().getY() || prevPosY1 >= frame.getLowerRight().getY())) {
+//                dx = -dx;
+//            }
+//        }
+//        if (prevPosY1 >= frame.getLowerRight().getY() && nextPosY1 <= frame.getLowerRight().getY()) {
+//            if (!(prevPosX1 <= frame.getUpperLeft().getX() || prevPosX1 >= frame.getLowerRight().getX())) {
+//                dy = -dy;
+//            }
+//        }
+//        else if (prevPosY2 <= frame.getUpperLeft().getY() && nextPosY2 >= frame.getUpperLeft().getY()) {
+//            if (!(prevPosX1 <= frame.getUpperLeft().getX() || prevPosX1 >= frame.getLowerRight().getX())) {
+//                dy = -dy;
+//            }
+//        }
         this.setVelocity(dx, dy);
     }
 }
