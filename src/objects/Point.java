@@ -3,6 +3,7 @@ package objects;
 import utils.Threshold;
 
 import static utils.Threshold.truncateToTolerance;
+import static utils.Threshold.compareNumbers;
 
 /**
  * The Point class represents a point in a two-dimensional space.
@@ -89,17 +90,20 @@ public class Point {
     }
 
     /**
-     * Truncates the absolute difference between two numbers to a certain tolerance
-     * and checks if it is less than or equal to the tolerance.
+     * Sets the x-coordinate of this point.
      *
-     * @param a The first number to compare.
-     * @param b The second number to compare.
-     * @return true if the truncated absolute difference between the two numbers is less than or equal to
-     * the tolerance defined in the Threshold class, false otherwise.
-     * The comparison is done after truncating each number and their absolute difference to a precision
-     * defined by the reciprocal of the tolerance using the truncateToTolerance method.
+     * @param x The new x-coordinate of this point.
      */
-    private boolean compareNumbers(double a, double b) {
-        return truncateToTolerance(Math.abs(a - b)) <= Threshold.TOLERANCE;
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    /**
+     * Sets the y-coordinate of this point.
+     *
+     * @param y The new y-coordinate of this point.
+     */
+    public void setY(double y) {
+        this.y = y;
     }
 }

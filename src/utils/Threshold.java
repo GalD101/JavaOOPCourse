@@ -23,6 +23,21 @@ public final class Threshold {
         return number > 0 ? Math.floor(number * scale) / scale : Math.ceil(number * scale) / scale;
     }
 
+    /**
+     * Truncates the absolute difference between two numbers to a certain tolerance
+     * and checks if it is less than or equal to the tolerance.
+     *
+     * @param a The first number to compare.
+     * @param b The second number to compare.
+     * @return true if the truncated absolute difference between the two numbers is less than or equal to
+     * the tolerance defined in the Threshold class, false otherwise.
+     * The comparison is done after truncating each number and their absolute difference to a precision
+     * defined by the reciprocal of the tolerance using the truncateToTolerance method.
+     */
+    public static boolean compareNumbers(double a, double b) {
+        return truncateToTolerance(Math.abs(a - b)) <= Threshold.TOLERANCE;
+    }
+
     private Threshold() {
         // restrict instantiation
     }

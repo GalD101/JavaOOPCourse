@@ -15,9 +15,10 @@ public class Ball {
 
     /**
      * Constructor that initializes a new Ball object with a center point, radius and color.
+     *
      * @param center The center point of the ball
-     * @param r The radius of the ball
-     * @param color The color of the ball
+     * @param r      The radius of the ball
+     * @param color  The color of the ball
      */
     public Ball(Point center, int r, java.awt.Color color) {
         this.center = (center == null) ? new Point(0, 0) : new Point(center.getX(), center.getY());
@@ -28,10 +29,11 @@ public class Ball {
 
     /**
      * Constructor that initializes a new Ball object with a center point (x, y coordinates), radius and color.
+     *
      * @param centerX The x-coordinate of the center point of the ball
      * @param centerY The y-coordinate of the center point of the ball
-     * @param r The radius of the ball
-     * @param color The color of the ball
+     * @param r       The radius of the ball
+     * @param color   The color of the ball
      */
     public Ball(double centerX, double centerY, int r, java.awt.Color color) {
         this(new Point(centerX, centerY), r, color);
@@ -39,6 +41,7 @@ public class Ball {
 
     /**
      * Returns the x-coordinate of the center of the ball.
+     *
      * @return The x-coordinate of the center of the ball
      */
     public int getX() {
@@ -50,6 +53,7 @@ public class Ball {
 
     /**
      * Returns the y-coordinate of the center of the ball.
+     *
      * @return The y-coordinate of the center of the ball
      */
     public int getY() {
@@ -61,6 +65,7 @@ public class Ball {
 
     /**
      * Returns the radius of the ball.
+     *
      * @return The radius of the ball
      */
     public int getSize() {
@@ -69,6 +74,7 @@ public class Ball {
 
     /**
      * Returns the color of the ball.
+     *
      * @return The color of the ball
      */
     public java.awt.Color getColor() {
@@ -77,6 +83,7 @@ public class Ball {
 
     /**
      * Returns the velocity of the ball.
+     *
      * @return The velocity of the ball
      */
     public Velocity getVelocity() {
@@ -85,6 +92,7 @@ public class Ball {
 
     /**
      * Draws the ball on the given DrawSurface.
+     *
      * @param surface The surface on which the ball is to be drawn
      */
     public void drawOn(DrawSurface surface) {
@@ -94,6 +102,7 @@ public class Ball {
 
     /**
      * Sets the velocity of the ball.
+     *
      * @param v The new velocity of the ball
      */
     public void setVelocity(Velocity v) {
@@ -102,6 +111,7 @@ public class Ball {
 
     /**
      * Sets the velocity of the ball.
+     *
      * @param dx The change in x-coordinate per unit time
      * @param dy The change in y-coordinate per unit time
      */
@@ -114,5 +124,49 @@ public class Ball {
      */
     public void moveOneStep() {
         this.center = this.getVelocity().applyToPoint(this.center);
+    }
+
+    public void collideWithFrameInside(Rectangle frame) {
+        double dx = this.getVelocity().getDx();
+        double dy = this.getVelocity().getDy();
+        if ((this.getX() + (this.getSize() + dx) >= frame.getLowerRight().getX()) || (this.getX() - (this.getSize() - dx) <= frame.getUpperLeft().getX())) {
+            dx = -dx;
+        }
+        if ((this.getY() + (this.getSize() + dy) >= frame.getLowerRight().getY()) || (this.getY() - (this.getSize() - dy) <= frame.getUpperLeft().getY())) {
+            dy = -dy;
+        }
+        this.setVelocity(dx, dy);
+    }
+
+    public void collideWithFrameOutside(Rectangle frame) {
+        double dx = this.getVelocity().getDx();
+        double dy = this.getVelocity().getDy();
+
+        double prevPosX = this.getX() + this.getSize();
+        double nextPosX = prevPosX + dx;
+
+        double prevPosY = this.getY() + this.getSize();
+        double nextPosY = prevPosY + dy;
+        if (prevPosX <= frame.getUpperLeft().getX() && nextPosX >= frame.getUpperLeft().getX()) {
+            if (!(prevPosY <= frame.getUpperLeft().getY() || prevPosY >= frame.getLowerRight().getY())) {
+                dx = -dx;
+            }
+        }
+        else if (prevPosX >= frame.getLowerRight().getX() && nextPosX <= frame.getLowerRight().getX()) {
+            if (!(prevPosY <= frame.getUpperLeft().getY() || prevPosY >= frame.getLowerRight().getY())) {
+                dx = -dx;
+            }
+        }
+        else if (prevPosY <= frame.getUpperLeft().getY() && nextPosY >= frame.getUpperLeft().getY()) {
+            if (!(prevPosX <= frame.getUpperLeft().getX() || prevPosX >= frame.getLowerRight().getX())) {
+                dy = -dy;
+            }
+        }
+        else if (prevPosY >= frame.getLowerRight().getY() && nextPosY <= frame.getLowerRight().getY()) {
+            if (!(prevPosX <= frame.getUpperLeft().getX() || prevPosX >= frame.getLowerRight().getX())) {
+                dy = -dy;
+            }
+        }
+        this.setVelocity(dx, dy);
     }
 }
