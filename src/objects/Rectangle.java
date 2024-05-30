@@ -95,19 +95,19 @@ public class Rectangle {
         return 2 * (this.getWidth() + this.getHeight());
     }
 
-    public Line GetTopLine() {
+    public Line getTopLine() {
         return new Line(this.upperLeft, new Point(this.lowerRight.getX(), this.upperLeft.getY()));
     }
 
-    public Line GetBottomLine() {
+    public Line getBottomLine() {
         return new Line(new Point(this.upperLeft.getX(), this.lowerRight.getY()), this.lowerRight);
     }
 
-    public Line GetLeftLine() {
+    public Line getLeftLine() {
         return new Line(this.upperLeft, new Point(this.upperLeft.getX(), this.lowerRight.getY()));
     }
 
-    public Line GetRightLine() {
+    public Line getRightLine() {
         return new Line(new Point(this.lowerRight.getX(), this.upperLeft.getY()), this.lowerRight);
     }
 

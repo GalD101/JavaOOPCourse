@@ -68,7 +68,7 @@ public class MultipleFramesBouncingBallsAnimation {
                 randomPoint.setY((randomPoint.getY() + frame1.getHeight()) % screen.getHeight());
             }
 //            Point randomPoint = screen.generateRandomPointInside(frame1, sizeOfBalls[i]);
-            balls[i] = new Ball(randomPoint.getX()  ,randomPoint.getY(), sizeOfBalls[i], randomColor);
+            balls[i] = new Ball(width - sizeOfBalls[i]  ,sizeOfBalls[i] + 50, sizeOfBalls[i], randomColor);
         }
 
         for (Ball ball : balls) {
