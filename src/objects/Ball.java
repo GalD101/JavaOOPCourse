@@ -147,28 +147,114 @@ public class Ball {
      * @param frame The frame of the screen
      */
     public void collideWithFrameOutside(Rectangle frame) {
-        Line LeftLine = frame.getLeftLine();
-        Line topLine = frame.getTopLine();
-        Line rightLine = frame.getRightLine();
-        Line bottomLine = frame.getBottomLine();
+        // get the horizontal velocity component
+        double dx = this.getVelocity().getDx();
 
-        Point ballEdge = new Point(this.getX(), this.getY());
-        Point ballEdgeLeft = new Point(this.getX() + this.getSize(), this.getY());
-        Point ballEdgeTop = new Point(this.getX(), this.getY() + this.getSize());
-        Point ballEdgeRight = new Point(this.getX() - this.getSize(), this.getY());
-        Point ballEdgeBottom = new Point(this.getX(), this.getY() - this.getSize());
-        if (LeftLine.isIntersecting(new Line(ballEdge, ballEdgeLeft))) {
+        // get the vertical velocity component
+        double dy = this.getVelocity().getDy();
+
+        // The previous position is defined as the position of the center
+        // of the ball *before* the moveOneStep method is called.
+        double prevPosXMovingRight = this.getX() + this.getSize();
+        double prevPosYMovingDown = this.getY() + this.getSize();
+
+        double prevPosXMovingLeft = this.getX() - this.getSize();
+        double prevPosYMovingUp = this.getY() - this.getSize();
+
+        // The next position is defined as the position of the center
+        // of the ball *after* the moveOneStep method is called.
+        double nextPosXMovingRight = prevPosXMovingRight + dx;
+        double nextPosYMovingDown = prevPosYMovingDown + dy;
+
+        double nextPosXMovingLeft = prevPosXMovingLeft + dx;
+        double nextPosYMovingUp = prevPosYMovingUp + dy;
+
+        // add if clause for cases the ball hits the edge of the rectangle
+        if (frame.getUpperLeft().getX() == prevPosXMovingRight || frame.getLowerRight().getX() == prevPosXMovingLeft) {
             this.setVelocity(-this.getVelocity().getDx(), this.getVelocity().getDy());
         }
-        if (topLine.isIntersecting(new Line(ballEdge, ballEdgeTop))) {
+        if (frame.getUpperLeft().getY() == prevPosYMovingDown || frame.getLowerRight().getY() == prevPosYMovingUp) {
             this.setVelocity(this.getVelocity().getDx(), -this.getVelocity().getDy());
         }
-        if (rightLine.isIntersecting(new Line(ballEdge, ballEdgeRight))) {
-            this.setVelocity(-this.getVelocity().getDx(), this.getVelocity().getDy());
+
+        // moving right
+        if (dx >= 0) {
+            if (prevPosXMovingRight <= frame.getUpperLeft().getX() && nextPosXMovingRight >= frame.getUpperLeft().getX()) {
+                if (dy > 0) {
+                    if (frame.getUpperLeft().getY() <= prevPosYMovingUp && prevPosYMovingUp <= frame.getLowerRight().getY()) {
+                        this.setVelocity(-this.getVelocity().getDx(), this.getVelocity().getDy());
+                    }
+                } else {
+                    if (frame.getUpperLeft().getY() <= prevPosYMovingDown && prevPosYMovingDown <= frame.getLowerRight().getY()) {
+                        this.setVelocity(-this.getVelocity().getDx(), this.getVelocity().getDy());
+                    }
+                }
+            }
+        } else { // moving left
+            if (prevPosXMovingLeft >= frame.getLowerRight().getX() && nextPosXMovingLeft <= frame.getLowerRight().getX()) {
+                if (dy > 0) {
+                    if (frame.getUpperLeft().getY() <= prevPosYMovingUp && prevPosYMovingUp <= frame.getLowerRight().getY()) {
+                        this.setVelocity(-this.getVelocity().getDx(), this.getVelocity().getDy());
+                    }
+                } else {
+                    if (frame.getUpperLeft().getY() <= prevPosYMovingDown && prevPosYMovingDown <= frame.getLowerRight().getY()) {
+                        this.setVelocity(-this.getVelocity().getDx(), this.getVelocity().getDy());
+                    }
+                }
+            }
         }
-        if (bottomLine.isIntersecting(new Line(ballEdge, ballEdgeBottom))) {
-            this.setVelocity(this.getVelocity().getDx(), -this.getVelocity().getDy());
+
+        // moving down
+        if (dy >= 0) {
+            if (prevPosYMovingDown <= frame.getUpperLeft().getY() && nextPosYMovingDown >= frame.getUpperLeft().getY()) {
+                if (dx > 0) {
+                    if (frame.getUpperLeft().getX() <= prevPosXMovingLeft && prevPosXMovingLeft <= frame.getLowerRight().getX()) {
+                        this.setVelocity(this.getVelocity().getDx(), -this.getVelocity().getDy());
+                    }
+                } else {
+                    if (frame.getUpperLeft().getX() <= prevPosXMovingRight && prevPosXMovingRight <= frame.getLowerRight().getX()) {
+                        this.setVelocity(this.getVelocity().getDx(), -this.getVelocity().getDy());
+                    }
+                }
+            }
+        } else { // moving up
+            if (prevPosYMovingUp >= frame.getLowerRight().getY() && nextPosYMovingUp <= frame.getLowerRight().getY()) {
+                if (dx > 0) {
+                    if (frame.getUpperLeft().getX() <= prevPosXMovingLeft && prevPosXMovingLeft <= frame.getLowerRight().getX()) {
+                        this.setVelocity(this.getVelocity().getDx(), -this.getVelocity().getDy());
+                    }
+                } else {
+                    if (frame.getUpperLeft().getX() <= prevPosXMovingLeft && prevPosXMovingLeft <= frame.getLowerRight().getX()) {
+                        this.setVelocity(this.getVelocity().getDx(), -this.getVelocity().getDy());
+                    }
+                }
+            }
         }
+        // The following code needs to first detect where the ball is coming from
+        // i.e. from the left side of the wall, right side, top or bottom.
+        // Then, change the velocity of the ball accordingly (flip the corresponding velocity component).
+
+
+//        if (prevPosX2 <= frame.getUpperLeft().getX() && nextPosX2 >= frame.getUpperLeft().getX()) {
+//            if (!(prevPosY2 <= frame.getUpperLeft().getY() || prevPosY2 >= frame.getLowerRight().getY())) {
+//                dx = -dx;
+//            }
+//        }
+//        else if (prevPosX1 >= frame.getLowerRight().getX() && nextPosX1 <= frame.getLowerRight().getX()) {
+//            if (!(prevPosY1 <= frame.getUpperLeft().getY() || prevPosY1 >= frame.getLowerRight().getY())) {
+//                dx = -dx;
+//            }
+//        }
+//        if (prevPosY1 >= frame.getLowerRight().getY() && nextPosY1 <= frame.getLowerRight().getY()) {
+//            if (!(prevPosX1 <= frame.getUpperLeft().getX() || prevPosX1 >= frame.getLowerRight().getX())) {
+//                dy = -dy;
+//            }
+//        }
+//        else if (prevPosY2 <= frame.getUpperLeft().getY() && nextPosY2 >= frame.getUpperLeft().getY()) {
+//            if (!(prevPosX1 <= frame.getUpperLeft().getX() || prevPosX1 >= frame.getLowerRight().getX())) {
+//                dy = -dy;
+//            }
+//        }
 //        this.setVelocity(dx, dy);
     }
 }
