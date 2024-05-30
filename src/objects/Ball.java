@@ -138,32 +138,54 @@ public class Ball {
         this.setVelocity(dx, dy);
     }
 
+    /**
+     * Collides the ball with the frame of the screen.
+     * If the ball hits the frame, it changes its flips its velocity accordingly.
+     * the function will check where the ball is coming from
+     * and will decide exactly how to rebound it off the frame.
+     *
+     * @param frame The frame of the screen
+     */
     public void collideWithFrameOutside(Rectangle frame) {
+        // get the horizontal velocity component
         double dx = this.getVelocity().getDx();
+
+        // get the vertical velocity component
         double dy = this.getVelocity().getDy();
 
-        double prevPosX = this.getX() + this.getSize();
-        double nextPosX = prevPosX + dx;
+        // The previous position is defined as the position of the center
+        // of the ball *before* the moveOneStep method is called.
+        double prevPosX1 = this.getX() - this.getSize();
+        double prevPosY1 = this.getY() - this.getSize();
 
-        double prevPosY = this.getY() + this.getSize();
-        double nextPosY = prevPosY + dy;
-        if (prevPosX <= frame.getUpperLeft().getX() && nextPosX >= frame.getUpperLeft().getX()) {
-            if (!(prevPosY <= frame.getUpperLeft().getY() || prevPosY >= frame.getLowerRight().getY())) {
+        double prevPosX2 = this.getX() + this.getSize();
+        double prevPosY2 = this.getY() + this.getSize();
+
+        // The next position is defined as the position of the center
+        // of the ball *after* the moveOneStep method is called.
+        double nextPosX1 = prevPosX1 + dx;
+        double nextPosY1 = prevPosY1 + dy;
+
+        double nextPosX2 = prevPosX2 + dx;
+        double nextPosY2 = prevPosY2 + dy;
+
+        if (prevPosX2 <= frame.getUpperLeft().getX() && nextPosX2 >= frame.getUpperLeft().getX()) {
+            if (!(prevPosY2 <= frame.getUpperLeft().getY() || prevPosY2 >= frame.getLowerRight().getY())) {
                 dx = -dx;
             }
         }
-        else if (prevPosX >= frame.getLowerRight().getX() && nextPosX <= frame.getLowerRight().getX()) {
-            if (!(prevPosY <= frame.getUpperLeft().getY() || prevPosY >= frame.getLowerRight().getY())) {
+        if (prevPosX1 >= frame.getLowerRight().getX() && nextPosX1 <= frame.getLowerRight().getX()) {
+            if (!(prevPosY1 <= frame.getUpperLeft().getY() || prevPosY1 >= frame.getLowerRight().getY())) {
                 dx = -dx;
             }
         }
-        else if (prevPosY <= frame.getUpperLeft().getY() && nextPosY >= frame.getUpperLeft().getY()) {
-            if (!(prevPosX <= frame.getUpperLeft().getX() || prevPosX >= frame.getLowerRight().getX())) {
+        if (prevPosY2 <= frame.getUpperLeft().getY() && nextPosY2 >= frame.getUpperLeft().getY()) {
+            if (!(prevPosX2 <= frame.getUpperLeft().getX() || prevPosX2 >= frame.getLowerRight().getX())) {
                 dy = -dy;
             }
         }
-        else if (prevPosY >= frame.getLowerRight().getY() && nextPosY <= frame.getLowerRight().getY()) {
-            if (!(prevPosX <= frame.getUpperLeft().getX() || prevPosX >= frame.getLowerRight().getX())) {
+        if (prevPosY1 >= frame.getLowerRight().getY() && nextPosY1 <= frame.getLowerRight().getY()) {
+            if (!(prevPosX1 <= frame.getUpperLeft().getX() || prevPosX1 >= frame.getLowerRight().getX())) {
                 dy = -dy;
             }
         }

@@ -50,7 +50,7 @@ public class MultipleFramesBouncingBallsAnimation {
 //                randomX = rand.nextDouble(frame1Start.getX() + sizeOfBalls[i], frame1End.getX() - sizeOfBalls[i]);
 //                randomY = rand.nextDouble(frame1Start.getY() + sizeOfBalls[i], frame1End.getY() - sizeOfBalls[i]);
 //            } while (randomX + sizeOfBalls[i] > frame2Start.getX() && randomY + sizeOfBalls[i] < frame2Start.getY());
-            balls[i] = new Ball(randomPoint.getX(), randomPoint.getY(), sizeOfBalls[i], Color.BLACK);
+            balls[i] = new Ball(randomPoint.getX(), randomPoint.getY(), sizeOfBalls[i], randomColor);
         }
 
         // Second half
@@ -58,9 +58,10 @@ public class MultipleFramesBouncingBallsAnimation {
             // generate rand coordinates outside frame 1 and frame 2
             // :(((((((((((((((((((((((((((((((((((((((((((((((((((((((( FUCK I AM SO PISSED
             // I WORKED FOR SO LONG FOR NOTHING, JUST LIKE EVERYTHING IN LIFE
+            Color randomColor = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
             Rectangle fuckScreen = new Rectangle(new Point(sizeOfBalls[i], 0), new Point(width, height), Color.WHITE);
             Point randomPoint = screen.generateRandomPointInside(frame1, sizeOfBalls[i]);
-            balls[i] = new Ball(randomPoint.getX()  , randomPoint.getY(), sizeOfBalls[i], Color.RED);
+            balls[i] = new Ball(650  , 210, sizeOfBalls[i], randomColor);
         }
 
         for (Ball ball : balls) {
@@ -91,8 +92,8 @@ public class MultipleFramesBouncingBallsAnimation {
                 Rectangle frame3 = new Rectangle(new Point(50 + sizeOfBalls[i], 50 + sizeOfBalls[i]), new Point(500 + sizeOfBalls[i], 500 + sizeOfBalls[i]), Color.GRAY);
                 Rectangle frame4 = new Rectangle(new Point(450 + sizeOfBalls[i], 450 + sizeOfBalls[i]), new Point(600 + sizeOfBalls[i], 600 + sizeOfBalls[i]), Color.GRAY);
 
-                balls[i].collideWithFrameOutside(frame3);
-                balls[i].collideWithFrameOutside(frame4);
+//                balls[i].collideWithFrameOutside(frame1);
+                balls[i].collideWithFrameOutside(frame2);
 
                 balls[i].moveOneStep();
                 balls[i].drawOn(d);
