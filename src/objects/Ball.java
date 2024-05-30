@@ -169,10 +169,18 @@ public class Ball {
         double nextPosXMovingLeft = prevPosXMovingLeft + dx;
         double nextPosYMovingUp = prevPosYMovingUp + dy;
 
+        // add if clause for cases the ball hits the edge of the rectangle
+        if (frame.getUpperLeft().getX() == prevPosXMovingRight || frame.getLowerRight().getX() == prevPosXMovingLeft) {
+            dx = -dx;
+        }
+        if (frame.getUpperLeft().getY() == prevPosYMovingDown || frame.getLowerRight().getY() == prevPosYMovingUp) {
+            dy = -dy;
+        }
+
         // moving right
         if (dx >= 0) {
             if (prevPosXMovingRight <= frame.getUpperLeft().getX() && nextPosXMovingRight >= frame.getUpperLeft().getX()) {
-                if (dy >= 0) {
+                if (dy > 0) {
                     if (frame.getUpperLeft().getY() <= prevPosYMovingUp && prevPosYMovingUp <= frame.getLowerRight().getY()) {
                         dx = -dx;
                     }
@@ -184,7 +192,7 @@ public class Ball {
             }
         } else { // moving left
             if (prevPosXMovingLeft >= frame.getLowerRight().getX() && nextPosXMovingLeft <= frame.getLowerRight().getX()) {
-                if (dy >= 0) {
+                if (dy > 0) {
                     if (frame.getUpperLeft().getY() <= prevPosYMovingUp && prevPosYMovingUp <= frame.getLowerRight().getY()) {
                         dx = -dx;
                     }
@@ -199,7 +207,7 @@ public class Ball {
         // moving down
         if (dy >= 0) {
             if (prevPosYMovingDown <= frame.getUpperLeft().getY() && nextPosYMovingDown >= frame.getUpperLeft().getY()) {
-                if (dx >= 0) {
+                if (dx > 0) {
                     if (frame.getUpperLeft().getX() <= prevPosXMovingLeft && prevPosXMovingLeft <= frame.getLowerRight().getX()) {
                         dy = -dy;
                     }
@@ -211,7 +219,7 @@ public class Ball {
             }
         } else { // moving up
             if (prevPosYMovingUp >= frame.getLowerRight().getY() && nextPosYMovingUp <= frame.getLowerRight().getY()) {
-                if (dx >= 0) {
+                if (dx > 0) {
                     if (frame.getUpperLeft().getX() <= prevPosXMovingLeft && prevPosXMovingLeft <= frame.getLowerRight().getX()) {
                         dy = -dy;
                     }

@@ -22,9 +22,9 @@ public class MultipleFramesBouncingBallsAnimation {
 
         final int width = 800;
         final int height = 600;
-        final double P = 1000.0;
+        final double P = 100.0;
         Rectangle screen = new Rectangle(new Point(0, 0), new Point(width, height), Color.WHITE);
-        Rectangle frame1 = new Rectangle(new Point(250, 250), new Point(500, 500), Color.GRAY);
+        Rectangle frame1 = new Rectangle(new Point(50, 50), new Point(500, 500), Color.GRAY);
         Rectangle frame2 = new Rectangle(new Point(450, 450), new Point(600, 600), Color.YELLOW);
 
         GUI gui = new GUI("Multiple frames bouncing balls animation", width, height);
@@ -98,7 +98,7 @@ public class MultipleFramesBouncingBallsAnimation {
 //                Rectangle fuckFrame1 = new Rectangle(new Point(50- sizeOfBalls[i], 50 - sizeOfBalls[i]), new Point(500, 500), Color.GRAY);
 //                Rectangle fuckFrame2 = new Rectangle(new Point(450 - sizeOfBalls[i], 450 - sizeOfBalls[i]), new Point(600, 600), Color.YELLOW);
                 balls[i].collideWithFrameOutside(frame1);
-//                balls[i].collideWithFrameOutside(frame2);
+                balls[i].collideWithFrameOutside(frame2);
 
                 balls[i].moveOneStep();
                 balls[i].drawOn(d);
