@@ -57,7 +57,7 @@ public class MultipleFramesBouncingBallsAnimation {
         for (int j = firstHalf.length; j < sizeOfBalls.length; j++) {
             // generate rand coordinates outside frame 1 and frame 2
             // :(((((((((((((((((((((((((((((((((((((((((((((((((((((((( FUCK I AM SO PISSED
-            // I WORKED FOR SO LONG FOR NOTHING, JUST LIKE EVERYTHING IN LIFE
+            // I WORKED FOR SO LONG FOR NOTHING
             Color randomColor = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
 //            Rectangle fuckScreen = new Rectangle(new Point(sizeOfBalls[i], 0), new Point(width, height), Color.WHITE);
             Point randomPoint = screen.generateRandomPointInside(sizeOfBalls[j]);
@@ -92,11 +92,11 @@ public class MultipleFramesBouncingBallsAnimation {
             d.setColor(frame1.getColor());
             d.fillRectangle((int) frame1.getUpperLeft().getX(), (int) frame1.getUpperLeft().getY(), (int) frame1.getWidth(), (int) frame1.getHeight());
 
-//            for (int n = 0; n < firstHalf.length; n++) {
-//                balls[n].collideWithFrameInside(frame1);
-//                balls[n].moveOneStep();
-//                balls[n].drawOn(d);
-//            }
+            for (int n = 0; n < firstHalf.length; n++) {
+                balls[n].collideWithFrameInside(frame1);
+                balls[n].moveOneStep();
+                balls[n].drawOn(d);
+            }
 
             for (int k = firstHalf.length; k < balls.length; k++) {
                 balls[k].collideWithFrameInside(screen);
