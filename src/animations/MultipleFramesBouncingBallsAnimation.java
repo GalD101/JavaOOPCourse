@@ -20,9 +20,9 @@ public class MultipleFramesBouncingBallsAnimation {
             System.exit(1);
         }
 
-        final int width = 800;
+        final int width = 1000;
         final int height = 600;
-        final double P = 100.0;
+        final double P = 100.0; // Should not be bigger than 100! (Can cause jittering)
         Rectangle screen = new Rectangle(new Point(0, 0), new Point(width, height), Color.WHITE);
         Rectangle frame1 = new Rectangle(new Point(50, 50), new Point(500, 500), Color.GRAY);
         Rectangle frame2 = new Rectangle(new Point(450, 450), new Point(600, 600), Color.YELLOW);
@@ -54,29 +54,34 @@ public class MultipleFramesBouncingBallsAnimation {
         }
 
         // Second half
-        for (int i = firstHalf.length; i < sizeOfBalls.length; i++) {
+        for (int j = firstHalf.length; j < sizeOfBalls.length; j++) {
             // generate rand coordinates outside frame 1 and frame 2
             // :(((((((((((((((((((((((((((((((((((((((((((((((((((((((( FUCK I AM SO PISSED
             // I WORKED FOR SO LONG FOR NOTHING, JUST LIKE EVERYTHING IN LIFE
             Color randomColor = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
 //            Rectangle fuckScreen = new Rectangle(new Point(sizeOfBalls[i], 0), new Point(width, height), Color.WHITE);
-            Point randomPoint = screen.generateRandomPointInside(sizeOfBalls[i]);
+            Point randomPoint = screen.generateRandomPointInside(sizeOfBalls[j]);
             if (frame1.getUpperLeft().getX() <= randomPoint.getX() && randomPoint.getX() <= frame1.getLowerRight().getX()) {
-                randomPoint.setX((randomPoint.getX() + frame1.getWidth()) % screen.getWidth());
+                randomPoint.setX((randomPoint.getX() + frame1.getWidth()) % (screen.getWidth() - sizeOfBalls[j]));
             }
             if (frame1.getUpperLeft().getY() <= randomPoint.getY() && randomPoint.getY() <= frame1.getLowerRight().getY()) {
-                randomPoint.setY((randomPoint.getY() + frame1.getHeight()) % screen.getHeight());
+                randomPoint.setY((randomPoint.getY() + frame1.getHeight()) % (screen.getHeight() - sizeOfBalls[j]));
             }
 //            Point randomPoint = screen.generateRandomPointInside(frame1, sizeOfBalls[i]);
-            balls[i] = new Ball(width - sizeOfBalls[i]  ,sizeOfBalls[i] + 50, sizeOfBalls[i], randomColor);
+            balls[j] = new Ball(750  ,300, sizeOfBalls[j], randomColor);
         }
 
         for (Ball ball : balls) {
+            if (ball == null) { continue; }
             if (ball.getSize() == 0) {
                 System.err.println("Ball size cannot be zero.");
                 System.exit(1);
             }
             double speed = ball.getSize() > 50 ? (P / 50) : (P / ball.getSize());
+            // Balls with small radii and high speeds will jitter :(
+            if (ball.getSize() < 10) {
+                speed = P/10;
+            }
             double angle = rand.nextDouble(360);
             Velocity v = Velocity.fromAngleAndSpeed(angle, speed);
             ball.setVelocity(v);
@@ -87,28 +92,28 @@ public class MultipleFramesBouncingBallsAnimation {
             d.setColor(frame1.getColor());
             d.fillRectangle((int) frame1.getUpperLeft().getX(), (int) frame1.getUpperLeft().getY(), (int) frame1.getWidth(), (int) frame1.getHeight());
 
-            for (int i = 0; i < firstHalf.length; i++) {
-                balls[i].collideWithFrameInside(frame1);
-                balls[i].moveOneStep();
-                balls[i].drawOn(d);
-            }
+//            for (int n = 0; n < firstHalf.length; n++) {
+//                balls[n].collideWithFrameInside(frame1);
+//                balls[n].moveOneStep();
+//                balls[n].drawOn(d);
+//            }
 
-            for (int i = firstHalf.length; i < balls.length; i++) {
-                balls[i].collideWithFrameInside(screen);
+            for (int k = firstHalf.length; k < balls.length; k++) {
+                balls[k].collideWithFrameInside(screen);
 //                Rectangle fuckFrame1 = new Rectangle(new Point(50- sizeOfBalls[i], 50 - sizeOfBalls[i]), new Point(500, 500), Color.GRAY);
 //                Rectangle fuckFrame2 = new Rectangle(new Point(450 - sizeOfBalls[i], 450 - sizeOfBalls[i]), new Point(600, 600), Color.YELLOW);
-                balls[i].collideWithFrameOutside(frame1);
-                balls[i].collideWithFrameOutside(frame2);
+                balls[k].collideWithFrameOutside(frame1);
+                balls[k].collideWithFrameOutside(frame2);
 
-                balls[i].moveOneStep();
-                balls[i].drawOn(d);
+                balls[k].moveOneStep();
+                balls[k].drawOn(d);
             }
 
             d.setColor(frame2.getColor());
             d.fillRectangle((int) frame2.getUpperLeft().getX(), (int) frame2.getUpperLeft().getY(), (int) frame2.getWidth(), (int) frame2.getHeight());
 
             gui.show(d);
-            sleeper.sleepFor(35);
+            sleeper.sleepFor(50);
         }
     }
 }
