@@ -50,27 +50,29 @@ public class MultipleFramesBouncingBallsAnimation {
 
         // Second half
         for (int j = firstHalf.length; j < sizeOfBalls.length; j++) {
-            // generate rand coordinates outside frame 1 and frame 2
-            // :(((((((((((((((((((((((((((((((((((((((((((((((((((((((( FUCK I AM SO PISSED
-            // I WORKED FOR SO LONG FOR NOTHING
             Color randomColor = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-//            Rectangle fuckScreen = new Rectangle(new Point(sizeOfBalls[i], 0), new Point(width, height), Color.WHITE);
-            Point randomPoint = screen.generateRandomPointInside(sizeOfBalls[j]);
-            if (frame1.getUpperLeft().getX() <= randomPoint.getX() && randomPoint.getX() <= frame1.getLowerRight().getX()) {
-                randomPoint.setX((randomPoint.getX() + frame1.getWidth()) % (screen.getWidth() - sizeOfBalls[j]));
+            Point randPoint = new Point(rand.nextDouble(sizeOfBalls[j] + frame2.getLowerRight().getX(), width - sizeOfBalls[j]),
+                    rand.nextDouble(sizeOfBalls[j], height - sizeOfBalls[j]));
+            if (sizeOfBalls[j] < frame1.getUpperLeft().getX() - sizeOfBalls[j]) {
+                if (rand.nextBoolean()) {
+                    randPoint = new Point(rand.nextDouble(sizeOfBalls[j], frame1.getUpperLeft().getX() - sizeOfBalls[j]),
+                            rand.nextDouble(sizeOfBalls[j], height - sizeOfBalls[j]));
+                }
             }
-            if (frame1.getUpperLeft().getY() <= randomPoint.getY() && randomPoint.getY() <= frame1.getLowerRight().getY()) {
-                randomPoint.setY((randomPoint.getY() + frame1.getHeight()) % (screen.getHeight() - sizeOfBalls[j]));
+            if (sizeOfBalls[j] < height - frame1.getLowerRight().getY() - sizeOfBalls[j]) {
+                if (rand.nextBoolean()) {
+                    randPoint = new Point(rand.nextDouble(sizeOfBalls[j], frame2.getUpperLeft().getX() - sizeOfBalls[j]),
+                            rand.nextDouble(sizeOfBalls[j] + frame1.getLowerRight().getY(), height - sizeOfBalls[j]));
+                }
             }
-//            Point randomPoint = screen.generateRandomPointInside(frame1, sizeOfBalls[i]);
-            balls[j] = new Ball(700  ,350, sizeOfBalls[j], randomColor);
+                balls[j] = new Ball(randPoint.getX(), randPoint.getY(), sizeOfBalls[j], randomColor);
         }
 
         for (Ball ball : balls) {
             double speed = ball.getSize() > 50 ? (P / 50) : (P / ball.getSize());
-            // Balls with small radii and high speeds will jitter :(
+            // Balls with small radius and high speeds will jitter :(
             if (ball.getSize() < 10) {
-                speed = P/10;
+                speed = P / 10;
             }
             double angle = rand.nextDouble(360);
             Velocity v = Velocity.fromAngleAndSpeed(angle, speed);

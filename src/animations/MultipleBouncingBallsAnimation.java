@@ -27,8 +27,8 @@ public class MultipleBouncingBallsAnimation {
      * @param args Command line arguments will take ball size as input.
      */
     public static void main(String[] args) {
-        final int width = 1000;
-        final int height = 1000;
+        final int width = 750;
+        final int height = 750;
         final int edges = 0;
         final int maxSize = 150;
         final double p = 1000.0; // Momentum of each ball.
