@@ -7,6 +7,7 @@ import objects.Ball;
 import objects.Point;
 import objects.Rectangle;
 import utils.RandomSingleton;
+import utils.Threshold;
 
 import java.awt.Color;
 import java.util.Random;
@@ -53,6 +54,17 @@ public class MultipleFramesBouncingBallsAnimation {
             Color randomColor = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
             Point randPoint = new Point(rand.nextDouble(sizeOfBalls[j] + frame2.getLowerRight().getX(), width - sizeOfBalls[j]),
                     rand.nextDouble(sizeOfBalls[j], height - sizeOfBalls[j]));
+            // TODO
+//            if (sizeOfBalls[j] < frame1.getUpperLeft().getY()) {
+//                if (rand.nextBoolean()) {
+//                    randPoint.setY();
+//                }
+//            }
+            if (randPoint.getY() + sizeOfBalls[j] < frame2.getUpperLeft().getY()) {
+                randPoint.setX(rand.nextDouble(frame1.getLowerRight().getX() + sizeOfBalls[j],
+                        width - sizeOfBalls[j]));
+            }
+
             if (sizeOfBalls[j] < frame1.getUpperLeft().getX() - sizeOfBalls[j]) {
                 if (rand.nextBoolean()) {
                     randPoint = new Point(rand.nextDouble(sizeOfBalls[j], frame1.getUpperLeft().getX() - sizeOfBalls[j]),
@@ -74,7 +86,7 @@ public class MultipleFramesBouncingBallsAnimation {
             if (ball.getSize() < 10) {
                 speed = P / 10;
             }
-            double angle = rand.nextDouble(360);
+            double angle = rand.nextDouble(0, 360);
             Velocity v = Velocity.fromAngleAndSpeed(angle, speed);
             ball.setVelocity(v);
         }
