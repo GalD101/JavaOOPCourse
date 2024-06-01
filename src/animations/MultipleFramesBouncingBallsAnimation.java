@@ -15,11 +15,6 @@ import static utils.InputValidator.stringToInteger;
 
 public class MultipleFramesBouncingBallsAnimation {
     public static void main(String[] args) {
-        if (args.length == 0) {
-            System.err.println("No arguments provided. Please provide the sizes of the balls as command-line arguments.");
-            System.exit(1);
-        }
-
         final int width = 1000;
         final int height = 600;
         final double P = 100.0; // Should not be bigger than 100! (Can cause jittering)
@@ -68,15 +63,10 @@ public class MultipleFramesBouncingBallsAnimation {
                 randomPoint.setY((randomPoint.getY() + frame1.getHeight()) % (screen.getHeight() - sizeOfBalls[j]));
             }
 //            Point randomPoint = screen.generateRandomPointInside(frame1, sizeOfBalls[i]);
-            balls[j] = new Ball(750  ,300, sizeOfBalls[j], randomColor);
+            balls[j] = new Ball(700  ,350, sizeOfBalls[j], randomColor);
         }
 
         for (Ball ball : balls) {
-            if (ball == null) { continue; }
-            if (ball.getSize() == 0) {
-                System.err.println("Ball size cannot be zero.");
-                System.exit(1);
-            }
             double speed = ball.getSize() > 50 ? (P / 50) : (P / ball.getSize());
             // Balls with small radii and high speeds will jitter :(
             if (ball.getSize() < 10) {

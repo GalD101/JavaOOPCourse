@@ -1,24 +1,29 @@
 package utils;
 
+/**
+ * This class provides utility methods for comparing and truncating numbers with a certain precision.
+ * The precision is defined by the TOLERANCE constant.
+ */
 public final class Threshold {
     private static final int DECIMALS = 7;
+    /**
+     * The tolerance used for number comparison and truncation.
+     * It is calculated as 10 raised to the power of the negative value of DECIMALS.
+     */
     public static final double TOLERANCE = Math.pow(10, -DECIMALS);
 
     /**
      * Truncates a number to a certain precision using the value of the tolerance.
      *
      * @param number The number to be truncated.
-     * @return The truncated number. The number is first multiplied by a scale factor which is the 10 raised to the power of the reciprocal of the tolerance.
-     * The result is then rounded down to the nearest whole number using the Math.floor method and finally divided by the scale factor to get the truncated number.
+     * @return The truncated number.
+     * The number is first multiplied by a scale factor which is the 10
+     * raised to the power of the reciprocal of the tolerance.
+     * The result is then rounded down to the nearest whole number using the Math.floor method
+     * and finally divided by the scale factor to get the truncated number.
      */
     public static double truncateToTolerance(double number) {
         double scale = Math.pow(10, DECIMALS);
-        // NOTE: This function will not work for huge numbers (~10^300)
-        // FIXME: Think what to do when numbers are too big (!!!)
-        // There will always be issues with this method.
-        // This is due to the fact that the computer simply represents numbers in a different way, and thus there will always be some error.
-        // The best way to handle big numbers is to use BigDecimal, however, I will simply assume our project won't have to deal with such big numbers.
-
         double testing = Math.round(number * scale) / scale;
         return number > 0 ? Math.floor(number * scale) / scale : Math.ceil(number * scale) / scale;
     }
@@ -38,6 +43,27 @@ public final class Threshold {
         return truncateToTolerance(Math.abs(a - b)) <= Threshold.TOLERANCE;
     }
 
+    /**
+     * Checks if a number is in the range between two other numbers.
+     * The comparison is done after truncating each number
+     * to a certain precision using the truncateToTolerance method.
+     * The range is considered to be inclusive, and a tolerance is added to the range to account for rounding errors.
+     *
+     * @param val1 The start of the range.
+     * @param num  The number to check.
+     * @param val2 The end of the range.
+     * @return true if the number is in the range, false otherwise.
+     */
+    public static boolean isInRange(double val1, double num, double val2) {
+        return ((val1 - Threshold.TOLERANCE <= num
+                && num <= val2 + Threshold.TOLERANCE)
+                || (val2 - Threshold.TOLERANCE <= num
+                && num <= val1 + Threshold.TOLERANCE));
+    }
+
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
     private Threshold() {
         // restrict instantiation
     }

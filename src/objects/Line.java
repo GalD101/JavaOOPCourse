@@ -1,6 +1,10 @@
+// 322558297 Gal Dali
 package objects;
 
 import utils.Threshold;
+
+import static utils.MathUtils.computeAverage;
+import static utils.Threshold.isInRange;
 
 /**
  * The Line class represents a line in a two-dimensional space.
@@ -30,15 +34,13 @@ public class Line {
      * @param end   The end point of the line.
      */
     public Line(Point start, Point end) {
-        boolean startIsNull = start == null;
-        boolean endIsNull = end == null;
-        double startX = startIsNull ? DEFAULT_POINT : start.getX();
-        double startY = startIsNull ? DEFAULT_POINT : start.getY();
-        double endX = endIsNull ? DEFAULT_POINT : end.getX();
-        double endY = endIsNull ? DEFAULT_POINT : end.getY();
+        if (start == null || end == null) {
+            this.start = new Point(DEFAULT_POINT, DEFAULT_POINT);
+        } else {
+            this.start = new Point(start.getX(), start.getY());
+            this.end = new Point(end.getX(), end.getY());
+        }
 
-        this.start = new Point(startX, startY);
-        this.end = new Point(endX, endY);
         calculateLineEquation();
     }
 
@@ -62,7 +64,7 @@ public class Line {
      * @return The length of the line.
      */
     public double length() {
-        return this.start.distance(this.end);
+        return this.start().distance(this.end());
     }
 
     /**
@@ -73,17 +75,18 @@ public class Line {
      * @return The middle point of the line.
      */
     public Point middle() {
-        // TODO: Remove this check in case it really is redundant
         if (this.start == null || this.end == null) {
             return null;
         }
+
+        if (this.start().equals(this.end())) {
+            return new Point(this.start().getX(), this.start().getY());
+        }
+
         double midX;
         double midY;
-        if (this.start.equals(this.end)) {
-            return new Point(this.start.getX(), this.start.getY());
-        }
-        midX = computeAverage(this.start.getX(), this.end.getX());
-        midY = computeAverage(this.start.getY(), this.end.getY());
+        midX = computeAverage(this.start().getX(), this.end().getX());
+        midY = computeAverage(this.start().getY(), this.end().getY());
 
         return new Point(midX, midY);
     }
@@ -163,7 +166,7 @@ public class Line {
         }
         Point intersection = calculateIntersectionPoint(other);
 
-        if (intersection == null || !isPointOnLine(this, intersection) || !isPointOnLine(other, intersection)) {
+        if (intersection == null || !(isPointOnLine(this, intersection) && isPointOnLine(other, intersection))) {
             return null;
         }
 
@@ -183,54 +186,10 @@ public class Line {
         if (other == null) {
             return false;
         }
-        return this.start().equals(other.start()) && this.end.equals(other.end())
-                || this.start().equals(other.end()) && this.end.equals(other.start());
+        return this.start().equals(other.start()) && this.end().equals(other.end())
+                || this.start().equals(other.end()) && this.end().equals(other.start());
     }
 
-    /**
-     * Calculates the average of two numbers in a way that prevents overflow.
-     * If a > b, calculates (a - b) / 2 + b.
-     * If a < b, calculates (b - a) / 2 + a.
-     * If a = b, returns a.
-     *
-     * @param a The first number.
-     * @param b The second number.
-     * @return The average of the two numbers.
-     */
-    private double computeAverage(double a, double b) {
-        if ((a > 0 && b < 0) || (a < 0 && b > 0)) {
-            // Numbers have different signs,
-            // therefore, (a + b) / 2 will prevent overflow.
-            return (a + b) / 2;
-        }
-        // Numbers have the same sign,
-        // therefore, (a - b) / 2 + b will prevent overflow.
-        // Use the following formula: assume (without lose of generality) that a > b so that means:
-        // (a - b) / 2 + b = (a - b + 2*b) / 2 = (a + b) / 2 === midPoint!
-        // This formula will prevent overflow.
-        if (a >= b) {
-            return ((a - b) / 2) + b;
-        }
-        return ((b - a) / 2) + a;
-    }
-
-    /**
-     * Checks if a number is in the range between two other numbers.
-     * The comparison is done after truncating each number
-     * to a certain precision using the truncateToTolerance method.
-     * The range is considered to be inclusive, and a tolerance is added to the range to account for rounding errors.
-     *
-     * @param val1 The start of the range.
-     * @param num  The number to check.
-     * @param val2 The end of the range.
-     * @return true if the number is in the range, false otherwise.
-     */
-    private boolean isInRange(double val1, double num, double val2) {
-        return ((val1 - Threshold.TOLERANCE <= num
-                && num <= val2 + Threshold.TOLERANCE)
-                || (val2 - Threshold.TOLERANCE <= num
-                && num <= val1 + Threshold.TOLERANCE));
-    }
 
     /**
      * Checks if a point is on a line.
@@ -246,8 +205,8 @@ public class Line {
         if (line == null || point == null) {
             return false;
         }
-        return isInRange(line.start.getX(), point.getX(), line.end.getX())
-                && isInRange(line.start.getY(), point.getY(), line.end.getY());
+        return isInRange(line.start().getX(), point.getX(), line.end().getX())
+                && isInRange(line.start().getY(), point.getY(), line.end().getY());
     }
 
     /**
@@ -259,9 +218,9 @@ public class Line {
      * plus 'b' times the y-coordinate of the start point.
      */
     private void calculateLineEquation() {
-        a = end.getY() - start.getY();
-        b = start.getX() - end.getX();
-        c = a * start.getX() + b * start.getY();
+        a = this.end().getY() - this.start().getY();
+        b = this.start().getX() - this.end().getX();
+        c = a * this.start().getX() + b * this.start().getY();
     }
 
     /**
@@ -281,17 +240,6 @@ public class Line {
         }
         return isInRange(rangeStart.getX(), point.getX(), rangeEnd.getX())
                 && isInRange(rangeStart.getY(), point.getY(), rangeEnd.getY());
-    }
-
-    public boolean isVertical() {
-        return Math.abs(this.start.getX() - this.end.getX()) <= Threshold.TOLERANCE;
-    }
-
-    public boolean isParallel(Line other) {
-        if (other == null) {
-            return false;
-        }
-        return Math.abs(this.a * other.b - other.a * this.b) <= Threshold.TOLERANCE;
     }
 
     /**

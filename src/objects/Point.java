@@ -1,8 +1,6 @@
+// 322558297 Gal Dali
 package objects;
 
-import utils.Threshold;
-
-import static utils.Threshold.truncateToTolerance;
 import static utils.Threshold.compareNumbers;
 
 /**
@@ -47,10 +45,8 @@ public class Point {
         double dy = this.y - other.y;
 
         // If one wants to improve accuracy and precision for far-flung points,
-        // one can use the hypot method from the Math class instead i.e. distance = Math.hypot(dx, dy).
-         double distance = Math.sqrt(dx * dx + dy * dy);
-//        double distance = Math.hypot(dx, dy); // TODO
-
+        // one can use the hypot method from the Math class instead; i.e. distance = Math.hypot(dx, dy).
+        double distance = Math.sqrt(dx * dx + dy * dy);
         return distance;
     }
 

@@ -2,14 +2,32 @@ package utils;
 
 import java.util.Random;
 
-public class RandomSingleton {
-    private static final Random instance = new Random();
+/**
+ * This class provides a singleton instance of the Random class.
+ * The singleton pattern ensures that there is only one instance of Random in the application that can be used globally.
+ * This is useful when a single instance of a class needs to coordinate actions across the system.
+ */
+public final class RandomSingleton {
+    /**
+     * The single instance of the Random class.
+     * It is declared as final to ensure that it cannot be reinitialized.
+     */
+    private static final Random INSTANCE = new Random();
 
+    /**
+     * Private constructor to prevent instantiation of this class.
+     * This is a key characteristic of the singleton pattern.
+     */
     private RandomSingleton() {
         // private constructor to prevent instantiation
     }
 
+    /**
+     * Provides global access to the single instance of the Random class.
+     *
+     * @return The single instance of the Random class.
+     */
     public static Random getInstance() {
-        return instance;
+        return INSTANCE;
     }
 }

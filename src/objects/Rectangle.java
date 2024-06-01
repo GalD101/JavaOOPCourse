@@ -1,11 +1,11 @@
+// 322558297 Gal Dali
 package objects;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Random;
 
 import utils.RandomSingleton;
 
-// Create a rectangle class that is defined by the upper left point and the lower right point.
 public class Rectangle {
     private Point upperLeft;
     private Point lowerRight;
@@ -67,12 +67,12 @@ public class Rectangle {
 
     // Returns the width of the rectangle.
     public double getWidth() {
-        return this.lowerRight.getX() - this.upperLeft.getX();
+        return this.getLowerRight().getX() - this.getUpperLeft().getX();
     }
 
     // Returns the height of the rectangle.
     public double getHeight() {
-        return this.lowerRight.getY() - this.upperLeft.getY();
+        return this.getLowerRight().getY() - this.getUpperLeft().getY();
     }
 
     // Returns the upper left point of the rectangle.
@@ -96,25 +96,25 @@ public class Rectangle {
     }
 
     public Line getTopLine() {
-        return new Line(this.upperLeft, new Point(this.lowerRight.getX(), this.upperLeft.getY()));
+        return new Line(this.getUpperLeft(), new Point(this.getLowerRight().getX(), this.getUpperLeft().getY()));
     }
 
     public Line getBottomLine() {
-        return new Line(new Point(this.upperLeft.getX(), this.lowerRight.getY()), this.lowerRight);
+        return new Line(new Point(this.getUpperLeft().getX(), this.getLowerRight().getY()), this.getLowerRight());
     }
 
     public Line getLeftLine() {
-        return new Line(this.upperLeft, new Point(this.upperLeft.getX(), this.lowerRight.getY()));
+        return new Line(this.getUpperLeft(), new Point(this.getUpperLeft().getX(), this.getLowerRight().getY()));
     }
 
     public Line getRightLine() {
-        return new Line(new Point(this.lowerRight.getX(), this.upperLeft.getY()), this.lowerRight);
+        return new Line(new Point(this.getLowerRight().getX(), this.getUpperLeft().getY()), this.getLowerRight());
     }
 
     // Checks if the given point is inside the rectangle.
     public boolean isInside(Point point) {
-        return point.getX() > this.upperLeft.getX() && point.getX() < this.lowerRight.getX()
-                && point.getY() > this.upperLeft.getY() && point.getY() < this.lowerRight.getY();
+        return point.getX() > this.getUpperLeft().getX() && point.getX() < this.getLowerRight().getX()
+                && point.getY() > this.getUpperLeft().getY() && point.getY() < this.getLowerRight().getY();
     }
 
     // Returns the color of the rectangle.
@@ -142,8 +142,8 @@ public class Rectangle {
     // with a given boundary off the walls of the rectangle.
     public Point generateRandomPointInside(double boundary) {
         Random rand = RandomSingleton.getInstance();
-        double randomX = rand.nextDouble() * (this.getWidth() - 2 * boundary) + this.upperLeft.getX() + boundary;
-        double randomY = rand.nextDouble() * (this.getHeight() - 2 * boundary) + this.upperLeft.getY() + boundary;
+        double randomX = rand.nextDouble() * (this.getWidth() - 2 * boundary) + this.getUpperLeft().getX() + boundary;
+        double randomY = rand.nextDouble() * (this.getHeight() - 2 * boundary) + this.getUpperLeft().getY() + boundary;
         return new Point(randomX, randomY);
     }
 

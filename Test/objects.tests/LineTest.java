@@ -164,8 +164,8 @@ class LineTest {
         assertEquals(1, line1.start().getY(), "The start Y coordinate of line1 should be 1");
         assertEquals(0, nullLine1.start().getX(), "The start X coordinate of nullLine1 should be 0");
         assertEquals(0, nullLine1.start().getY(), "The start Y coordinate of nullLine1 should be 0");
-        assertEquals(4, nullLine1.end().getX(), "The end X coordinate of nullLine1 should be 4");
-        assertEquals(5, nullLine1.end().getY(), "The end Y coordinate of nullLine1 should be 5");
+        assertEquals(0, nullLine1.end().getX(), "The end X coordinate of nullLine1 should be 4");
+        assertEquals(0, nullLine1.end().getY(), "The end Y coordinate of nullLine1 should be 5");
         assertEquals(Double.MAX_VALUE, longestLine.start().getX(), "The start X coordinate of longestLine should be Double.MAX_VALUE");
         assertEquals(Double.MAX_VALUE, longestLine.start().getY(), "The start Y coordinate of longestLine should be Double.MAX_VALUE");
     }
@@ -176,8 +176,8 @@ class LineTest {
         assertEquals(5, line1.end().getY(), "The end Y coordinate of line1 end should be 5");
         assertEquals(0, nullLine2.end().getX(), "The end X coordinate of nullLine2 end should be 0");
         assertEquals(0, nullLine2.end().getY(), "The end Y coordinate of nullLine2 end should be 0");
-        assertEquals(1, nullLine2.start().getX(), "The start X coordinate of nullLine2 start should be 1");
-        assertEquals(1, nullLine2.start().getY(), "The start Y coordinate of nullLine2 start should be 1");
+        assertEquals(0, nullLine2.start().getX(), "The start X coordinate of nullLine2 start should be 1");
+        assertEquals(0, nullLine2.start().getY(), "The start Y coordinate of nullLine2 start should be 1");
         assertEquals(0, linepoint.end().getX(), "The end X coordinate of linepoint end should be 0");
         assertEquals(0, linepoint.end().getY(), "The end Y coordinate of linepoint end should be 0");
         assertEquals(1, verticalLine.end().getX(), "The end X coordinate of verticalLine end should be 1");

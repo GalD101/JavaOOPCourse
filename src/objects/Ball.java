@@ -1,10 +1,9 @@
+// 322558297 Gal Dali
 package objects;
 
 import animations.Velocity;
 import biuoop.DrawSurface;
 import utils.Threshold;
-
-import static utils.Threshold.truncateToTolerance;
 
 /**
  * Ball class represents a ball object in a 2D space.
@@ -100,7 +99,7 @@ public class Ball {
      */
     public void drawOn(DrawSurface surface) {
         surface.setColor(this.color);
-        surface.fillCircle(this.getX(), this.getY(), this.r);
+        surface.fillCircle(this.getX(), this.getY(), this.getSize());
     }
 
     /**
@@ -129,15 +128,34 @@ public class Ball {
         this.center = this.getVelocity().applyToPoint(this.center);
     }
 
+    /**
+     * Handles the collision of the ball with the inside of a given frame.
+     * If the ball hits the frame, it changes its velocity accordingly to simulate a bounce.
+     * The function checks the ball's current position and velocity, and if a collision is detected,
+     * it flips the velocity in the appropriate direction.
+     *
+     * @param frame The frame within which the ball is moving
+     */
     public void collideWithFrameInside(Rectangle frame) {
+        // Get the current velocity components of the ball
         double dx = this.getVelocity().getDx();
         double dy = this.getVelocity().getDy();
-        if ((this.getX() + (this.getSize() + dx) >= frame.getLowerRight().getX()) || (this.getX() - (this.getSize() - dx) <= frame.getUpperLeft().getX())) {
+
+        // Check if the ball is hitting the left or right side of the frame
+        // If it is, flip the x-component of the velocity
+        if ((this.getX() + (this.getSize() + dx) >= frame.getLowerRight().getX())
+                || (this.getX() - (this.getSize() - dx) <= frame.getUpperLeft().getX())) {
             dx = -dx;
         }
-        if ((this.getY() + (this.getSize() + dy) >= frame.getLowerRight().getY()) || (this.getY() - (this.getSize() - dy) <= frame.getUpperLeft().getY())) {
+
+        // Check if the ball is hitting the top or bottom side of the frame
+        // If it is, flip the y-component of the velocity
+        if ((this.getY() + (this.getSize() + dy) >= frame.getLowerRight().getY())
+                || (this.getY() - (this.getSize() - dy) <= frame.getUpperLeft().getY())) {
             dy = -dy;
         }
+
+        // Set the new velocity of the ball
         this.setVelocity(dx, dy);
     }
 
@@ -150,42 +168,64 @@ public class Ball {
      * @param frame The frame of the screen
      */
     public void collideWithFrameOutside(Rectangle frame) {
-        Line LeftLine = frame.getLeftLine();
+        Line leftLine = frame.getLeftLine();
         Line topLine = frame.getTopLine();
         Line rightLine = frame.getRightLine();
         Line bottomLine = frame.getBottomLine();
 
-        Point ballEdge = new Point(this.getX(), this.getY());
-//        Point AHHHHH = new Point(this.getX(), this.getY());
-        double size = this.getSize() < 10 ? 10: this.getSize();
-        Point ballEdgeLeft = new Point(this.getX() + size, this.getY() + size);
-        Point ballEdgeLeft2 = new Point(this.getX() + size, this.getY() - size);
-        Point ballEdgeTop = new Point(this.getX() + size, this.getY() + size);
-        Point ballEdgeTop2 = new Point(this.getX() - size, this.getY() + size);
-        Point ballEdgeRight = new Point(this.getX() - size, this.getY() + size);
-        Point ballEdgeRight2 = new Point(this.getX() - size, this.getY() - size);
-        Point ballEdgeBottom = new Point(this.getX() + size, this.getY() - size);
-        Point ballEdgeBottom2 = new Point(this.getX() - size, this.getY() - size);
-        if (LeftLine.isIntersecting(new Line(ballEdge, ballEdgeLeft)) || LeftLine.isIntersecting(new Line(ballEdge, ballEdgeLeft2))) {
-            this.center.setX(Math.round(truncateToTolerance(this.center.getX() - (frame.getUpperLeft().getX() + frame.getLowerRight().getX()) / 2 < Threshold.TOLERANCE ? frame.getUpperLeft().getX() - size : frame.getLowerRight().getX() + size)));
-//            this.center.setX(Math.round(truncateToTolerance(frame.getUpperLeft().getX() + this.getSize())));
-            this.setVelocity(Math.round(truncateToTolerance(-this.getVelocity().getDx())), Math.round(truncateToTolerance(this.getVelocity().getDy())));
+        // Treat balls with radius less than 10 as size 10 balls (in order to avoid jittering).
+        double size = Math.max(this.getSize(), 10);
+
+        Point ballEdgeBottomRight = new Point(this.getX() + size, this.getY() + size);
+        Point ballEdgeUpperRight = new Point(this.getX() + size, this.getY() - size);
+        Point ballEdgeBottomLeft = new Point(this.getX() - size, this.getY() + size);
+        Point ballEdgeUpperLeft = new Point(this.getX() - size, this.getY() - size);
+
+        Line ballEdgeBottomRightVector = new Line(this.center, ballEdgeBottomRight);
+        Line ballEdgeUpperRightVector = new Line(this.center, ballEdgeUpperRight);
+        Line ballEdgeBottomLeftVector = new Line(this.center, ballEdgeBottomLeft);
+        Line ballEdgeUpperLeftVector = new Line(this.center, ballEdgeUpperLeft);
+
+        boolean isNearCenter = false;
+        // TODO: Duplicated code segments. Refactor this.
+        // Collision with the left side of the frame
+        if (leftLine.isIntersecting(ballEdgeBottomRightVector) || leftLine.isIntersecting(ballEdgeUpperRightVector)) {
+            isNearCenter = this.center.getX()
+                    - (frame.getUpperLeft().getX() + frame.getLowerRight().getX()) / 2 < Threshold.TOLERANCE;
+            this.center.setX(
+                    isNearCenter ? frame.getUpperLeft().getX() - size
+                            : frame.getLowerRight().getX() + size);
+            this.setVelocity(-this.getVelocity().getDx(), this.getVelocity().getDy());
         }
-        if (topLine.isIntersecting(new Line(ballEdge, ballEdgeTop)) || topLine.isIntersecting(new Line(ballEdge, ballEdgeTop2))) {
-            this.center.setY(Math.round(truncateToTolerance(this.center.getY() - (frame.getUpperLeft().getY() + frame.getLowerRight().getY()) / 2 < Threshold.TOLERANCE ? frame.getUpperLeft().getY() - size : frame.getLowerRight().getY() + size)));
-//            this.center.setY(Math.round(truncateToTolerance(frame.getUpperLeft().getY() - this.getSize())));
-            this.setVelocity(Math.round(truncateToTolerance(this.getVelocity().getDx())), Math.round(truncateToTolerance(-this.getVelocity().getDy())));
+
+        // Collision with the upper side of the frame
+        if (topLine.isIntersecting(ballEdgeBottomLeftVector) || topLine.isIntersecting(ballEdgeBottomRightVector)) {
+            isNearCenter = this.center.getY()
+                    - (frame.getUpperLeft().getY() + frame.getLowerRight().getY()) / 2 < Threshold.TOLERANCE;
+            this.center.setY(
+                    isNearCenter ? frame.getUpperLeft().getY() - size
+                            : frame.getLowerRight().getY() + size);
+            this.setVelocity(this.getVelocity().getDx(), -this.getVelocity().getDy());
         }
-        if (rightLine.isIntersecting(new Line(ballEdge, ballEdgeRight)) || rightLine.isIntersecting(new Line(ballEdge, ballEdgeRight2))) {
-            this.center.setX(Math.round(truncateToTolerance(this.center.getX() - (frame.getUpperLeft().getX() + frame.getLowerRight().getX()) / 2 < Threshold.TOLERANCE ? frame.getUpperLeft().getX() - size : frame.getLowerRight().getX() + size)));
-//            this.center.setX(Math.round(truncateToTolerance(frame.getLowerRight().getX() - this.getSize())));
-            this.setVelocity(Math.round(truncateToTolerance(-this.getVelocity().getDx())), Math.round(truncateToTolerance(this.getVelocity().getDy())));
+
+        // Collision with the right side of the frame
+        if (rightLine.isIntersecting(ballEdgeUpperLeftVector) || rightLine.isIntersecting(ballEdgeBottomLeftVector)) {
+            isNearCenter = this.center.getX()
+                    - (frame.getUpperLeft().getX() + frame.getLowerRight().getX()) / 2 < Threshold.TOLERANCE;
+            this.center.setX(
+                    isNearCenter ? frame.getUpperLeft().getX() - size
+                            : frame.getLowerRight().getX() + size);
+            this.setVelocity(-this.getVelocity().getDx(), this.getVelocity().getDy());
         }
-        if (bottomLine.isIntersecting(new Line(ballEdge, ballEdgeBottom)) || bottomLine.isIntersecting(new Line(ballEdge, ballEdgeBottom2))) {
-//            this.center.setY(Math.round(truncateToTolerance(frame.getLowerRight().getY() + this.getSize())));
-            this.center.setY(Math.round(truncateToTolerance(this.center.getY() - (frame.getUpperLeft().getY() + frame.getLowerRight().getY()) / 2 < Threshold.TOLERANCE ? frame.getUpperLeft().getY() - size : frame.getLowerRight().getY() + size)));
-            this.setVelocity(Math.round(truncateToTolerance(this.getVelocity().getDx())), Math.round(truncateToTolerance(-this.getVelocity().getDy())));
+
+        // Collision with the lower side of the frame
+        if (bottomLine.isIntersecting(ballEdgeUpperLeftVector) || bottomLine.isIntersecting(ballEdgeUpperRightVector)) {
+            isNearCenter = this.center.getY()
+                    - (frame.getUpperLeft().getY() + frame.getLowerRight().getY()) / 2 < Threshold.TOLERANCE;
+            this.center.setY(
+                    isNearCenter ? frame.getUpperLeft().getY() - size
+                            : frame.getLowerRight().getY() + size);
+            this.setVelocity(this.getVelocity().getDx(), -this.getVelocity().getDy());
         }
-//        this.setVelocity(dx, dy);
     }
 }
