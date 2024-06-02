@@ -187,7 +187,6 @@ public class Ball {
         Line ballEdgeUpperLeftVector = new Line(this.center, ballEdgeUpperLeft);
 
         boolean isNearCenter = false;
-        // TODO: Duplicated code segments. Refactor this.
         // Collision with the left side of the frame
         if (leftLine.isIntersecting(ballEdgeBottomRightVector) || leftLine.isIntersecting(ballEdgeUpperRightVector)) {
             isNearCenter = this.center.getX()

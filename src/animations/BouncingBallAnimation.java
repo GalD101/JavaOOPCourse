@@ -1,3 +1,4 @@
+// 322558297 Gal Dali
 package animations;
 
 import biuoop.DrawSurface;
@@ -29,6 +30,12 @@ public class BouncingBallAnimation {
         GUI gui = new GUI("Bouncing ball animation", width, height);
         biuoop.Sleeper sleeper = new biuoop.Sleeper();
 
+        if (start.getX() < radius) {
+            start.setX(radius + start.getX());
+        }
+        if (start.getY() < radius) {
+            start.setY(radius + start.getY());
+        }
         Ball ball = new Ball(start.getX(), start.getY(), radius, java.awt.Color.BLACK);
         ball.setVelocity(dx, dy);
         while (true) {
@@ -67,11 +74,14 @@ public class BouncingBallAnimation {
         for (int i = 0; i < args.length; i++) {
             inputNumbers[i] = stringToInteger(args[i]);
         }
+        if (inputNumbers[0] < 0 || inputNumbers[1] < 0) {
+            System.out.println("Invalid input. Please enter 4 integers. The first 2 must be non negative.");
+            System.exit(1);
+        }
 
         // Adjust the ball to be within the screen
-        // TODO: Use a constant for the radius of the ball.
-        double centerX = inputNumbers[0] > 30 ? inputNumbers[0] : 30 + inputNumbers[0];
-        double centerY = inputNumbers[1] > 30 ? inputNumbers[1] : 30 + inputNumbers[1];
+        double centerX = inputNumbers[0];
+        double centerY = inputNumbers[1];
         double dx = inputNumbers[2];
         double dy = inputNumbers[3];
         drawAnimation(new Point(centerX, centerY), dx, dy);

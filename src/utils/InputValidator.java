@@ -1,3 +1,4 @@
+// 322558297 Gal Dali
 package utils;
 
 /**
@@ -24,17 +25,17 @@ public class InputValidator {
         while (input.startsWith("+")) {
             input = input.substring(1);
             if (input.startsWith("-")) {
-                return 0;
+                return -1;
             }
         }
         if (input.matches("^\\d+$")) {
             try {
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                return 0;
+                return -1;
             }
         } else {
-            return 0;
+            return -1;
         }
     }
 }

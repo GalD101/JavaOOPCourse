@@ -1,11 +1,27 @@
+// 322558297 Gal Dali
+
 import biuoop.GUI;
 import biuoop.DrawSurface;
 import objects.Ball;
 import objects.Point;
 
+/**
+ * This class represents a simple animation of a ball bouncing within a frame.
+ */
 public class BallsTest1 {
-    static private void drawAnimation(Point start, double dx, double dy) {
-        GUI gui = new GUI("title",200,200);
+
+    /**
+     * Initiates an animation of a ball bouncing within a frame.
+     * The method creates a GUI window, a sleeper,
+     * and a ball at the given start point with the given velocity.
+     * The ball will continue to bounce within the frame indefinitely.
+     *
+     * @param start The starting point of the ball.
+     * @param dx    The initial x component of the velocity.
+     * @param dy    The initial y component of the velocity.
+     */
+    public static void drawAnimation(Point start, double dx, double dy) {
+        GUI gui = new GUI("title", 200, 200);
         biuoop.Sleeper sleeper = new biuoop.Sleeper();
         Ball ball = new Ball(start.getX(), start.getY(), 30, java.awt.Color.BLACK);
         ball.setVelocity(dx, dy);
@@ -26,7 +42,14 @@ public class BallsTest1 {
             sleeper.sleepFor(50); // wait for 50 milliseconds.
         }
     }
+
+    /**
+     * The main method of the class.
+     * It calls the drawAnimation method with a starting point and initial velocity.
+     *
+     * @param args The command line arguments, which are not used in this case.
+     */
     public static void main(String[] args) {
-        drawAnimation(new Point(100,100), 0, +30);
+        drawAnimation(new Point(100, 100), 0, 30);
     }
 }
