@@ -12,7 +12,7 @@ import utils.RandomSingleton;
 import java.awt.Color;
 import java.util.Random;
 
-import static utils.InputValidator.stringToInteger2;
+import static utils.InputValidator.stringToPositiveInteger;
 
 /**
  * This class represents a multiple frames bouncing balls animation.
@@ -50,8 +50,8 @@ public class MultipleFramesBouncingBallsAnimation {
 
         // Parse input arguments to integers
         for (int i = 0; i < args.length; i++) {
-            sizeOfBalls[i] = stringToInteger2(args[i]);
-            if (sizeOfBalls[i] == -1) {
+            sizeOfBalls[i] = stringToPositiveInteger(args[i]);
+            if (sizeOfBalls[i] < 0) {
                 System.out.println(args[i] + " is an invalid input and it will be treated as 0."
                         + "\nYou should enter an even number of positive integer seperated by spaces."
                         + "\nWe will treat your input as 0");

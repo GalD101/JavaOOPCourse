@@ -47,7 +47,7 @@ public class InputValidator {
      * @param input The string to be converted to an integer.
      * @return The integer representation of the string, or 0 if the string cannot be converted to an integer.
      */
-    public static int stringToInteger2(String input) {
+    public static int stringToPositiveInteger(String input) {
         while (input.startsWith("+")) {
             input = input.substring(1);
             if (input.startsWith("-")) {

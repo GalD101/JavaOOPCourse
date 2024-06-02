@@ -34,6 +34,8 @@ public final class RandomSingleton {
 
     /**
      * Generates a random double value between the origin and the bound.
+     * This is used since the Random class in some versions of java
+     * does not provide a method for generating random double values in a specific range.
      *
      * @param origin The lower bound of the random double value.
      * @param bound  The upper bound of the random double value.

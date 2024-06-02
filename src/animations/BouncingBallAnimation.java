@@ -7,6 +7,7 @@ import objects.Ball;
 import objects.Point;
 
 import static utils.InputValidator.stringToInteger;
+import static utils.InputValidator.stringToPositiveInteger;
 
 /**
  * This class is responsible for creating a bouncing ball animation.
@@ -86,7 +87,13 @@ public class BouncingBallAnimation {
         }
         int[] inputNumbers = new int[args.length];
 
-        for (int i = 0; i < args.length; i++) {
+        // Parse the first two numbers to a positive integer
+        for (int i = 0; i < 2; i++) {
+            inputNumbers[i] = stringToPositiveInteger(args[i]);
+        }
+
+        // Parse the last two numbers to an integer
+        for (int i = 2; i < args.length; i++) {
             inputNumbers[i] = stringToInteger(args[i]);
         }
         if (inputNumbers[0] < 0 || inputNumbers[1] < 0) {
