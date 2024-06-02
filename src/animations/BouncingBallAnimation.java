@@ -30,11 +30,26 @@ public class BouncingBallAnimation {
         GUI gui = new GUI("Bouncing ball animation", width, height);
         biuoop.Sleeper sleeper = new biuoop.Sleeper();
 
+        if (start.getX() > width || start.getY() > height) {
+            System.out.println("Invalid input. Please enter 4 integers. The first 2 must be non negative"
+                    + " and less than " + width + " and " + height + " respectively."
+                    + " We will adjust the ball to be within the screen.");
+            start.setX(width / 2);
+            start.setY(height / 2);
+        }
+
+        // If the center is positioned such that the ball is a little bit out of the screen, adjust it
         if (start.getX() < radius) {
             start.setX(radius + start.getX());
         }
         if (start.getY() < radius) {
             start.setY(radius + start.getY());
+        }
+        if (start.getX() > width - radius) {
+            start.setX(start.getX() - radius);
+        }
+        if (start.getY() > height - radius) {
+            start.setY(start.getY() - radius);
         }
         Ball ball = new Ball(start.getX(), start.getY(), radius, java.awt.Color.BLACK);
         ball.setVelocity(dx, dy);
@@ -67,7 +82,7 @@ public class BouncingBallAnimation {
         // Check if the input is valid
         if (args.length != 4) {
             System.out.println("Usage: BouncingBallAnimation <centerX> <centerY> <dx> <dy>");
-            System.exit(1);
+            args = new String[]{"100", "100", "0", "30"};
         }
         int[] inputNumbers = new int[args.length];
 
@@ -75,11 +90,13 @@ public class BouncingBallAnimation {
             inputNumbers[i] = stringToInteger(args[i]);
         }
         if (inputNumbers[0] < 0 || inputNumbers[1] < 0) {
-            System.out.println("Invalid input. Please enter 4 integers. The first 2 must be non negative.");
-            System.exit(1);
+            System.out.println("Invalid input. You should enter 4 integers."
+                    + "\nThe first 2 must be non negative."
+                    + "\nWe will adjust the ball to be within the screen.");
+            inputNumbers[0] = 100;
+            inputNumbers[1] = 100;
         }
 
-        // Adjust the ball to be within the screen
         double centerX = inputNumbers[0];
         double centerY = inputNumbers[1];
         double dx = inputNumbers[2];

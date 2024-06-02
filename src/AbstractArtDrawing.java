@@ -15,8 +15,8 @@ import java.util.Random;
 public class AbstractArtDrawing {
     private static final int POINT_RADIUS = 3;
     private Random rand = RandomSingleton.getInstance(); // create a random-number generator
-    private final double width = 400.0;
-    private final double height = 300.0;
+    private final int width = 400;
+    private final int height = 300;
 
     /**
      * Generates a random line within the bounds of the window.
@@ -24,10 +24,10 @@ public class AbstractArtDrawing {
      * @return A Line object representing the random line.
      */
     public Line generateRandLine() {
-        double x1 = width*rand.nextDouble() + 1.0;
-        double y1 = height*rand.nextDouble() + 1.0;
-        double x2 = width*rand.nextDouble() + 1.0;
-        double y2 = height*rand.nextDouble() + 1.0;
+        double x1 = utils.RandomSingleton.myNextDouble(0, width) + 1;
+        double y1 = utils.RandomSingleton.myNextDouble(0, height) + 1;
+        double x2 = utils.RandomSingleton.myNextDouble(0, width) + 1;
+        double y2 = utils.RandomSingleton.myNextDouble(0, height) + 1;
         return new Line(x1, y1, x2, y2);
     }
 

@@ -12,7 +12,7 @@ import utils.RandomSingleton;
 import java.awt.Color;
 import java.util.Random;
 
-import static utils.InputValidator.stringToInteger;
+import static utils.InputValidator.stringToInteger2;
 
 /**
  * This class represents a multiple frames bouncing balls animation.
@@ -50,10 +50,11 @@ public class MultipleFramesBouncingBallsAnimation {
 
         // Parse input arguments to integers
         for (int i = 0; i < args.length; i++) {
-            sizeOfBalls[i] = stringToInteger(args[i]);
+            sizeOfBalls[i] = stringToInteger2(args[i]);
             if (sizeOfBalls[i] == -1) {
                 System.out.println(args[i] + " is an invalid input and it will be treated as 0."
-                        + "\nPlease enter an even number of positive integer seperated by spaces.");
+                        + "\nYou should enter an even number of positive integer seperated by spaces."
+                        + "\nWe will treat your input as 0");
                 sizeOfBalls[i] = 0;
             }
 
@@ -66,59 +67,59 @@ public class MultipleFramesBouncingBallsAnimation {
         // generate randomly positioned balls inside frame 1:
         for (int i = 0; i < numBallsInFrame1; i++) {
             Point randomPointInFrame1 = frame1.generateRandomPointInside(sizeOfBalls[i]);
-            Color randomColor = new Color(rand.nextInt(0, 256), rand.nextInt(0, 256), rand.nextInt(0, 256));
+            Color randomColor = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
             balls[i] = new Ball(randomPointInFrame1.getX(), randomPointInFrame1.getY(), sizeOfBalls[i], randomColor);
         }
 
         // generate randomly positioned balls inside the screen, but outside the frames:
         for (int j = numBallsInFrame1; j < sizeOfBalls.length; j++) {
-            Color randomColor = new Color(rand.nextInt(0, 256), rand.nextInt(0, 256), rand.nextInt(0, 256));
-            double randX = rand.nextDouble(
+            Color randomColor = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+            double randX = utils.RandomSingleton.myNextDouble(
                     sizeOfBalls[j] + frame2.getLowerRight().getX(), screenWidth - sizeOfBalls[j]);
-            double randY = rand.nextDouble(
+            double randY = utils.RandomSingleton.myNextDouble(
                     sizeOfBalls[j], screenHeight - sizeOfBalls[j]);
             Point randomPointOutsideFrames;
-            int randomDomain = rand.nextInt(1, 6);
+            int randomDomain = 1 + rand.nextInt(6);
             switch (randomDomain) {
                 // Upper section
                 case 1:
                     if (sizeOfBalls[j] < frame1.getUpperLeft().getY() - sizeOfBalls[j]) {
-                        randX = rand.nextDouble(
+                        randX = utils.RandomSingleton.myNextDouble(
                                 sizeOfBalls[j], frame1.getLowerRight().getX() - sizeOfBalls[j]);
-                        randY = rand.nextDouble(
+                        randY = utils.RandomSingleton.myNextDouble(
                                 sizeOfBalls[j], frame1.getUpperLeft().getY() - sizeOfBalls[j]);
                     }
                     break;
                 // Left section
                 case 2:
                     if (sizeOfBalls[j] < frame1.getUpperLeft().getX() - sizeOfBalls[j]) {
-                        randX = rand.nextDouble(
+                        randX = utils.RandomSingleton.myNextDouble(
                                 sizeOfBalls[j], frame1.getUpperLeft().getX() - sizeOfBalls[j]);
-                        randY = rand.nextDouble(
+                        randY = utils.RandomSingleton.myNextDouble(
                                 sizeOfBalls[j], screenHeight - sizeOfBalls[j]);
                     }
                     break;
                 // Bottom section
                 case 3:
                     if (sizeOfBalls[j] < screenHeight - frame1.getLowerRight().getY() - sizeOfBalls[j]) {
-                        randX = rand.nextDouble(
+                        randX = utils.RandomSingleton.myNextDouble(
                                 sizeOfBalls[j], frame2.getUpperLeft().getX() - sizeOfBalls[j]);
-                        randY = rand.nextDouble(
+                        randY = utils.RandomSingleton.myNextDouble(
                                 sizeOfBalls[j] + frame1.getLowerRight().getY(), screenHeight - sizeOfBalls[j]);
                     }
                     break;
                 // Right section
                 case 4:
-                    randX = rand.nextDouble(
+                    randX = utils.RandomSingleton.myNextDouble(
                             sizeOfBalls[j] + frame2.getLowerRight().getX(), screenWidth - sizeOfBalls[j]);
-                    randY = rand.nextDouble(
+                    randY = utils.RandomSingleton.myNextDouble(
                             sizeOfBalls[j], screenHeight - sizeOfBalls[j]);
                     break;
                 // Upper right section
                 case 5:
-                    randX = rand.nextDouble(
+                    randX = utils.RandomSingleton.myNextDouble(
                             sizeOfBalls[j] + frame1.getLowerRight().getX(), screenWidth - sizeOfBalls[j]);
-                    randY = rand.nextDouble(
+                    randY = utils.RandomSingleton.myNextDouble(
                             sizeOfBalls[j], frame2.getUpperLeft().getY() - sizeOfBalls[j]);
                     break;
                 default:
@@ -138,7 +139,7 @@ public class MultipleFramesBouncingBallsAnimation {
             if (ball.getSize() < 10) {
                 speed = p / 10;
             }
-            double angle = rand.nextDouble(0, 360);
+            double angle = utils.RandomSingleton.myNextDouble(0, 360);
             Velocity v = Velocity.fromAngleAndSpeed(angle, speed);
             ball.setVelocity(v);
         }

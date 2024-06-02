@@ -52,8 +52,9 @@ public class MultipleBouncingBallsAnimation {
             Color randomColor = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
 
             // Create a ball with random position inside the frame.
-            balls[i] = new Ball(rand.nextDouble(sizeOfBalls[i], width - sizeOfBalls[i]),
-                    rand.nextDouble(sizeOfBalls[i], height - sizeOfBalls[i]), sizeOfBalls[i], randomColor);
+            balls[i] = new Ball(utils.RandomSingleton.myNextDouble(sizeOfBalls[i], width - sizeOfBalls[i]),
+                    utils.RandomSingleton.myNextDouble(
+                            sizeOfBalls[i], height - sizeOfBalls[i]), sizeOfBalls[i], randomColor);
         }
 
         for (Ball ball : balls) {
@@ -63,7 +64,7 @@ public class MultipleBouncingBallsAnimation {
             double speed = p / ball.getSize();
 
             // Randomize the direction of the velocity.
-            double angle = rand.nextDouble(360);
+            double angle = utils.RandomSingleton.myNextDouble(0, 360);
             Velocity v = Velocity.fromAngleAndSpeed(angle, speed);
             ball.setVelocity(v);
         }

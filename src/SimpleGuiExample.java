@@ -20,7 +20,7 @@ public class SimpleGuiExample {
         GUI gui = new GUI("Random Circles Example", 400, 300);
         DrawSurface d = gui.getDrawSurface();
         for (int i = 0; i < 10; ++i) {
-            int x = 400*rand.nextInt() + 1; // get integer in range 1-400
+            int x = rand.nextInt(400) + 1; // get integer in range 1-400
             int y = rand.nextInt(300) + 1; // get integer in range 1-300
             int r = 5 * (rand.nextInt(4) + 1); // get integer in 5,10,15,20
             d.setColor(Color.RED);

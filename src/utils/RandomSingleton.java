@@ -31,4 +31,15 @@ public final class RandomSingleton {
     public static Random getInstance() {
         return INSTANCE;
     }
+
+    /**
+     * Generates a random double value between the origin and the bound.
+     *
+     * @param origin The lower bound of the random double value.
+     * @param bound  The upper bound of the random double value.
+     * @return A random double value between the origin and the bound.
+     */
+    public static double myNextDouble(double origin, double bound) {
+        return origin + (bound - origin) * INSTANCE.nextDouble();
+    }
 }
