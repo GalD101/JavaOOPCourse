@@ -186,6 +186,7 @@ public class Ball {
         Line ballEdgeBottomLeftVector = new Line(this.center, ballEdgeBottomLeft);
         Line ballEdgeUpperLeftVector = new Line(this.center, ballEdgeUpperLeft);
 
+        // https://docs.flatredball.com/flatredball/tutorials/code-tutorials/collision-jitter
         boolean isNearCenter = false;
         // Collision with the left side of the frame
         if (leftLine.isIntersecting(ballEdgeBottomRightVector) || leftLine.isIntersecting(ballEdgeUpperRightVector)) {
