@@ -130,7 +130,7 @@ public class MultipleFramesBouncingBallsAnimation {
                     sizeOfBalls[j], randomColor);
         }
 
-        // Set a random velocity for each ball according to it's size
+        // Set a random velocity for each ball according to its size
         for (Ball ball : balls) {
             // Balls with size > 50 will all have the same slow speed.
             double speed = p / Math.max(50, ball.getSize());
