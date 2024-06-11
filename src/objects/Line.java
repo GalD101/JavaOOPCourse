@@ -174,6 +174,37 @@ public class Line {
     }
 
     /**
+     * Returns the closest intersection point between this line and a given rectangle.
+     * <p>
+     * This method first checks if the line intersects with the rectangle by calling the rectangle's intersectionPoints method.
+     * If there are no intersection points, the method returns null.
+     * If there are intersection points, the method calculates the distance from the start of the line to each intersection point.
+     * It then returns the intersection point that is closest to the start of the line.
+     *
+     * @param rect The rectangle to check for intersections with. Must not be null.
+     * @return The closest intersection point to the start of the line, or null if the line does not intersect with the rectangle.
+     */
+    public Point closestIntersectionToStartOfLine(Rectangle rect) {
+        if (rect == null) {
+            return null;
+        }
+
+        java.util.List<Point> intersectionPoints = rect.intersectionPoints(this);
+        if (intersectionPoints.isEmpty()) {
+            return null;
+        }
+        int minPointDistanceIndex = 0;
+        for (int i = 0; i < intersectionPoints.size(); i++) {
+            double currentDistanceFromStart = intersectionPoints.get(i).distance(this.start());
+            double minDistanceFromStart = intersectionPoints.get(minPointDistanceIndex).distance(this.start());
+            if (currentDistanceFromStart < minDistanceFromStart) {
+                minPointDistanceIndex = i;
+            }
+        }
+        return intersectionPoints.get(minPointDistanceIndex);
+    }
+
+    /**
      * Checks if the line is equal to another line.
      * Two lines are considered equal if they have the same start and end points,
      * or if one line's start point is the other line's end point and vice versa.
@@ -259,13 +290,14 @@ public class Line {
             return null;
         }
 
-        // Check for common edge point
-        if ((this.start().equals(other.start())) || (this.start().equals(other.end()))) {
-            return this.start();
-        }
-        if ((this.end().equals(other.start())) || (this.end().equals(other.end()))) {
-            return this.end();
-        }
+//        // Check for common edge point
+//        // FIXME: This causes an unexpected issue when I have two lines that have the same end and are parallel
+//        if ((this.start().equals(other.start())) || (this.start().equals(other.end()))) {
+//            return this.start();
+//        }
+//        if ((this.end().equals(other.start())) || (this.end().equals(other.end()))) {
+//            return this.end();
+//        }
         // Using Cramer's rule to solve the system of linear equations.
         double determinant = a * other.b - other.a * b;
 
