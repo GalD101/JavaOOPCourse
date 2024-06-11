@@ -135,7 +135,7 @@ public class Line {
             return false;
         }
 
-        return isPointOnLine(this, intersection) && isPointOnLine(other, intersection);
+        return this.isPointOnLine(intersection) && other.isPointOnLine(intersection);
     }
 
     /**
@@ -166,7 +166,7 @@ public class Line {
         }
         Point intersection = calculateIntersectionPoint(other);
 
-        if (intersection == null || !(isPointOnLine(this, intersection) && isPointOnLine(other, intersection))) {
+        if (intersection == null || !(this.isPointOnLine(intersection) && other.isPointOnLine(intersection))) {
             return null;
         }
 
@@ -228,16 +228,15 @@ public class Line {
      * Checks if the x and y coordinates of the point are in the range
      * between the x and y coordinates of the start and end points of the line.
      *
-     * @param line  The line to check.
      * @param point The point to check.
      * @return true if the point is on the line, false otherwise.
      */
-    private boolean isPointOnLine(Line line, Point point) {
-        if (line == null || point == null) {
+    public boolean isPointOnLine(Point point) {
+        if (point == null) {
             return false;
         }
-        return isInRange(line.start().getX(), point.getX(), line.end().getX())
-                && isInRange(line.start().getY(), point.getY(), line.end().getY());
+        return isInRange(this.start().getX(), point.getX(), this.end().getX())
+                && isInRange(this.start().getY(), point.getY(), this.end().getY());
     }
 
     /**
