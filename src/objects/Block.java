@@ -1,6 +1,7 @@
 package objects;
 
 import animations.Velocity;
+import game.GameEnvironment;
 
 import java.awt.Color;
 
@@ -12,6 +13,29 @@ import java.awt.Color;
 public class Block implements Collidable {
     private Rectangle collisionRectangle;
     private Color color;
+    private GameEnvironment gameEnvironment;
+
+    /**
+     * Constructs a new Block object.
+     * <p>
+     * This constructor creates a new Block object with a specified collision rectangle and color.
+     * The collision rectangle is copied to prevent external modifications to the rectangle from affecting the block.
+     * The color is directly assigned.
+     *
+     * @param collisionRectangle The rectangle that represents the size and position of the block. Must not be null.
+     * @param color              The color of the block.
+     * @param gameEnvironment    The game environment in which the block exists.
+     * @throws IllegalArgumentException if collisionRectangle is null.
+     */
+    public Block(Rectangle collisionRectangle, Color color, GameEnvironment gameEnvironment) {
+        if (collisionRectangle == null) {
+            throw new IllegalArgumentException("The rectangle must not be null.");
+        }
+        this.collisionRectangle = new Rectangle(collisionRectangle.getUpperLeft(),
+                collisionRectangle.getLowerRight());
+        this.color = color == null ? Color.BLACK : color;
+        this.gameEnvironment = gameEnvironment;
+    }
 
     /**
      * Constructs a new Block object.
@@ -25,12 +49,7 @@ public class Block implements Collidable {
      * @throws IllegalArgumentException if collisionRectangle is null.
      */
     public Block(Rectangle collisionRectangle, Color color) {
-        if (collisionRectangle == null) {
-            throw new IllegalArgumentException("The rectangle must not be null.");
-        }
-        this.collisionRectangle = new Rectangle(collisionRectangle.getUpperLeft(),
-                collisionRectangle.getLowerRight());
-        this.color = color == null ? Color.BLACK : color;
+        this(collisionRectangle, color, null);
     }
 
     /**
@@ -56,6 +75,7 @@ public class Block implements Collidable {
     public Color getColor() {
         return this.color;
     }
+
 
     // TODO: Change the docs in case you change the logic (if there is jitter or what not)
 
