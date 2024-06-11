@@ -6,6 +6,10 @@ import objects.Point;
 
 import java.util.ArrayList;
 
+/**
+ * The GameEnvironment class represents the environment of the game.
+ * It maintains a list of Collidable objects that can interact with each other in the game.
+ */
 public class GameEnvironment {
     private java.util.List<Collidable> collidableList;
 
