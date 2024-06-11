@@ -35,9 +35,10 @@ public class MultipleFramesBouncingBallsAnimation {
         final int maxBallSize = 199;
 
         // Create instances of the screen and frames
-        Rectangle screen = new Rectangle(new Point(0, 0), new Point(screenWidth, screenHeight), Color.WHITE);
-        Rectangle frame1 = new Rectangle(new Point(50, 50), new Point(500, 500), Color.GRAY);
-        Rectangle frame2 = new Rectangle(new Point(450, 450), new Point(600, 600), Color.YELLOW);
+        Rectangle screen = new Rectangle(new Point(0, 0), new Point(screenWidth, screenHeight));
+        Color screenColor = Color.white, frame1Color = Color.gray, frame2Color = Color.yellow;
+        Rectangle frame1 = new Rectangle(new Point(50, 50), new Point(500, 500));
+        Rectangle frame2 = new Rectangle(new Point(450, 450), new Point(600, 600));
 
         // Initialize Gui, Sleeper and random instance
         GUI gui = new GUI("Multiple frames bouncing balls animation", screenWidth, screenHeight);
@@ -147,7 +148,7 @@ public class MultipleFramesBouncingBallsAnimation {
         // Main animation loop
         while (true) {
             DrawSurface d = gui.getDrawSurface();
-            d.setColor(frame1.getColor());
+            d.setColor(frame1Color);
             d.fillRectangle((int) frame1.getUpperLeft().getX(), (int) frame1.getUpperLeft().getY(),
                     (int) frame1.getWidth(), (int) frame1.getHeight());
 
@@ -166,7 +167,7 @@ public class MultipleFramesBouncingBallsAnimation {
             }
 
             // frame 2 should hide all balls and therefor, we create it last
-            d.setColor(frame2.getColor());
+            d.setColor(frame2Color);
             d.fillRectangle((int) frame2.getUpperLeft().getX(), (int) frame2.getUpperLeft().getY(),
                     (int) frame2.getWidth(), (int) frame2.getHeight());
 

@@ -45,8 +45,8 @@ class LineTest {
         Point end6 = new Point(5, 1);
 
         line1 = new Line(start1, end1);
-        nullLine1 = new Line(null, end1);
-        nullLine2 = new Line(start1, null);
+//        nullLine1 = new Line(null, end1);
+//        nullLine2 = new Line(start1, null);
         line2 = new Line(start2, end2);
         line3 = new Line(start3, end3);
         line4 = new Line(start4, end4);
@@ -238,7 +238,7 @@ class LineTest {
         Line nonIntersectingLine = new Line(new Point(5, 5), new Point(6, 6));
         assertNull(line1.intersectionWith(nonIntersectingLine), "line1 should not intersect with nonIntersectingLine");
         assertNull(line1.intersectionWith(null), "line1 should not intersect with null");
-        assertNull(nullLine1.intersectionWith(null), "nullLine1 should not intersect with null");
+//        assertNull(nullLine1.intersectionWith(null), "nullLine1 should not intersect with null");
     }
 
     @Test

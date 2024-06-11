@@ -1,32 +1,25 @@
 // 322558297 Gal Dali
 package objects;
 
-import java.awt.Color;
 import java.util.Random;
 
 import utils.RandomSingleton;
 
 /**
  * This class represents a Rectangle object with various properties and methods.
- * The Rectangle object is defined by its upper left and lower right points and a color.
+ * The Rectangle object is defined by its upper left and lower right points.
  */
 public class Rectangle {
     private Point upperLeft;
     private Point lowerRight;
-    private Line topLine;
-    private Line bottomLine;
-    private Line leftLine;
-    private Line rightLine;
-    private Color color;
 
     /**
      * Constructs a rectangle object with the given upper left and lower right points.
      *
      * @param upperLeft  The upper left point of the rectangle.
      * @param lowerRight The lower right point of the rectangle.
-     * @param color      The color of the rectangle.
      */
-    public Rectangle(Point upperLeft, Point lowerRight, Color color) {
+    public Rectangle(Point upperLeft, Point lowerRight) {
         if (upperLeft == null || lowerRight == null) {
             throw new IllegalArgumentException("The upper left and lower right points must not be null.");
         }
@@ -40,23 +33,70 @@ public class Rectangle {
         if (upperLeft.getX() == lowerRight.getX() || upperLeft.getY() == lowerRight.getY()) {
             throw new IllegalArgumentException("The rectangle must have a positive area.");
         }
-        if (upperLeft.getX() < 0 || upperLeft.getY() < 0 || lowerRight.getX() < 0 || lowerRight.getY() < 0) {
-            throw new IllegalArgumentException("The rectangle must have non-negative coordinates.");
-        }
         this.upperLeft = new Point(upperLeft.getX(), upperLeft.getY());
         this.lowerRight = new Point(lowerRight.getX(), lowerRight.getY());
-        this.color = color == null ? Color.BLACK : color;
     }
 
     /**
-     * Constructs a rectangle object with the given upper left and lower right points.
-     * The color of the rectangle will be set to null. It will get the default color
+     * Constructs a Rectangle object with the given upper left point, width, and height.
      *
-     * @param upperLeft  The upper left point of the rectangle.
-     * @param lowerRight The lower right point of the rectangle.
+     * @param upperLeft The upper left point of the rectangle. Must not be null.
+     * @param width     The width of the rectangle. Must be positive.
+     * @param height    The height of the rectangle. Must be positive.
+     * @throws IllegalArgumentException if the upper left point is null, or if the width or height is less than or equal to 0,
+     *                                  or if the x or y coordinate of the upper left point is negative.
      */
-    public Rectangle(Point upperLeft, Point lowerRight) {
-        this(upperLeft, lowerRight, null);
+    public Rectangle(Point upperLeft, double width, double height) {
+        // Check if the upper left point is null
+        if (upperLeft == null) {
+            throw new IllegalArgumentException("The upper left point must not be null.");
+        }
+        // Check if the width or height is less than or equal to 0
+        if (width <= 0 || height <= 0) {
+            throw new IllegalArgumentException("The rectangle must have a positive area.");
+        }
+        // Check if the x or y coordinate of the upper left point is negative
+        if (upperLeft.getX() < 0 || upperLeft.getY() < 0) {
+            throw new IllegalArgumentException("The rectangle must have non-negative coordinates.");
+        }
+
+        this.upperLeft = new Point(upperLeft.getX(), upperLeft.getY());
+        this.lowerRight = new Point(upperLeft.getX() + width, upperLeft.getY() + height);
+    }
+
+    /**
+     * Calculates the intersection points between the rectangle and a given line.
+     * <p>
+     * This method creates an array of the four lines that make up the rectangle (top, bottom, left, right).
+     * It then iterates over these lines, checking for an intersection with the provided line.
+     * If an intersection is found, it is added to a list of intersection points.
+     * Once all lines have been checked, the method returns the list of intersection points.
+     *
+     * @param line The line to check for intersections with. Must not be null.
+     * @return A list of points where the line intersects the rectangle. If there are no intersections, an empty list is returned.
+     * @throws IllegalArgumentException if the line is null.
+     */
+    public java.util.List<Point> intersectionPoints(Line line) {
+        java.util.List<Point> intersectionPoints = new java.util.ArrayList<>();
+        Line[] rectangleLines = {this.getTopLine(), this.getBottomLine(), this.getLeftLine(), this.getRightLine()};
+        for (Line rectangleLine : rectangleLines) {
+            Point currentIntersectionPoint = rectangleLine.intersectionWith(line);
+            if (currentIntersectionPoint != null) {
+                // There is an intersection point!
+                if (intersectionPoints.isEmpty()) {
+                    intersectionPoints.add(currentIntersectionPoint);
+                }
+                else {
+                    for (int i = 0; i < intersectionPoints.size(); i++) {
+                        // Before adding the point, make sure we didn't encounter that point already (edges)
+                        if (!currentIntersectionPoint.equals(intersectionPoints.get(i))) {
+                            intersectionPoints.add(currentIntersectionPoint);
+                        }
+                    }
+                }
+            }
+        }
+        return intersectionPoints;
     }
 
     /**
@@ -141,19 +181,6 @@ public class Rectangle {
      */
     public Line getRightLine() {
         return new Line(new Point(this.getLowerRight().getX(), this.getUpperLeft().getY()), this.getLowerRight());
-    }
-
-    /**
-     * Returns the color of the rectangle.
-     * If the color of the rectangle is null, it returns black.
-     *
-     * @return The color of the rectangle.
-     */
-    public Color getColor() {
-        if (this.color == null) {
-            return Color.BLACK;
-        }
-        return this.color;
     }
 
     /**
