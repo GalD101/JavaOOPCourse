@@ -1,6 +1,7 @@
 package objects;
 
 import animations.Velocity;
+import biuoop.DrawSurface;
 import game.GameEnvironment;
 
 import java.awt.Color;
@@ -76,6 +77,13 @@ public class Block implements Collidable {
         return this.color;
     }
 
+    public void drawOn(DrawSurface surface) {
+        surface.setColor(this.color);
+        surface.fillRectangle((int) this.collisionRectangle.getUpperLeft().getX(),
+                (int) this.collisionRectangle.getUpperLeft().getY(),
+                (int) this.collisionRectangle.getWidth(),
+                (int) this.collisionRectangle.getHeight());
+    }
 
     // TODO: Change the docs in case you change the logic (if there is jitter or what not)
 
