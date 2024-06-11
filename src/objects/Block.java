@@ -4,6 +4,11 @@ import animations.Velocity;
 
 import java.awt.Color;
 
+/**
+ * The Block class represents a block in a game. It implements the Collidable interface,
+ * meaning it can participate in collisions with other game objects.
+ * Each block has a rectangular shape and a color.
+ */
 public class Block implements Collidable {
     private Rectangle collisionRectangle;
     private Color color;
