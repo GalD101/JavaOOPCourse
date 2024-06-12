@@ -3,15 +3,16 @@ package game;
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
-import objects.Ball;
-import objects.Block;
-import objects.Point;
 import objects.Collidable;
+import objects.Point;
 import objects.Rectangle;
+import objects.Block;
+import objects.Ball;
+import objects.Paddle;
 import objects.Sprite;
 import utils.RandomSingleton;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Game {
     private SpriteCollection sprites;
@@ -74,20 +75,16 @@ public class Game {
         gameBall.setVelocity(animations.Velocity.fromAngleAndSpeed(RandomSingleton.myNextDouble(0, 360), ballSpeed));
         gameBall.addToGame(this);
 
-        // Here I need to create the GUI - check, add blocks to the screen - check but needs testing, add the ball - check and the paddle - will happen in the future. and any other game object
-        // Size of GUI should be 800x600 (width x height) - check
-        // Create the Blocks - check needs testing
-        // Create the Ball - check
-        // Create the Paddle - will be done in the future
-        // Add the Blocks, Ball, and Paddle to the game - check
-
+        // Create a paddle:
+        Paddle gamePaddle = new Paddle(this.gui.getKeyboardSensor(), new Rectangle(new Point(0.5 * width - 0.5 * 100, 0.9 * height), 100, 1), Color.ORANGE);
+        gamePaddle.addToGame(this);
     }
 
     private void addScreenBounderies(double width, double height) {
-        Block rightSideOfScreen = new Block(new Rectangle(new Point(width, 0), width, height), java.awt.Color.BLACK);
-        Block leftSideOfScreen = new Block(new Rectangle(new Point(-width, 0), new Point(0, height)), java.awt.Color.BLACK);
-        Block topSideOfScreen = new Block(new Rectangle(new Point(0, -height), new Point(width, 0)), java.awt.Color.BLACK);
-        Block bottomSideOfScreen = new Block(new Rectangle(new Point(0, height), new Point(width, 2*height)), java.awt.Color.BLACK);
+        Block rightSideOfScreen = new Block(new Rectangle(new Point(width, 0), width, height), Color.WHITE);
+        Block leftSideOfScreen = new Block(new Rectangle(new Point(-width, 0), new Point(0, height)), Color.WHITE);
+        Block topSideOfScreen = new Block(new Rectangle(new Point(0, -height), new Point(width, 0)), Color.WHITE);
+        Block bottomSideOfScreen = new Block(new Rectangle(new Point(0, height), new Point(width, 2*height)), Color.WHITE);
         rightSideOfScreen.addToGame(this);
         leftSideOfScreen.addToGame(this);
         topSideOfScreen.addToGame(this);
