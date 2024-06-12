@@ -3,6 +3,7 @@ package objects;
 
 import animations.Velocity;
 import biuoop.DrawSurface;
+import game.Game;
 import game.GameEnvironment;
 import game.CollisionInfo;
 import utils.Threshold;
@@ -11,7 +12,7 @@ import utils.Threshold;
  * Ball class represents a ball object in a 2D space.
  * It has properties like center, radius, color and velocity.
  */
-public class Ball {
+public class Ball implements Sprite {
     private Point center; // The center point of the ball
     private int r; // The radius of the ball
     private java.awt.Color color; // The color of the ball
@@ -68,6 +69,10 @@ public class Ball {
      */
     public Ball(double centerX, double centerY, int r, java.awt.Color color) {
         this(new Point(centerX, centerY), r, color, null);
+    }
+
+    public void addToGame(Game game) {
+        game.addSprite(this);
     }
 
     /**
@@ -137,6 +142,10 @@ public class Ball {
     public void drawOn(DrawSurface surface) {
         surface.setColor(this.color);
         surface.fillCircle(this.getX(), this.getY(), this.getSize());
+    }
+
+    public void timePassed() {
+        this.moveOneStep();
     }
 
     /**

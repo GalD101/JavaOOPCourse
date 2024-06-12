@@ -2,6 +2,7 @@ package objects;
 
 import animations.Velocity;
 import biuoop.DrawSurface;
+import game.Game;
 import game.GameEnvironment;
 
 import java.awt.Color;
@@ -11,7 +12,7 @@ import java.awt.Color;
  * meaning it can participate in collisions with other game objects.
  * Each block has a rectangular shape and a color.
  */
-public class Block implements Collidable {
+public class Block implements Collidable, Sprite {
     private Rectangle collisionRectangle;
     private Color color;
     private GameEnvironment gameEnvironment;
@@ -65,6 +66,11 @@ public class Block implements Collidable {
         return new Rectangle(this.collisionRectangle.getUpperLeft(), this.collisionRectangle.getLowerRight());
     }
 
+    public void addToGame(Game game) {
+        game.addCollidable(this);
+        game.addSprite(this);
+    }
+
     /**
      * Returns the color of the block.
      * <p>
@@ -83,6 +89,10 @@ public class Block implements Collidable {
                 (int) this.collisionRectangle.getUpperLeft().getY(),
                 (int) this.collisionRectangle.getWidth(),
                 (int) this.collisionRectangle.getHeight());
+    }
+
+    public void timePassed() {
+        // currently do nothing
     }
 
     // TODO: Change the docs in case you change the logic (if there is jitter or what not)

@@ -27,6 +27,9 @@ public class GameEnvironment {
      * @param c The Collidable object to be added to the game environment.
      */
     public void addCollidable(Collidable c) {
+        if (c == null) {
+            return;
+        }
         this.collidableList.add(c);
     }
 
