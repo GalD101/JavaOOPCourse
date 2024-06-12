@@ -15,12 +15,13 @@ import java.awt.Color;
 public class Block implements Collidable, Sprite {
     private Rectangle collisionRectangle;
     private Color color;
+    // TODO add frame color
     private GameEnvironment gameEnvironment;
 
     /**
      * Constructs a new Block object.
-     * <p>
-     * This constructor creates a new Block object with a specified collision rectangle and color.
+     *
+     * <p>This constructor creates a new Block object with a specified collision rectangle and color.
      * The collision rectangle is copied to prevent external modifications to the rectangle from affecting the block.
      * The color is directly assigned.
      *
@@ -41,8 +42,8 @@ public class Block implements Collidable, Sprite {
 
     /**
      * Constructs a new Block object.
-     * <p>
-     * This constructor creates a new Block object with a specified collision rectangle and color.
+     *
+     * <p>This constructor creates a new Block object with a specified collision rectangle and color.
      * The collision rectangle is copied to prevent external modifications to the rectangle from affecting the block.
      * The color is directly assigned.
      *
@@ -56,8 +57,9 @@ public class Block implements Collidable, Sprite {
 
     /**
      * Returns a copy of the block's collision rectangle.
-     * <p>
-     * This method creates a new Rectangle object that has the same upper left and lower right points as the block's collision rectangle.
+     *
+     * <p>This method creates a new Rectangle object
+     * that has the same upper left and lower right points as the block's collision rectangle.
      * The new rectangle is a copy, so changes to it will not affect the block's collision rectangle.
      *
      * @return A new Rectangle object that represents the block's collision shape.
@@ -66,6 +68,15 @@ public class Block implements Collidable, Sprite {
         return new Rectangle(this.collisionRectangle.getUpperLeft(), this.collisionRectangle.getLowerRight());
     }
 
+    /**
+     * Adds this block to the specified game.
+     *
+     * <p>This method adds the block to the game as both a collidable and a sprite.
+     * Collidables are objects that can participate in collisions.
+     * Sprites are objects that can be drawn on the screen.
+     *
+     * @param game The game to which the block is to be added
+     */
     public void addToGame(Game game) {
         game.addCollidable(this);
         game.addSprite(this);
@@ -73,8 +84,9 @@ public class Block implements Collidable, Sprite {
 
     /**
      * Returns the color of the block.
-     * <p>
-     * This method returns the color of the block. The color is directly assigned during the construction of the block.
+     *
+     * <p>This method returns the color of the block.
+     * The color is directly assigned during the construction of the block.
      * The returned color is the same as the color used to draw the block.
      *
      * @return The color of the block.
@@ -83,25 +95,43 @@ public class Block implements Collidable, Sprite {
         return this.color;
     }
 
+    /**
+     * Draws this block on the given DrawSurface.
+     *
+     * <p>This method sets the color of the DrawSurface to the color of this block,
+     * then fills a rectangle on the DrawSurface with the dimensions and position of this block.
+     * After that, it sets the color of the DrawSurface to black and draws the outline of the rectangle.
+     *
+     * @param surface The DrawSurface on which this block is to be drawn
+     */
     public void drawOn(DrawSurface surface) {
         surface.setColor(this.color);
         surface.fillRectangle((int) this.collisionRectangle.getUpperLeft().getX(),
                 (int) this.collisionRectangle.getUpperLeft().getY(),
                 (int) this.collisionRectangle.getWidth(),
                 (int) this.collisionRectangle.getHeight());
+        surface.setColor(Color.black);
+
+        surface.drawRectangle((int) this.collisionRectangle.getUpperLeft().getX(),
+                (int) this.collisionRectangle.getUpperLeft().getY(),
+                (int) this.collisionRectangle.getWidth(),
+                (int) this.collisionRectangle.getHeight());
     }
 
+    /**
+     * This method is called every time a time unit passes in the game.
+     * Currently, it does not perform any action.
+     */
     public void timePassed() {
         // currently do nothing
     }
 
-    // TODO: Change the docs in case you change the logic (if there is jitter or what not)
-
     /**
      * Calculates and returns the new velocity after a collision.
-     * <p>
-     * This method calculates the new velocity of an object after it hits the block.
-     * The method first checks if the collision point or the current velocity is null. If either is null, it returns the current velocity.
+     *
+     * <p>This method calculates the new velocity of an object after it hits the block.
+     * The method first checks if the collision point or the current velocity is null.
+     * If either is null, it returns the current velocity.
      * Then, it checks if the collision point is on the top, bottom, left, or right side of the block.
      * If the collision point is on the left or right side, it inverts the x direction of the velocity.
      * If the collision point is on the top or bottom side, it inverts the y direction of the velocity.
@@ -110,7 +140,8 @@ public class Block implements Collidable, Sprite {
      *
      * @param collisionPoint  The point where the collision occurs. Can be null.
      * @param currentVelocity The current velocity of the object that is hitting the block. Can be null.
-     * @return The new velocity after the collision, or the current velocity if the collision point or the current velocity is null.
+     * @return The new velocity after the collision,
+     * or the current velocity if the collision point or the current velocity is null.
      */
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
         if (collisionPoint == null || currentVelocity == null) {

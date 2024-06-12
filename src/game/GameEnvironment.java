@@ -49,7 +49,8 @@ public class GameEnvironment {
      * Otherwise, it returns information about the closest collision that is going to occur.
      *
      * @param trajectory The trajectory along which the object is moving.
-     * @return CollisionInfo object containing information about the closest collision. If no collision is going to occur, returns null.
+     * @return CollisionInfo object containing information about the closest collision.
+     * If no collision is going to occur, returns null.
      */
     public CollisionInfo getClosestCollision(Line trajectory) {
         if (trajectory == null) {
@@ -61,7 +62,8 @@ public class GameEnvironment {
 
         // Filter only relevant collidables
         for (Collidable collidable : this.collidableList) {
-            Point currentCollisionPoint = trajectory.closestIntersectionToStartOfLine(collidable.getCollisionRectangle());
+            Point currentCollisionPoint = trajectory.closestIntersectionToStartOfLine(
+                    collidable.getCollisionRectangle());
             if (currentCollisionPoint != null) {
                 // Add the current collision point to the list
                 collisionPoints.add(currentCollisionPoint);
@@ -70,12 +72,15 @@ public class GameEnvironment {
             }
         }
 
-        Point closestCollisionPoint = collisionPoints.isEmpty() ? null : collisionPoints.get(0);
-        Collidable closestCollisionCollidable = collidablesInTrajectory.isEmpty() ? null : collidablesInTrajectory.get(0);
+        Point closestCollisionPoint = collisionPoints.isEmpty()
+                ? null : collisionPoints.get(0);
+        Collidable closestCollisionCollidable = collidablesInTrajectory.isEmpty()
+                ? null : collidablesInTrajectory.get(0);
 
         // Find the closest collision point to trajectory.start()
         for (int i = 0; i < collisionPoints.size(); i++) {
-            if (collisionPoints.get(i).distance(trajectory.start()) < closestCollisionPoint.distance(trajectory.start())) {
+            double currentPointDistance = collisionPoints.get(i).distance(trajectory.start());
+            if (currentPointDistance < closestCollisionPoint.distance(trajectory.start())) {
                 closestCollisionPoint = collisionPoints.get(i);
                 closestCollisionCollidable = collidablesInTrajectory.get(i);
             }

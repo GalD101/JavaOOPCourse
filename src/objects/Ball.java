@@ -22,10 +22,10 @@ public class Ball implements Sprite {
     /**
      * Constructor that initializes a new Ball object with a center point, radius and color.
      *
-     * @param center The center point of the ball
-     * @param r      The radius of the ball
-     * @param color  The color of the ball
-     * @param gameEnvironment  The game environment of the ball
+     * @param center          The center point of the ball
+     * @param r               The radius of the ball
+     * @param color           The color of the ball
+     * @param gameEnvironment The game environment of the ball
      */
     public Ball(Point center, int r, java.awt.Color color, GameEnvironment gameEnvironment) {
         this.center = (center == null) ? new Point(0, 0) : new Point(center.getX(), center.getY());
@@ -49,11 +49,11 @@ public class Ball implements Sprite {
     /**
      * Constructor that initializes a new Ball object with a center point (x, y coordinates), radius and color.
      *
-     * @param centerX The x-coordinate of the center point of the ball
-     * @param centerY The y-coordinate of the center point of the ball
-     * @param r       The radius of the ball
-     * @param color   The color of the ball
-     * @param gameEnvironment  The game environment of the ball
+     * @param centerX         The x-coordinate of the center point of the ball
+     * @param centerY         The y-coordinate of the center point of the ball
+     * @param r               The radius of the ball
+     * @param color           The color of the ball
+     * @param gameEnvironment The game environment of the ball
      */
     public Ball(double centerX, double centerY, int r, java.awt.Color color, GameEnvironment gameEnvironment) {
         this(new Point(centerX, centerY), r, color, gameEnvironment);
@@ -71,6 +71,11 @@ public class Ball implements Sprite {
         this(new Point(centerX, centerY), r, color, null);
     }
 
+    /**
+     * Adds this ball to the specified game.
+     *
+     * @param game The game to which the ball is to be added
+     */
     public void addToGame(Game game) {
         game.addSprite(this);
     }
@@ -97,10 +102,6 @@ public class Ball implements Sprite {
             throw new NullPointerException("Center point of the ball is not initialized.");
         }
         return (int) Math.round(this.center.getY());
-    }
-
-    public Point getCenter() {
-        return new Point(this.center.getX(), this.center.getY());
     }
 
     /**
@@ -130,10 +131,6 @@ public class Ball implements Sprite {
         return new Velocity(this.velocity.getDx(), this.velocity.getDy());
     }
 
-    public GameEnvironment getGameEnvironment() {
-        return this.gameEnvironment; // TODO: Encapsulate or not? I think not
-    }
-
     /**
      * Draws the ball on the given DrawSurface.
      *
@@ -144,6 +141,10 @@ public class Ball implements Sprite {
         surface.fillCircle(this.getX(), this.getY(), this.getSize());
     }
 
+    /**
+     * This method is called every time a time unit passes in the game.
+     * It triggers the ball to move one step based on its current velocity.
+     */
     public void timePassed() {
         this.moveOneStep();
     }
@@ -167,6 +168,11 @@ public class Ball implements Sprite {
         this.velocity = new Velocity(dx, dy);
     }
 
+    /**
+     * Sets the center point of the ball.
+     *
+     * @param center The new center point of the ball
+     */
     public void setCenter(Point center) {
         this.center = new Point(center.getX(), center.getY());
     }

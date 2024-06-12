@@ -43,7 +43,8 @@ public class Rectangle {
      * @param upperLeft The upper left point of the rectangle. Must not be null.
      * @param width     The width of the rectangle. Must be positive.
      * @param height    The height of the rectangle. Must be positive.
-     * @throws IllegalArgumentException if the upper left point is null, or if the width or height is less than or equal to 0,
+     * @throws IllegalArgumentException if the upper left point is null,
+     *                                  or if the width or height is less than or equal to 0,
      *                                  or if the x or y coordinate of the upper left point is negative.
      */
     public Rectangle(Point upperLeft, double width, double height) {
@@ -66,14 +67,15 @@ public class Rectangle {
 
     /**
      * Calculates the intersection points between the rectangle and a given line.
-     * <p>
-     * This method creates an array of the four lines that make up the rectangle (top, bottom, left, right).
+     *
+     * <p>This method creates an array of the four lines that make up the rectangle (top, bottom, left, right).
      * It then iterates over these lines, checking for an intersection with the provided line.
      * If an intersection is found, it is added to a list of intersection points.
      * Once all lines have been checked, the method returns the list of intersection points.
      *
      * @param line The line to check for intersections with. Must not be null.
-     * @return A list of points where the line intersects the rectangle. If there are no intersections, an empty list is returned.
+     * @return A list of points where the line intersects the rectangle.
+     * If there are no intersections, an empty list is returned.
      * @throws IllegalArgumentException if the line is null.
      */
     public java.util.List<Point> intersectionPoints(Line line) {
@@ -85,8 +87,7 @@ public class Rectangle {
                 // There is an intersection point!
                 if (intersectionPoints.isEmpty()) {
                     intersectionPoints.add(currentIntersectionPoint);
-                }
-                else {
+                } else {
                     for (int i = 0; i < intersectionPoints.size(); i++) {
                         // Before adding the point, make sure we didn't encounter that point already (edges)
                         if (!currentIntersectionPoint.equals(intersectionPoints.get(i))) {

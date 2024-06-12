@@ -175,14 +175,17 @@ public class Line {
 
     /**
      * Returns the closest intersection point between this line and a given rectangle.
-     * <p>
-     * This method first checks if the line intersects with the rectangle by calling the rectangle's intersectionPoints method.
+     *
+     * <p>This method first checks if the line intersects with the rectangle
+     * by calling the rectangle's intersectionPoints method.
      * If there are no intersection points, the method returns null.
-     * If there are intersection points, the method calculates the distance from the start of the line to each intersection point.
+     * If there are intersection points,
+     * the method calculates the distance from the start of the line to each intersection point.
      * It then returns the intersection point that is closest to the start of the line.
      *
      * @param rect The rectangle to check for intersections with. Must not be null.
-     * @return The closest intersection point to the start of the line, or null if the line does not intersect with the rectangle.
+     * @return The closest intersection point to the start of the line,
+     * or null if the line does not intersect with the rectangle.
      */
     public Point closestIntersectionToStartOfLine(Rectangle rect) {
         if (rect == null) {
