@@ -21,7 +21,7 @@ public class GameSettings {
     public static final double PADDLE_WIDTH = 100;
     public static final double PADDLE_HEIGHT = 0.2 * PADDLE_WIDTH;
     public static final double PADDLE_SPEED = 5;
-    public static final Color PADDLE_FILL_COLOR = Color.ORANGE;
+    public static final Color PADDLE_FILL_COLOR = Color.YELLOW;
     public static final Color PADDLE_BORDER_COLOR = Color.BLACK;
 
     /*                              BLOCKS                              */
@@ -50,6 +50,6 @@ public class GameSettings {
     public static final double SIDE_BLOCKS_BOTTOM_WIDTH = SCREEN_WIDTH - SIDE_BLOCKS_LEFT_WIDTH - SIDE_BLOCKS_RIGHT_WIDTH;
     public static final double SIDE_BLOCKS_BOTTOM_HEIGHT = 25;
 
-    public static final Color SIDE_BLOCKS_FILL_COLOR = Color.LIGHT_GRAY;
+    public static final Color SIDE_BLOCKS_FILL_COLOR = Color.GRAY;
 
 }
