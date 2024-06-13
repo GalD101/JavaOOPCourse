@@ -153,7 +153,6 @@ public class Game {
         double x = MAIN_BLOCKS_HEIGHT + seperationStart;
         double blocksYValue = 0.1 * SCREEN_HEIGHT + MAIN_BLOCKS_HEIGHT;
         double num_of_rows = 6;
-//        addScreenBounderies(SCREEN_WIDTH, SCREEN_HEIGHT);
         // TODO Figure out why -4 is needed to make the blocks align properly, also put this in a loop
         for (int i = 0; i < num_of_rows; i++) {
             createLineOfBlocks(SCREEN_WIDTH, MAIN_BLOCKS_WIDTH, seperationBetweenBlocks, x + i * MAIN_BLOCKS_WIDTH, blocksYValue + i * MAIN_BLOCKS_HEIGHT, MAIN_BLOCKS_HEIGHT, MAIN_BLOCKS_FILL_COLOR[i]);
@@ -185,22 +184,6 @@ public class Game {
             startXValue += blockWidth + seperationBetweenBlocks;
             block.addToGame(this);
         }
-    }
-
-    // TODO: I think this is unnecessary
-    private void addScreenBounderies(double width, double height) {
-        Block rightSideOfScreen = new Block(new Rectangle(
-                new Point(width, 0), width, height), Color.WHITE);
-        Block leftSideOfScreen = new Block(new Rectangle(
-                new Point(-width, 0), new Point(0, height)), Color.WHITE);
-        Block topSideOfScreen = new Block(new Rectangle(
-                new Point(0, -height), new Point(width, 0)), Color.WHITE);
-        Block bottomSideOfScreen = new Block(new Rectangle(
-                new Point(0, height), new Point(width, 2 * height)), Color.WHITE);
-        rightSideOfScreen.addToGame(this);
-        leftSideOfScreen.addToGame(this);
-        topSideOfScreen.addToGame(this);
-        bottomSideOfScreen.addToGame(this);
     }
 
     /**
