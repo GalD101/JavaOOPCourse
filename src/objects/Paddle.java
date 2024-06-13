@@ -236,12 +236,14 @@ public class Paddle implements Sprite, Collidable {
                 Velocity newVelocity;
                 switch (collisionRegion) {
                     case 1:
-                        // Ball should bounce back with an angle of 300 degrees (a lot to the left)
-                        newVelocity = Velocity.fromAngleAndSpeed(300, PADDLE_SPEED);
+                        // Ball should bounce back with an angle of
+                        // 300 degrees relative to the upwards direction with clockwise rotation (a lot to the left)
+                        newVelocity = Velocity.fromAngleAndSpeed(300 - 90, PADDLE_SPEED);
                         break;
                     case 2:
-                        // Ball should bounce back with an angle of 330 degrees (a little to the left)
-                        newVelocity = Velocity.fromAngleAndSpeed(330, PADDLE_SPEED);
+                        // Ball should bounce back with an angle of
+                        // 330 degrees relative to the upwards direction with clockwise rotation (a little to the left)
+                        newVelocity = Velocity.fromAngleAndSpeed(330 - 90, PADDLE_SPEED);
                         break;
                     case 3:
                         // Ball should simply bounce back as expected
@@ -249,12 +251,14 @@ public class Paddle implements Sprite, Collidable {
                         newVelocity = new Velocity(newDx, newDy);
                         break;
                     case 4:
-                        // Ball should bounce back with an angle of 30 degrees (a little to the right)
-                        newVelocity = Velocity.fromAngleAndSpeed(30, PADDLE_SPEED);
+                        // Ball should bounce back with an angle of
+                        // 30 degrees relative to the upwards direction with clockwise rotation (a little to the right)
+                        newVelocity = Velocity.fromAngleAndSpeed(30 - 90, PADDLE_SPEED);
                         break;
                     case 5:
-                        // Ball should bounce back with an angle of 60 degrees (a lot to the right)
-                        newVelocity = Velocity.fromAngleAndSpeed(60, PADDLE_SPEED);
+                        // Ball should bounce back with an angle of
+                        // 60 degrees relative to the upwards direction with clockwise rotation (a lot to the right)
+                        newVelocity = Velocity.fromAngleAndSpeed(60 - 90, PADDLE_SPEED);
                         break;
                     default:
                         newDy = -1 * newDy;

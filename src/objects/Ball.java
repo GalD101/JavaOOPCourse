@@ -111,6 +111,25 @@ public class Ball implements Sprite {
     }
 
     /**
+     * Returns a new Point object that represents the center of the ball.
+     * The new Point object is a copy of the current center point of the ball.
+     *
+     * @return A new Point object representing the center of the ball
+     */
+    public Point getCenter() {
+        return new Point(this.center.getX(), this.center.getY());
+    }
+
+    /**
+     * Returns the game environment in which the ball moves.
+     *
+     * @return The game environment of the ball
+     */
+    public GameEnvironment getGameEnvironment() {
+        return this.gameEnvironment;
+    }
+
+    /**
      * Returns the radius of the ball.
      *
      * @return The radius of the ball
