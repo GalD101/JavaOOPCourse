@@ -6,7 +6,17 @@ import biuoop.KeyboardSensor;
 import game.Game;
 import utils.RandomSingleton;
 
-import static game.GameSettings.*;
+import static game.GameSettings.IS_FUN_MODE;
+import static game.GameSettings.PADDLE_REGION_ONE;
+import static game.GameSettings.PADDLE_REGION_TWO;
+import static game.GameSettings.PADDLE_REGION_THREE;
+import static game.GameSettings.PADDLE_REGION_FOUR;
+import static game.GameSettings.PADDLE_REGION_FIVE;
+import static game.GameSettings.PADDLE_SPEED;
+import static game.GameSettings.PADDLE_FILL_COLOR;
+import static game.GameSettings.PADDLE_BORDER_COLOR;
+import static game.GameSettings.SCREEN_WIDTH;
+import static game.GameSettings.MAIN_BLOCKS_HEIGHT;
 
 /**
  * The Collidable interface represents objects that can participate in collisions.
@@ -222,9 +232,9 @@ public class Paddle implements Sprite, Collidable {
 
         if (isOnTop) {
             if (IS_FUN_MODE) {
-                int collision_region = getCollisionRegion(collisionPoint.getX());
+                int collisionRegion = getCollisionRegion(collisionPoint.getX());
                 Velocity newVelocity;
-                switch (collision_region) {
+                switch (collisionRegion) {
                     case 1:
                         // Ball should bounce back with an angle of 300 degrees (a lot to the left)
                         newVelocity = Velocity.fromAngleAndSpeed(300, PADDLE_SPEED);
@@ -260,19 +270,24 @@ public class Paddle implements Sprite, Collidable {
 
     private int getCollisionRegion(double horizontalPosition) {
         double paddleLeftSideHorizontalValue = this.getCollisionRectangle().getUpperLeft().getX();
-        if (paddleLeftSideHorizontalValue <= horizontalPosition && horizontalPosition < paddleLeftSideHorizontalValue + PADDLE_REGION_ONE) {
+        if (paddleLeftSideHorizontalValue <= horizontalPosition
+                && horizontalPosition < paddleLeftSideHorizontalValue + PADDLE_REGION_ONE) {
             return 1;
         }
-        if (paddleLeftSideHorizontalValue + PADDLE_REGION_ONE <= horizontalPosition && horizontalPosition < paddleLeftSideHorizontalValue + PADDLE_REGION_TWO) {
+        if (paddleLeftSideHorizontalValue + PADDLE_REGION_ONE <= horizontalPosition
+                && horizontalPosition < paddleLeftSideHorizontalValue + PADDLE_REGION_TWO) {
             return 2;
         }
-        if (paddleLeftSideHorizontalValue + PADDLE_REGION_TWO <= horizontalPosition && horizontalPosition < paddleLeftSideHorizontalValue + PADDLE_REGION_THREE) {
+        if (paddleLeftSideHorizontalValue + PADDLE_REGION_TWO <= horizontalPosition
+                && horizontalPosition < paddleLeftSideHorizontalValue + PADDLE_REGION_THREE) {
             return 3;
         }
-        if (paddleLeftSideHorizontalValue + PADDLE_REGION_THREE <= horizontalPosition && horizontalPosition < paddleLeftSideHorizontalValue + PADDLE_REGION_FOUR) {
+        if (paddleLeftSideHorizontalValue + PADDLE_REGION_THREE <= horizontalPosition
+                && horizontalPosition < paddleLeftSideHorizontalValue + PADDLE_REGION_FOUR) {
             return 4;
         }
-        if (paddleLeftSideHorizontalValue + PADDLE_REGION_FOUR <= horizontalPosition && horizontalPosition <= paddleLeftSideHorizontalValue + PADDLE_REGION_FIVE) {
+        if (paddleLeftSideHorizontalValue + PADDLE_REGION_FOUR <= horizontalPosition
+                && horizontalPosition <= paddleLeftSideHorizontalValue + PADDLE_REGION_FIVE) {
             return 5;
         }
         return 0;

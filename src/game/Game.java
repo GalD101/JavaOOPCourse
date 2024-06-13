@@ -14,7 +14,27 @@ import utils.RandomSingleton;
 
 import java.awt.Color;
 
-import static game.GameSettings.*;
+import static game.GameSettings.SCREEN_WIDTH;
+import static game.GameSettings.SCREEN_HEIGHT;
+import static game.GameSettings.SCREEN_BACKGROUND_COLOR;
+import static game.GameSettings.SIDE_BLOCKS_TOP_WIDTH;
+import static game.GameSettings.SIDE_BLOCKS_TOP_HEIGHT;
+import static game.GameSettings.SIDE_BLOCKS_LEFT_WIDTH;
+import static game.GameSettings.SIDE_BLOCKS_LEFT_HEIGHT;
+import static game.GameSettings.SIDE_BLOCKS_RIGHT_WIDTH;
+import static game.GameSettings.SIDE_BLOCKS_RIGHT_HEIGHT;
+import static game.GameSettings.SIDE_BLOCKS_BOTTOM_WIDTH;
+import static game.GameSettings.SIDE_BLOCKS_BOTTOM_HEIGHT;
+import static game.GameSettings.SIDE_BLOCKS_FILL_COLOR;
+import static game.GameSettings.MAIN_BLOCKS_WIDTH;
+import static game.GameSettings.MAIN_BLOCKS_HEIGHT;
+import static game.GameSettings.MAIN_BLOCKS_FILL_COLOR;
+import static game.GameSettings.BALL_SIZE;
+import static game.GameSettings.BALL_SPEED;
+import static game.GameSettings.BALL_FILL_COLOR;
+import static game.GameSettings.NUM_OF_BALLS;
+import static game.GameSettings.PADDLE_WIDTH;
+import static game.GameSettings.PADDLE_HEIGHT;
 import static utils.MathUtils.computeAverage;
 
 /**
@@ -134,48 +154,69 @@ public class Game {
         this.gui = new GUI("G.L.D.223", SCREEN_WIDTH, SCREEN_HEIGHT);
         this.sleeper = new Sleeper();
 
-        /*           SIDE BLOCKS         */
-        Block leftSideBlock = new Block(new Rectangle(new Point(0, 0 + SIDE_BLOCKS_TOP_HEIGHT), SIDE_BLOCKS_LEFT_WIDTH, SIDE_BLOCKS_LEFT_HEIGHT), SIDE_BLOCKS_FILL_COLOR);
-        Block topSideBlock = new Block(new Rectangle(new Point(0, 0), SIDE_BLOCKS_TOP_WIDTH, SIDE_BLOCKS_TOP_HEIGHT), SIDE_BLOCKS_FILL_COLOR);
-        Block rightSideBlock = new Block(new Rectangle(new Point(SCREEN_WIDTH - SIDE_BLOCKS_RIGHT_WIDTH, SIDE_BLOCKS_TOP_HEIGHT), SIDE_BLOCKS_RIGHT_WIDTH, SIDE_BLOCKS_RIGHT_HEIGHT), SIDE_BLOCKS_FILL_COLOR);
-        Block bottomSideBlock = new Block(new Rectangle(new Point(SIDE_BLOCKS_LEFT_WIDTH, SCREEN_HEIGHT - SIDE_BLOCKS_BOTTOM_HEIGHT), SIDE_BLOCKS_BOTTOM_WIDTH, SIDE_BLOCKS_BOTTOM_HEIGHT), SIDE_BLOCKS_FILL_COLOR);
+        /*               SIDE BLOCKS               */
+        Block leftSideBlock = new Block(new Rectangle(
+                new Point(0, 0 + SIDE_BLOCKS_TOP_HEIGHT),
+                SIDE_BLOCKS_LEFT_WIDTH, SIDE_BLOCKS_LEFT_HEIGHT),
+                SIDE_BLOCKS_FILL_COLOR);
+        Block topSideBlock = new Block(new Rectangle(
+                new Point(0, 0),
+                SIDE_BLOCKS_TOP_WIDTH, SIDE_BLOCKS_TOP_HEIGHT),
+                SIDE_BLOCKS_FILL_COLOR);
+        Block rightSideBlock = new Block(new Rectangle(
+                new Point(SCREEN_WIDTH - SIDE_BLOCKS_RIGHT_WIDTH, SIDE_BLOCKS_TOP_HEIGHT),
+                SIDE_BLOCKS_RIGHT_WIDTH, SIDE_BLOCKS_RIGHT_HEIGHT),
+                SIDE_BLOCKS_FILL_COLOR);
+        Block bottomSideBlock = new Block(new Rectangle(
+                new Point(SIDE_BLOCKS_LEFT_WIDTH, SCREEN_HEIGHT - SIDE_BLOCKS_BOTTOM_HEIGHT),
+                SIDE_BLOCKS_BOTTOM_WIDTH, SIDE_BLOCKS_BOTTOM_HEIGHT),
+                SIDE_BLOCKS_FILL_COLOR);
+
         leftSideBlock.addToGame(this);
         topSideBlock.addToGame(this);
         rightSideBlock.addToGame(this);
         bottomSideBlock.addToGame(this);
 
-        /*                   MAIN_BLOCKS                        */
-        final double seperationBetweenBlocks = 0;
-        final double seperationStart = 3 * MAIN_BLOCKS_WIDTH;
+        /*               MAIN_BLOCKS               */
+        final double separationBetweenBlocks = 0;
+        final double separationStart = 3 * MAIN_BLOCKS_WIDTH;
+        final double blocksYValue = 0.1 * SCREEN_HEIGHT + MAIN_BLOCKS_HEIGHT;
 
-        double x = MAIN_BLOCKS_HEIGHT + seperationStart;
-        double blocksYValue = 0.1 * SCREEN_HEIGHT + MAIN_BLOCKS_HEIGHT;
-        double num_of_rows = 6;
-        // TODO Figure out why -4 is needed to make the blocks align properly, also put this in a loop
-        for (int i = 0; i < num_of_rows; i++) {
-            createLineOfBlocks(SCREEN_WIDTH, MAIN_BLOCKS_WIDTH, seperationBetweenBlocks, x + i * MAIN_BLOCKS_WIDTH, blocksYValue + i * MAIN_BLOCKS_HEIGHT, MAIN_BLOCKS_HEIGHT, MAIN_BLOCKS_FILL_COLOR[i]);
+        double x = MAIN_BLOCKS_HEIGHT + separationStart;
+        final double numOfRows = 6;
+        // TODO Figure out why 4 is needed to make the blocks align properly
+        for (int i = 0; i < numOfRows; i++) {
+            createLineOfBlocks(SCREEN_WIDTH, MAIN_BLOCKS_WIDTH,
+                    separationBetweenBlocks, x + i * MAIN_BLOCKS_WIDTH,
+                    blocksYValue + i * MAIN_BLOCKS_HEIGHT,
+                    MAIN_BLOCKS_HEIGHT, MAIN_BLOCKS_FILL_COLOR[i]);
         }
 
-        /*              GAME BALL                    */
-        // Create the game ball and position it in the lower middle part of the screen
-        // with fixed speed and random direction                             // ;) //TODO: Remove stupid smiley i dont even like 69 that much, doggy and missionary are better
+        /*               GAME BALL               */
         for (int i = 0; i < NUM_OF_BALLS; i++) {
-            Point gameBallCenterPoint = new Point(computeAverage(0, SCREEN_WIDTH), 0.69 * SCREEN_HEIGHT);
+            // Create the game ball and position it in the lower middle part of the screen
+            Point gameBallCenterPoint = new Point(computeAverage(0, SCREEN_WIDTH), 0.7 * SCREEN_HEIGHT);
             Ball gameBall = new Ball(gameBallCenterPoint, BALL_SIZE, BALL_FILL_COLOR, this.environment);
             // TODO: Special case if the balls velocity is purely horizontal
-            gameBall.setVelocity(animations.Velocity.fromAngleAndSpeed(RandomSingleton.myNextDouble(0, 360), BALL_SPEED));
+            // give the ball fixed speed and random direction
+            gameBall.setVelocity(animations.Velocity.fromAngleAndSpeed(
+                    RandomSingleton.myNextDouble(0, 360), BALL_SPEED));
             gameBall.addToGame(this);
         }
 
-        /*                PADDLE                  */
-        // TODO: Figure out mysterious -4
-        Rectangle gamePaddleRectangle = new Rectangle(new Point(computeAverage(0 + MAIN_BLOCKS_HEIGHT, SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT), SCREEN_HEIGHT - 2 * MAIN_BLOCKS_HEIGHT + 4), PADDLE_WIDTH, PADDLE_HEIGHT);
+        /*               PADDLE               */
+        // TODO: Figure out mysterious 4
+        Rectangle gamePaddleRectangle = new Rectangle(
+                new Point(computeAverage(0 + MAIN_BLOCKS_HEIGHT, SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT),
+                        SCREEN_HEIGHT - 2 * MAIN_BLOCKS_HEIGHT + 4), PADDLE_WIDTH, PADDLE_HEIGHT);
         Paddle gamePaddle = new Paddle(this.gui.getKeyboardSensor(), gamePaddleRectangle);
         gamePaddle.addToGame(this);
     }
 
     // TODO: Change this - why?
-    private void createLineOfBlocks(double screenWidth, double blockWidth, double seperationBetweenBlocks, double startXValue, double blocksYValue, double blocksThickness, Color color) {
+    private void createLineOfBlocks(double screenWidth, double blockWidth,
+                                    double seperationBetweenBlocks, double startXValue,
+                                    double blocksYValue, double blocksThickness, Color color) {
         while (startXValue < screenWidth - blocksThickness) {
             Block block = new Block(new Rectangle(
                     new Point(startXValue, blocksYValue), blockWidth, blocksThickness), color, this.environment);
@@ -204,17 +245,23 @@ public class Game {
     public void run() {
         // Start the animation loop
         // Go over all the sprites and call drawOn() and timePassed() on each one
-        //...
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
         while (true) {
             long startTime = System.currentTimeMillis(); // timing
             DrawSurface d = this.gui.getDrawSurface();
+
+            // Draw background
+            d.setColor(SCREEN_BACKGROUND_COLOR);
+            d.fillRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+            // Draw sprites
             this.sprites.drawAllOn(d);
+
             this.gui.show(d);
             this.sprites.notifyAllTimePassed();
 
-            // timing
+            // Timing
             long usedTime = System.currentTimeMillis() - startTime;
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
             if (milliSecondLeftToSleep > 0) {

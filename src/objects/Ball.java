@@ -8,15 +8,16 @@ import game.GameEnvironment;
 import game.CollisionInfo;
 import utils.Threshold;
 
-import java.awt.Color;
-
-import static game.GameSettings.*;
+import static game.GameSettings.BALL_BORDER_COLOR;
+import static game.GameSettings.BALL_FILL_COLOR;
+import static game.GameSettings.BALL_CENTER_POINT_COLOR;
 
 /**
  * Ball class represents a ball object in a 2D space.
  * It has properties like center, radius, color and velocity.
  */
-// TODO: Maybe just remove color since it is defined in the settings. or create constructors that recieve color for center point and border and so on...
+// TODO: Maybe just remove color since it is defined in the settings.
+//  or create constructors that receive color for center point and border and so on...
 public class Ball implements Sprite {
     private Point center; // The center point of the ball
     private int r; // The radius of the ball
@@ -188,7 +189,7 @@ public class Ball implements Sprite {
 
     /**
      * Moves the ball one step based on its velocity
-     * and if it will hit an object in the trajectory
+     * and if it will hit an object in the trajectory.
      */
     public void moveOneStep() {
         // Assume the ball is small enough

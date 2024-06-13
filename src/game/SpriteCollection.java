@@ -3,9 +3,6 @@ package game;
 import biuoop.DrawSurface;
 import objects.Sprite;
 
-import static game.GameSettings.*;
-
-
 /**
  * The SpriteCollection class represents a collection of Sprite objects in the game.
  *
@@ -62,8 +59,6 @@ public class SpriteCollection {
      * @param d The DrawSurface on which to draw the sprites
      */
     public void drawAllOn(DrawSurface d) {
-        d.setColor(SCREEN_BACKGROUND_COLOR);
-        d.fillRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         for (Sprite s : this.spriteList) {
             s.drawOn(d);
         }

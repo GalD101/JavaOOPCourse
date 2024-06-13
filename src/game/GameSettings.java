@@ -2,6 +2,13 @@ package game;
 
 import java.awt.Color;
 
+/**
+ * The GameSettings class holds all the settings for the game.
+ * This includes settings related to the game mode, screen, ball, paddle, and blocks.
+ * Each setting is defined as a public static final variable,
+ * making them constants that can be accessed directly via the class name.
+ * This class centralizes all the settings and makes them easily accessible throughout the game code.
+ */
 public class GameSettings {
 
     /*                              GAME_MODE                           */
@@ -51,7 +58,9 @@ public class GameSettings {
     public static final double MAIN_BLOCKS_WIDTH = 50;
     public static final double MAIN_BLOCKS_HEIGHT = 0.5 * MAIN_BLOCKS_WIDTH;
 
-    public static final Color[] MAIN_BLOCKS_FILL_COLOR = {Color.RED, Color.CYAN, Color.GREEN, Color.MAGENTA, Color.ORANGE, Color.BLUE, Color.PINK, Color.WHITE, Color.YELLOW};
+    public static final Color[] MAIN_BLOCKS_FILL_COLOR =
+            {Color.RED, Color.CYAN, Color.GREEN, Color.MAGENTA,
+                    Color.ORANGE, Color.BLUE, Color.PINK, Color.WHITE, Color.YELLOW};
 
     /*                              SIDE_BLOCKS                         */
     public static final double SIDE_BLOCKS_TOP_WIDTH = SCREEN_WIDTH;
@@ -63,7 +72,8 @@ public class GameSettings {
     public static final double SIDE_BLOCKS_RIGHT_WIDTH = 25;
     public static final double SIDE_BLOCKS_RIGHT_HEIGHT = SCREEN_HEIGHT - SIDE_BLOCKS_TOP_HEIGHT;
 
-    public static final double SIDE_BLOCKS_BOTTOM_WIDTH = SCREEN_WIDTH - SIDE_BLOCKS_LEFT_WIDTH - SIDE_BLOCKS_RIGHT_WIDTH;
+    public static final double SIDE_BLOCKS_BOTTOM_WIDTH =
+            SCREEN_WIDTH - SIDE_BLOCKS_LEFT_WIDTH - SIDE_BLOCKS_RIGHT_WIDTH;
     public static final double SIDE_BLOCKS_BOTTOM_HEIGHT = 25;
 
     public static final Color SIDE_BLOCKS_FILL_COLOR = Color.GRAY;
