@@ -1,5 +1,8 @@
 package objects.tests;
 
+import game.CollisionInfo;
+import game.GameEnvironment;
+import objects.Rectangle;
 import org.junit.jupiter.api.Test;
 import objects.Ball;
 import objects.Point;
@@ -57,5 +60,26 @@ class BallTest {
         Velocity v = ball.getVelocity();
         assertEquals(5, v.getDx());
         assertEquals(5, v.getDy());
+    }
+
+    @Test
+    void ballMovesOneStepWithoutCollision() {
+        GameEnvironment gameEnvironment = new GameEnvironment();
+        Ball ball = new Ball(new Point(0, 0), 10, Color.BLACK, gameEnvironment);
+        ball.setVelocity(5, 5);
+        ball.moveOneStep();
+
+        assertEquals(5, ball.getX());
+        assertEquals(5, ball.getY());
+    }
+
+    @Test
+    void ballMovesOneStepWithoutGameEnvironment() {
+        Ball ball = new Ball(new Point(0, 0), 10, Color.BLACK);
+        ball.setVelocity(5, 5);
+        ball.moveOneStep();
+
+        assertEquals(5, ball.getX());
+        assertEquals(5, ball.getY());
     }
 }
