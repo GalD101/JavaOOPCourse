@@ -1,4 +1,5 @@
 // 322558297 Gal Dali
+
 package objects;
 
 import java.util.Random;

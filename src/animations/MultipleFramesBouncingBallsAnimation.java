@@ -1,4 +1,5 @@
 // 322558297 Gal Dali
+
 package animations;
 
 import biuoop.DrawSurface;
@@ -23,6 +24,7 @@ public class MultipleFramesBouncingBallsAnimation {
     /**
      * The main method of the class.
      * It initialized the GUI, creates the frames and balls, and runs the animation.
+     *
      * @param args The command line arguments, which represent the sizes of the balls.
      */
     public static void main(String[] args) {
