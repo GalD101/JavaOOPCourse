@@ -15,6 +15,7 @@ public class GameSettings {
     public static final Color BALL_FILL_COLOR = Color.WHITE;
     public static final Color BALL_BORDER_COLOR = Color.BLACK;
     public static final Color BALL_CENTER_POINT_COLOR = Color.RED;
+    public static final int NUM_OF_BALLS = 2;
 
     /*                              PADDLE                              */
     public static final double PADDLE_WIDTH = 100;

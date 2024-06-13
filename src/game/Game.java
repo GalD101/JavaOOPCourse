@@ -162,11 +162,13 @@ public class Game {
         /*              GAME BALL                    */
         // Create the game ball and position it in the lower middle part of the screen
         // with fixed speed and random direction                             // ;) //TODO: Remove stupid smiley i dont even like 69 that much, doggy and missionary are better
-        Point gameBallCenterPoint = new Point(computeAverage(0, SCREEN_WIDTH), 0.69 * SCREEN_HEIGHT);
-        Ball gameBall = new Ball(gameBallCenterPoint, BALL_SIZE, BALL_FILL_COLOR, this.environment);
-        // TODO: Special case if the balls velocity is purely horizontal
-        gameBall.setVelocity(animations.Velocity.fromAngleAndSpeed(RandomSingleton.myNextDouble(0, 360), BALL_SPEED));
-        gameBall.addToGame(this);
+        for (int i = 0; i < NUM_OF_BALLS; i++) {
+            Point gameBallCenterPoint = new Point(computeAverage(0, SCREEN_WIDTH), 0.69 * SCREEN_HEIGHT);
+            Ball gameBall = new Ball(gameBallCenterPoint, BALL_SIZE, BALL_FILL_COLOR, this.environment);
+            // TODO: Special case if the balls velocity is purely horizontal
+            gameBall.setVelocity(animations.Velocity.fromAngleAndSpeed(RandomSingleton.myNextDouble(0, 360), BALL_SPEED));
+            gameBall.addToGame(this);
+        }
 
         /*                PADDLE                  */
         // TODO: Figure out mysterious -4
@@ -175,7 +177,7 @@ public class Game {
         gamePaddle.addToGame(this);
     }
 
-    // TODO: Change this
+    // TODO: Change this - why?
     private void createLineOfBlocks(double screenWidth, double blockWidth, double seperationBetweenBlocks, double startXValue, double blocksYValue, double blocksThickness, Color color) {
         while (startXValue < screenWidth - blocksThickness) {
             Block block = new Block(new Rectangle(
