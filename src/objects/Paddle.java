@@ -111,10 +111,11 @@ public class Paddle implements Sprite, Collidable {
         // TODO: use constants instead of plain numbers
         // The paddle moves in a circular fashion,
         // so that when it reaches the edge of the screen it moves to the other side
-        if (this.getCollisionRectangle().getLowerRight().getX() >= 800) {
+        // TODO: Important use gamesetting class to store all these numbers!!!
+        if (this.getCollisionRectangle().getLowerRight().getX() >= 800 - 25) {
             moveLeft();
             return;
-        } else if (this.getCollisionRectangle().getUpperLeft().getX() <= 0) {
+        } else if (this.getCollisionRectangle().getUpperLeft().getX() <= 0 + 25) {
             moveRight();
             return;
         }
@@ -148,12 +149,14 @@ public class Paddle implements Sprite, Collidable {
      * @param d The DrawSurface on which this Paddle is to be drawn
      */
     public void drawOn(DrawSurface d) {
+        // TODO: y'know
         d.setColor(this.color);
-        d.drawRectangle(
+        d.fillRectangle(
                 (int) this.collisionRectangle.getUpperLeft().getX(),
                 (int) this.collisionRectangle.getUpperLeft().getY(),
                 (int) this.collisionRectangle.getWidth(), (int) this.collisionRectangle.getHeight());
-        d.fillRectangle(
+        d.setColor(Color.BLACK);
+        d.drawRectangle(
                 (int) this.collisionRectangle.getUpperLeft().getX(),
                 (int) this.collisionRectangle.getUpperLeft().getY(),
                 (int) this.collisionRectangle.getWidth(), (int) this.collisionRectangle.getHeight());

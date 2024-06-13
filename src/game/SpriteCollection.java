@@ -60,6 +60,8 @@ public class SpriteCollection {
      * @param d The DrawSurface on which to draw the sprites
      */
     public void drawAllOn(DrawSurface d) {
+        // TODO: Y'know
+        d.fillRectangle(0, 0, 800, 600);
         for (Sprite s : this.spriteList) {
             s.drawOn(d);
         }

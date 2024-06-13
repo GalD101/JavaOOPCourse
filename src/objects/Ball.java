@@ -8,6 +8,8 @@ import game.GameEnvironment;
 import game.CollisionInfo;
 import utils.Threshold;
 
+import java.awt.*;
+
 /**
  * Ball class represents a ball object in a 2D space.
  * It has properties like center, radius, color and velocity.
@@ -137,8 +139,13 @@ public class Ball implements Sprite {
      * @param surface The surface on which the ball is to be drawn
      */
     public void drawOn(DrawSurface surface) {
+        // TODO: y'know
         surface.setColor(this.color);
         surface.fillCircle(this.getX(), this.getY(), this.getSize());
+        surface.setColor(Color.BLACK);
+        surface.drawCircle(this.getX(), this.getY(), this.getSize());
+        surface.setColor(Color.RED);
+        surface.fillCircle(this.getX(), this.getY(), 2);
     }
 
     /**
@@ -178,7 +185,8 @@ public class Ball implements Sprite {
     }
 
     /**
-     * Moves the ball one step based on its velocity.
+     * Moves the ball one step based on its velocity
+     * and if it will hit an object in the trajectory
      */
     public void moveOneStep() {
         // Assume the ball is small enough
