@@ -8,12 +8,15 @@ import game.GameEnvironment;
 import game.CollisionInfo;
 import utils.Threshold;
 
-import java.awt.*;
+import java.awt.Color;
+
+import static game.GameSettings.*;
 
 /**
  * Ball class represents a ball object in a 2D space.
  * It has properties like center, radius, color and velocity.
  */
+// TODO: Maybe just remove color since it is defined in the settings. or create constructors that recieve color for center point and border and so on...
 public class Ball implements Sprite {
     private Point center; // The center point of the ball
     private int r; // The radius of the ball
@@ -139,12 +142,11 @@ public class Ball implements Sprite {
      * @param surface The surface on which the ball is to be drawn
      */
     public void drawOn(DrawSurface surface) {
-        // TODO: y'know
-        surface.setColor(this.color);
+        surface.setColor(BALL_FILL_COLOR);
         surface.fillCircle(this.getX(), this.getY(), this.getSize());
-        surface.setColor(Color.BLACK);
+        surface.setColor(BALL_BORDER_COLOR);
         surface.drawCircle(this.getX(), this.getY(), this.getSize());
-        surface.setColor(Color.RED);
+        surface.setColor(BALL_CENTER_POINT_COLOR);
         surface.fillCircle(this.getX(), this.getY(), 2);
     }
 

@@ -14,6 +14,7 @@ import utils.RandomSingleton;
 
 import java.awt.Color;
 
+import static game.GameSettings.*;
 import static utils.MathUtils.computeAverage;
 
 /**
@@ -130,64 +131,51 @@ public class Game {
      * 9. Creates the paddle and adds it to the game.
      */
     public void initialize() {
-        final int height = 600;
-        final int width = 800;
-        final int ballSize = 5; // NOTE: this must be relatively small since we assume the ball to be a point object
-        final int ballSpeed = 5;
-        this.gui = new GUI("G.L.D.223", width, height);
-        this.gui.getDrawSurface().setColor(Color.BLUE);
-        this.gui.getDrawSurface().fillRectangle(0, 0, width, height);
+        this.gui = new GUI("G.L.D.223", SCREEN_WIDTH, SCREEN_HEIGHT);
+        this.gui.getDrawSurface().setColor(SCREEN_BACKGROUND_COLOR);
+        this.gui.getDrawSurface().fillRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         this.sleeper = new Sleeper();
 
         /*           SIDE BLOCKS         */
-        Color sideBlocksColor = Color.GRAY;
-        double blocksThickness = 25;
-        Block leftSideBlock = new Block(new Rectangle(new Point(0, 0 + blocksThickness), blocksThickness, width), sideBlocksColor);
-        Block topSideBlock = new Block(new Rectangle(new Point(0, 0), width, blocksThickness), sideBlocksColor);
-        Block rightSideBlock = new Block(new Rectangle(new Point(width - blocksThickness, 0 + blocksThickness), blocksThickness, height - blocksThickness), sideBlocksColor);
-        Block bottomSideBlock = new Block(new Rectangle(new Point(0 + blocksThickness, height - blocksThickness), width - 2 * blocksThickness, blocksThickness), sideBlocksColor);
+        Block leftSideBlock = new Block(new Rectangle(new Point(0, 0 + SIDE_BLOCKS_TOP_HEIGHT), SIDE_BLOCKS_LEFT_WIDTH, SIDE_BLOCKS_LEFT_HEIGHT), SIDE_BLOCKS_FILL_COLOR);
+        Block topSideBlock = new Block(new Rectangle(new Point(0, 0), SIDE_BLOCKS_TOP_WIDTH, SIDE_BLOCKS_TOP_HEIGHT), SIDE_BLOCKS_FILL_COLOR);
+        Block rightSideBlock = new Block(new Rectangle(new Point(SCREEN_WIDTH - SIDE_BLOCKS_RIGHT_WIDTH, SIDE_BLOCKS_TOP_HEIGHT), SIDE_BLOCKS_RIGHT_WIDTH, SIDE_BLOCKS_RIGHT_HEIGHT), SIDE_BLOCKS_FILL_COLOR);
+        Block bottomSideBlock = new Block(new Rectangle(new Point(SIDE_BLOCKS_LEFT_WIDTH, SCREEN_HEIGHT - SIDE_BLOCKS_BOTTOM_HEIGHT), SIDE_BLOCKS_BOTTOM_WIDTH, SIDE_BLOCKS_BOTTOM_HEIGHT), SIDE_BLOCKS_FILL_COLOR);
         leftSideBlock.addToGame(this);
         topSideBlock.addToGame(this);
         rightSideBlock.addToGame(this);
         bottomSideBlock.addToGame(this);
 
-        // TODO: Create a class gameSettings that holds all the settings for the game (color for paddle, size, and so on)
-
-        /*                   BLOCKS                        */
-        final double blockWidth = 50;
+        /*                   MAIN_BLOCKS                        */
         final double seperationBetweenBlocks = 0;
-        final double seperationStart = 3 * blockWidth;
+        final double seperationStart = 3 * MAIN_BLOCKS_WIDTH;
 
-        double x = blocksThickness + seperationStart;
-        double blocksYValue = 0.1 * height + blocksThickness;
-        addScreenBounderies(width, height);
+        double x = MAIN_BLOCKS_HEIGHT + seperationStart;
+        double blocksYValue = 0.1 * SCREEN_HEIGHT + MAIN_BLOCKS_HEIGHT;
+        double num_of_rows = 6;
+//        addScreenBounderies(SCREEN_WIDTH, SCREEN_HEIGHT);
         // TODO Figure out why -4 is needed to make the blocks align properly, also put this in a loop
-        createLineOfBlocks(width, blockWidth, seperationBetweenBlocks, x, blocksYValue, blocksThickness, Color.GRAY);
-        createLineOfBlocks(width, blockWidth, seperationBetweenBlocks, x + blockWidth, blocksYValue + blocksThickness, blocksThickness, Color.RED);
-        createLineOfBlocks(width, blockWidth, seperationBetweenBlocks, x + 2 * blockWidth, blocksYValue + 2 * blocksThickness, blocksThickness, Color.YELLOW);
-        createLineOfBlocks(width, blockWidth, seperationBetweenBlocks, x + 3 * blockWidth, blocksYValue + 3 * blocksThickness, blocksThickness, Color.BLUE);
-        createLineOfBlocks(width, blockWidth, seperationBetweenBlocks, x + 4 * blockWidth, blocksYValue + 4 * blocksThickness, blocksThickness, Color.PINK);
-        createLineOfBlocks(width, blockWidth, seperationBetweenBlocks, x + 5 * blockWidth, blocksYValue + 5 * blocksThickness, blocksThickness, Color.GREEN);
+        for (int i = 0; i < num_of_rows; i++) {
+            createLineOfBlocks(SCREEN_WIDTH, MAIN_BLOCKS_WIDTH, seperationBetweenBlocks, x + i * MAIN_BLOCKS_WIDTH, blocksYValue + i * MAIN_BLOCKS_HEIGHT, MAIN_BLOCKS_HEIGHT, MAIN_BLOCKS_FILL_COLOR[i]);
+        }
 
         /*              GAME BALL                    */
         // Create the game ball and position it in the lower middle part of the screen
-        // with fixed speed and random direction
-        Point gameBallCenterPoint = new Point(computeAverage(0, width), 0.69 * height);
-        Ball gameBall = new Ball(gameBallCenterPoint, ballSize, Color.WHITE, this.environment);
-        gameBall.setVelocity(animations.Velocity.fromAngleAndSpeed(RandomSingleton.myNextDouble(0, 360), ballSpeed));
+        // with fixed speed and random direction                             // ;) //TODO: Remove stupid smiley i dont even like 69 that much, doggy and missionary are better
+        Point gameBallCenterPoint = new Point(computeAverage(0, SCREEN_WIDTH), 0.69 * SCREEN_HEIGHT);
+        Ball gameBall = new Ball(gameBallCenterPoint, BALL_SIZE, BALL_FILL_COLOR, this.environment);
+        // TODO: Special case if the balls velocity is purely horizontal
+        gameBall.setVelocity(animations.Velocity.fromAngleAndSpeed(RandomSingleton.myNextDouble(0, 360), BALL_SPEED));
         gameBall.addToGame(this);
 
         /*                PADDLE                  */
-        // Create a paddle:
-        double paddleWidth = 100;
-        double paddleHeight = 0.2 * paddleWidth;
-        Color paddleColor = Color.ORANGE;
         // TODO: Figure out mysterious -4
-        Rectangle gamePaddleRectangle = new Rectangle(new Point(computeAverage(0 + blocksThickness, width - blocksThickness), height - 2*blocksThickness + 4 ), paddleWidth, paddleHeight);
-        Paddle gamePaddle = new Paddle(this.gui.getKeyboardSensor(), gamePaddleRectangle, Color.ORANGE);
+        Rectangle gamePaddleRectangle = new Rectangle(new Point(computeAverage(0 + MAIN_BLOCKS_HEIGHT, SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT), SCREEN_HEIGHT - 2 * MAIN_BLOCKS_HEIGHT + 4), PADDLE_WIDTH, PADDLE_HEIGHT);
+        Paddle gamePaddle = new Paddle(this.gui.getKeyboardSensor(), gamePaddleRectangle);
         gamePaddle.addToGame(this);
     }
 
+    // TODO: Change this
     private void createLineOfBlocks(double screenWidth, double blockWidth, double seperationBetweenBlocks, double startXValue, double blocksYValue, double blocksThickness, Color color) {
         while (startXValue < screenWidth - blocksThickness) {
             Block block = new Block(new Rectangle(
@@ -197,6 +185,7 @@ public class Game {
         }
     }
 
+    // TODO: I think this is unnecessary
     private void addScreenBounderies(double width, double height) {
         Block rightSideOfScreen = new Block(new Rectangle(
                 new Point(width, 0), width, height), Color.WHITE);

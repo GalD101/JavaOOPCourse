@@ -6,7 +6,11 @@ import biuoop.KeyboardSensor;
 import game.Game;
 import utils.RandomSingleton;
 
-import java.awt.Color;
+import static game.GameSettings.PADDLE_SPEED;
+import static game.GameSettings.PADDLE_BORDER_COLOR;
+import static game.GameSettings.PADDLE_FILL_COLOR;
+import static game.GameSettings.SCREEN_WIDTH;
+import static game.GameSettings.MAIN_BLOCKS_HEIGHT;
 
 /**
  * The Collidable interface represents objects that can participate in collisions.
@@ -16,29 +20,23 @@ import java.awt.Color;
 public class Paddle implements Sprite, Collidable {
     private KeyboardSensor keyboard;
     private Rectangle collisionRectangle;
-    private Color color;
     private double speed;
 
     /**
      * Constructs a new Paddle object.
      *
-     * <p>This constructor initializes the Paddle with a keyboard sensor, a collision rectangle, and a color.
+     * <p>This constructor initializes the Paddle with a keyboard sensor, a collision rectangle.
      * The keyboard sensor is used to control the movement of the Paddle.
      * The collision rectangle defines the size and position of the Paddle.
-     * The color is used when drawing the Paddle on the screen.
-     * If the color is null, the Paddle is initialized with a default color of white.
-     * The speed of the Paddle is randomly set to either 5 or -5.
+     * The speed of the Paddle is randomly set to either positive (right) or negative (left).
      *
      * @param keyboard           The keyboard sensor used to control the Paddle
      * @param collisionRectangle The collision rectangle defining the size and position of the Paddle
-     * @param color              The color of the Paddle
      */
-    public Paddle(KeyboardSensor keyboard, Rectangle collisionRectangle, Color color) {
+    public Paddle(KeyboardSensor keyboard, Rectangle collisionRectangle) {
         this.keyboard = keyboard;
         this.collisionRectangle = new Rectangle(collisionRectangle.getUpperLeft(), collisionRectangle.getLowerRight());
-        this.color = color == null ? Color.WHITE : color;
-        // TODO: Use constants from constants class instead of hard coded numbers
-        this.speed = RandomSingleton.getInstance().nextBoolean() ? 5 : -5;
+        this.speed = RandomSingleton.getInstance().nextBoolean() ? PADDLE_SPEED : -PADDLE_SPEED;
     }
 
     /**
@@ -112,10 +110,10 @@ public class Paddle implements Sprite, Collidable {
         // The paddle moves in a circular fashion,
         // so that when it reaches the edge of the screen it moves to the other side
         // TODO: Important use gamesetting class to store all these numbers!!!
-        if (this.getCollisionRectangle().getLowerRight().getX() >= 800 - 25) {
+        if (this.getCollisionRectangle().getLowerRight().getX() >= SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT) {
             moveLeft();
             return;
-        } else if (this.getCollisionRectangle().getUpperLeft().getX() <= 0 + 25) {
+        } else if (this.getCollisionRectangle().getUpperLeft().getX() <= MAIN_BLOCKS_HEIGHT) {
             moveRight();
             return;
         }
@@ -149,13 +147,12 @@ public class Paddle implements Sprite, Collidable {
      * @param d The DrawSurface on which this Paddle is to be drawn
      */
     public void drawOn(DrawSurface d) {
-        // TODO: y'know
-        d.setColor(this.color);
+        d.setColor(PADDLE_FILL_COLOR);
         d.fillRectangle(
                 (int) this.collisionRectangle.getUpperLeft().getX(),
                 (int) this.collisionRectangle.getUpperLeft().getY(),
                 (int) this.collisionRectangle.getWidth(), (int) this.collisionRectangle.getHeight());
-        d.setColor(Color.BLACK);
+        d.setColor(PADDLE_BORDER_COLOR);
         d.drawRectangle(
                 (int) this.collisionRectangle.getUpperLeft().getX(),
                 (int) this.collisionRectangle.getUpperLeft().getY(),
