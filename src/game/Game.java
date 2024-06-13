@@ -210,8 +210,6 @@ public class Game {
         while (true) {
             long startTime = System.currentTimeMillis(); // timing
             DrawSurface d = this.gui.getDrawSurface();
-            d.setColor(SCREEN_BACKGROUND_COLOR);
-            this.gui.getDrawSurface().fillRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             this.sprites.drawAllOn(d);
             this.gui.show(d);
             this.sprites.notifyAllTimePassed();
