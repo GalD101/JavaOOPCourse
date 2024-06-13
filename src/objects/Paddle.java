@@ -6,11 +6,7 @@ import biuoop.KeyboardSensor;
 import game.Game;
 import utils.RandomSingleton;
 
-import static game.GameSettings.PADDLE_SPEED;
-import static game.GameSettings.PADDLE_BORDER_COLOR;
-import static game.GameSettings.PADDLE_FILL_COLOR;
-import static game.GameSettings.SCREEN_WIDTH;
-import static game.GameSettings.MAIN_BLOCKS_HEIGHT;
+import static game.GameSettings.*;
 
 /**
  * The Collidable interface represents objects that can participate in collisions.
@@ -105,15 +101,13 @@ public class Paddle implements Sprite, Collidable {
         // Check if the left or right keys are pressed and move the paddle accordingly use KeyboardSensor
         boolean moveRight = this.speed > 0;
         boolean moveLeft = this.speed < 0;
+
         // Check if there is a collision with the right/left block and invert the velocity
-        // TODO: use constants instead of plain numbers
-        // The paddle moves in a circular fashion,
-        // so that when it reaches the edge of the screen it moves to the other side
-        // TODO: Important use gamesetting class to store all these numbers!!!
         if (this.getCollisionRectangle().getLowerRight().getX() >= SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT) {
             moveLeft();
             return;
-        } else if (this.getCollisionRectangle().getUpperLeft().getX() <= MAIN_BLOCKS_HEIGHT) {
+        }
+        if (this.getCollisionRectangle().getUpperLeft().getX() <= MAIN_BLOCKS_HEIGHT) {
             moveRight();
             return;
         }
@@ -131,7 +125,6 @@ public class Paddle implements Sprite, Collidable {
         }
         if (moveLeft) {
             moveLeft();
-            return;
         }
     }
 
@@ -214,13 +207,75 @@ public class Paddle implements Sprite, Collidable {
         double newDx = currentVelocity.getDx();
         double newDy = currentVelocity.getDy();
 
-        if (isOnLeft || isOnRight) {
+        // This (left and right side) never works and the ball tunnels inside the paddle
+        if (isOnLeft) {
             newDx = -1 * newDx;
         }
-        if (isOnTop || isOnBottom) {
+
+        if (isOnRight) {
+            newDx = -1 * newDx;
+        }
+
+        if (isOnBottom) {
+            newDy = -1 * newDy;
+        }
+
+        if (isOnTop) {
+            if (IS_FUN_MODE) {
+                int collision_region = getCollisionRegion(collisionPoint.getX());
+                Velocity newVelocity;
+                switch (collision_region) {
+                    case 1:
+                        // Ball should bounce back with an angle of 300 degrees (a lot to the left)
+                        newVelocity = Velocity.fromAngleAndSpeed(300, PADDLE_SPEED);
+                        break;
+                    case 2:
+                        // Ball should bounce back with an angle of 330 degrees (a little to the left)
+                        newVelocity = Velocity.fromAngleAndSpeed(330, PADDLE_SPEED);
+                        break;
+                    case 3:
+                        // Ball should simply bounce back as expected
+                        newDy = -1 * newDy;
+                        newVelocity = new Velocity(newDx, newDy);
+                        break;
+                    case 4:
+                        // Ball should bounce back with an angle of 30 degrees (a little to the right)
+                        newVelocity = Velocity.fromAngleAndSpeed(30, PADDLE_SPEED);
+                        break;
+                    case 5:
+                        // Ball should bounce back with an angle of 60 degrees (a lot to the right)
+                        newVelocity = Velocity.fromAngleAndSpeed(60, PADDLE_SPEED);
+                        break;
+                    default:
+                        newDy = -1 * newDy;
+                        newVelocity = new Velocity(newDx, newDy);
+                        break;
+                }
+                return newVelocity;
+            }
             newDy = -1 * newDy;
         }
         return new Velocity(newDx, newDy);
+    }
+
+    private int getCollisionRegion(double horizontalPosition) {
+        double paddleLeftSideHorizontalValue = this.getCollisionRectangle().getUpperLeft().getX();
+        if (paddleLeftSideHorizontalValue <= horizontalPosition && horizontalPosition < paddleLeftSideHorizontalValue + PADDLE_REGION_ONE) {
+            return 1;
+        }
+        if (paddleLeftSideHorizontalValue + PADDLE_REGION_ONE <= horizontalPosition && horizontalPosition < paddleLeftSideHorizontalValue + PADDLE_REGION_TWO) {
+            return 2;
+        }
+        if (paddleLeftSideHorizontalValue + PADDLE_REGION_TWO <= horizontalPosition && horizontalPosition < paddleLeftSideHorizontalValue + PADDLE_REGION_THREE) {
+            return 3;
+        }
+        if (paddleLeftSideHorizontalValue + PADDLE_REGION_THREE <= horizontalPosition && horizontalPosition < paddleLeftSideHorizontalValue + PADDLE_REGION_FOUR) {
+            return 4;
+        }
+        if (paddleLeftSideHorizontalValue + PADDLE_REGION_FOUR <= horizontalPosition && horizontalPosition <= paddleLeftSideHorizontalValue + PADDLE_REGION_FIVE) {
+            return 5;
+        }
+        return 0;
     }
 
     /**
