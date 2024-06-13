@@ -182,6 +182,10 @@ public class Ball implements Sprite {
      */
     public void moveOneStep() {
         // Assume the ball is small enough
+        if (this.gameEnvironment == null) {
+            this.setCenter(this.getVelocity().applyToPoint(this.center));
+            return;
+        }
         Line trajectory = new Line(this.center, this.getVelocity().applyToPoint(this.center));
         CollisionInfo collisionInfo = this.gameEnvironment.getClosestCollision(trajectory);
         if (collisionInfo == null) {
