@@ -60,7 +60,7 @@
     <!-- See https://checkstyle.org/config_sizes.html -->
     <module name="FileLength"/>
     <module name="LineLength">
-        <!-- Line length of 120 instead of the defalult 80 -->
+        <!-- Line length of 120 instead of the default 80 -->
         <property name="max" value="120"/>
     </module>
 
