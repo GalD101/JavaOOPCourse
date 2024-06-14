@@ -34,10 +34,6 @@ public class CollisionInfo {
         return new Point(this.collisionPoint.getX(), this.collisionPoint.getY());
     }
 
-    public String getName() {
-        return this.collisionObject.getClass().getSimpleName();
-    }
-
     /**
      * Returns the collidable object involved in the collision.
      * This method directly exposes the internal state of the CollisionInfo object.
