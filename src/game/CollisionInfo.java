@@ -21,7 +21,7 @@ public class CollisionInfo {
      */
     public CollisionInfo(Point collisionPoint, Collidable collisionObject) {
         this.collisionPoint = new Point(collisionPoint.getX(), collisionPoint.getY());
-        this.collisionObject = collisionObject; // TODO - encapsulate this
+        this.collisionObject = collisionObject;
     }
 
     /**
@@ -34,14 +34,17 @@ public class CollisionInfo {
         return new Point(this.collisionPoint.getX(), this.collisionPoint.getY());
     }
 
+    public String getName() {
+        return this.collisionObject.getClass().getSimpleName();
+    }
+
     /**
      * Returns the collidable object involved in the collision.
      * This method directly exposes the internal state of the CollisionInfo object.
-     * TODO - Consider returning a copy or a read-only view to preserve encapsulation.
      *
      * @return The collidable object involved in the collision.
      */
     public Collidable collisionObject() {
-        return this.collisionObject; // TODO - encapsulate this
+        return this.collisionObject;
     }
 }
