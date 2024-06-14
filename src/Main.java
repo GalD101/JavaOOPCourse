@@ -79,7 +79,6 @@ public class Main {
                             (int) balls[j + i * rectsAmount].getCenter().getX(),
                             (int) balls[j + i * rectsAmount].getCenter().getY(),
                             balls[j + i * rectsAmount].getSize());
-                    balls[j + i * rectsAmount].getGameEnvironment();
                     balls[j + i * rectsAmount].moveOneStep();
                 }
             }
