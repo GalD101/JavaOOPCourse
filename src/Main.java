@@ -39,19 +39,19 @@ public class Main {
         for (int i = 0; i < rectsAmount; i++) {
             for (int j = 0; j < rectsAmount; j++) {
                 Block myBlock = new Block(new Rectangle(
-                        new Point(10 + i * 80, 10 + j * 60), 20, 20), java.awt.Color.BLACK, ge);
+                        new Point(10 + i * 80, 10 + j * 60), 20, 20), java.awt.Color.BLACK);
                 blocks.add(myBlock);
                 ge.addCollidable(myBlock);
             }
         }
         Block rightSideOfScreen = new Block(new Rectangle(
-                new Point(width, 0), width, height), java.awt.Color.BLACK, ge);
+                new Point(width, 0), width, height), java.awt.Color.BLACK);
         Block leftSideOfScreen = new Block(new Rectangle(
-                new Point(-width, 0), new Point(0, height)), java.awt.Color.BLACK, ge);
+                new Point(-width, 0), new Point(0, height)), java.awt.Color.BLACK);
         Block topSideOfScreen = new Block(new Rectangle(
-                new Point(0, -height), new Point(width, 0)), java.awt.Color.BLACK, ge);
+                new Point(0, -height), new Point(width, 0)), java.awt.Color.BLACK);
         Block bottomSideOfScreen = new Block(new Rectangle(
-                new Point(0, height), new Point(width, 2 * height)), java.awt.Color.BLACK, ge);
+                new Point(0, height), new Point(width, 2 * height)), java.awt.Color.BLACK);
         ge.addCollidable(rightSideOfScreen);
         ge.addCollidable(leftSideOfScreen);
         ge.addCollidable(topSideOfScreen);

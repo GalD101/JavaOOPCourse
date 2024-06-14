@@ -221,7 +221,7 @@ public class Game {
                                     double blocksYValue, double blocksThickness, Color color) {
         while (startXValue < screenWidth - blocksThickness) {
             Block block = new Block(new Rectangle(
-                    new Point(startXValue, blocksYValue), blockWidth, blocksThickness), color, this.environment);
+                    new Point(startXValue, blocksYValue), blockWidth, blocksThickness), color);
             startXValue += blockWidth + seperationBetweenBlocks;
             block.addToGame(this);
         }
