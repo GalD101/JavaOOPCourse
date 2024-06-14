@@ -46,9 +46,8 @@ public class Point {
         double dy = this.y - other.y;
 
         // If one wants to improve accuracy and precision for far-flung points,
-        // one can use the hypot method from the Math class instead; i.e. distance = Math.hypot(dx, dy).
-        double distance = Math.sqrt(dx * dx + dy * dy);
-        return distance;
+        // one can use the hypot method from the Math class instead; i.e. return Math.hypot(dx, dy).
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     /**

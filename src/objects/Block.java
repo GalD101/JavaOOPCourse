@@ -16,8 +16,6 @@ import java.awt.Color;
 public class Block implements Collidable, Sprite {
     private Rectangle collisionRectangle;
     private Color color;
-    // TODO add border color - should be black for all objects
-    private GameEnvironment gameEnvironment;
 
     /**
      * Constructs a new Block object.

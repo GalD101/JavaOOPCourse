@@ -17,8 +17,6 @@ import static game.GameSettings.BALL_CENTER_POINT_COLOR;
  * Ball class represents a ball object in a 2D space.
  * It has properties like center, radius, color and velocity.
  */
-// TODO: Maybe just remove color since it is defined in the settings.
-//  or create constructors that receive color for center point and border and so on...
 public class Ball implements Sprite {
     private Point center; // The center point of the ball
     private int r; // The radius of the ball
@@ -119,15 +117,6 @@ public class Ball implements Sprite {
      */
     public Point getCenter() {
         return new Point(this.center.getX(), this.center.getY());
-    }
-
-    /**
-     * Returns the game environment in which the ball moves.
-     *
-     * @return The game environment of the ball
-     */
-    public GameEnvironment getGameEnvironment() {
-        return this.gameEnvironment;
     }
 
     /**
@@ -292,7 +281,7 @@ public class Ball implements Sprite {
         Line ballEdgeUpperLeftVector = new Line(this.center, ballEdgeUpperLeft);
 
         // https://docs.flatredball.com/flatredball/tutorials/code-tutorials/collision-jitter
-        boolean isNearCenter = false;
+        boolean isNearCenter;
         // Collision with the left side of the frame
         if (leftLine.isIntersecting(ballEdgeBottomRightVector) || leftLine.isIntersecting(ballEdgeUpperRightVector)) {
             isNearCenter = this.center.getX()

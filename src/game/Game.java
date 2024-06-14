@@ -186,12 +186,9 @@ public class Game {
 
         double x = MAIN_BLOCKS_HEIGHT + separationStart;
         final double numOfRows = 6;
-        // TODO Figure out why 4 is needed to make the blocks align properly
         for (int i = 0; i < numOfRows; i++) {
-            createLineOfBlocks(SCREEN_WIDTH, MAIN_BLOCKS_WIDTH,
-                    separationBetweenBlocks, x + i * MAIN_BLOCKS_WIDTH,
-                    blocksYValue + i * MAIN_BLOCKS_HEIGHT,
-                    MAIN_BLOCKS_HEIGHT, MAIN_BLOCKS_FILL_COLOR[i]);
+            createLineOfBlocks(separationBetweenBlocks, x + i * MAIN_BLOCKS_WIDTH,
+                    blocksYValue + i * MAIN_BLOCKS_HEIGHT, MAIN_BLOCKS_FILL_COLOR[i]);
         }
 
         /*               GAME BALL               */
@@ -199,7 +196,6 @@ public class Game {
             // Create the game ball and position it in the lower middle part of the screen
             Point gameBallCenterPoint = new Point(computeAverage(0, SCREEN_WIDTH), 0.7 * SCREEN_HEIGHT);
             Ball gameBall = new Ball(gameBallCenterPoint, BALL_SIZE, BALL_FILL_COLOR, this.environment);
-            // TODO: Special case if the balls velocity is purely horizontal
             // give the ball fixed speed and random direction
             gameBall.setVelocity(animations.Velocity.fromAngleAndSpeed(
                     RandomSingleton.myNextDouble(0, 360), BALL_SPEED));
@@ -207,7 +203,6 @@ public class Game {
         }
 
         /*               PADDLE               */
-        // TODO: Figure out mysterious 4
         Rectangle gamePaddleRectangle = new Rectangle(
                 new Point(computeAverage(0 + MAIN_BLOCKS_HEIGHT, SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT),
                         SCREEN_HEIGHT - 2 * MAIN_BLOCKS_HEIGHT + 4), PADDLE_WIDTH, PADDLE_HEIGHT);
@@ -215,14 +210,12 @@ public class Game {
         gamePaddle.addToGame(this);
     }
 
-    // TODO: Change this - why?
-    private void createLineOfBlocks(double screenWidth, double blockWidth,
-                                    double seperationBetweenBlocks, double startXValue,
-                                    double blocksYValue, double blocksThickness, Color color) {
-        while (startXValue < screenWidth - blocksThickness) {
+    private void createLineOfBlocks(double separationBetweenBlocks, double startXValue,
+                                    double blocksYValue, Color color) {
+        while (startXValue < SCREEN_WIDTH - GameSettings.MAIN_BLOCKS_HEIGHT) {
             Block block = new Block(new Rectangle(
-                    new Point(startXValue, blocksYValue), blockWidth, blocksThickness), color);
-            startXValue += blockWidth + seperationBetweenBlocks;
+                    new Point(startXValue, blocksYValue), MAIN_BLOCKS_WIDTH, GameSettings.MAIN_BLOCKS_HEIGHT), color);
+            startXValue += MAIN_BLOCKS_WIDTH + separationBetweenBlocks;
             block.addToGame(this);
         }
     }

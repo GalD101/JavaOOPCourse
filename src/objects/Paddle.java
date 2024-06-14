@@ -178,19 +178,6 @@ public class Paddle implements Sprite, Collidable {
         return new Rectangle(this.collisionRectangle.getUpperLeft(), this.collisionRectangle.getLowerRight());
     }
 
-    // Collidable
-    // TODO: Check weird behavior when ball collides with side of paddle
-    // Answer: The issue is that the ball can collide from inside the paddle
-    // Why does the ball gets inside the paddle?
-    // It is supposed to bounce when it hits the left or right side of the paddle
-    // Right now it doesnt do that - I need to figure out why
-    // It happens because the lines are moving.
-    // Idea check if the collision point is between the two lines
-    // Problem - I cant since it uses another function that checks if the line is intersecting with the point :(
-    // New idea - Make it so that only collision from outside are possible
-    // LAZY IDEA BECAUSE NOTHING ELSE WORKS - JUST MAKE THE PADDLE VERY THIN AND IT WON'T CAUSE ANY ISSUES
-    // TODO: Unfortunately, the lazy idea won't work because they want me to create a paddle with width so that sucks
-
     /**
      * Handles the logic for when a collision occurs with this Paddle object.
      *
@@ -205,8 +192,6 @@ public class Paddle implements Sprite, Collidable {
      * @return The new velocity of the object after the collision
      */
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
-        // should be the same logic as block
-        // TODO: This is too similar to block so change it accordingly
         if (collisionPoint == null || currentVelocity == null) {
             return currentVelocity;
         }

@@ -7,7 +7,7 @@ import animations.Velocity;
 /**
  * The Collidable interface represents objects that can participate in collisions.
  * Each Collidable object has a "collision shape" represented as a Rectangle object.
- * When a collision occurs, the Collidable object is notified and it returns the new velocity expected after the hit.
+ * When a collision occurs, the Collidable object is notified, and it returns the new velocity expected after the hit.
  */
 public interface Collidable {
     /**
