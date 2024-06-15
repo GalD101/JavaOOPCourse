@@ -19,6 +19,7 @@ import static game.GameSettings.PADDLE_FILL_COLOR;
 import static game.GameSettings.PADDLE_BORDER_COLOR;
 import static game.GameSettings.SCREEN_WIDTH;
 import static game.GameSettings.MAIN_BLOCKS_HEIGHT;
+import static game.GameSettings.BALL_SPEED;
 
 /**
  * The Collidable interface represents objects that can participate in collisions.
@@ -225,12 +226,12 @@ public class Paddle implements Sprite, Collidable {
                     case 1:
                         // Ball should bounce back with an angle of
                         // 300 degrees relative to the upwards direction with clockwise rotation (a lot to the left)
-                        newVelocity = Velocity.fromAngleAndSpeed(300 - 90, PADDLE_SPEED);
+                        newVelocity = Velocity.fromAngleAndSpeed(300 - 90, BALL_SPEED);
                         break;
                     case 2:
                         // Ball should bounce back with an angle of
                         // 330 degrees relative to the upwards direction with clockwise rotation (a little to the left)
-                        newVelocity = Velocity.fromAngleAndSpeed(330 - 90, PADDLE_SPEED);
+                        newVelocity = Velocity.fromAngleAndSpeed(330 - 90, BALL_SPEED);
                         break;
                     case 3:
                         // Ball should simply bounce back as expected
@@ -240,12 +241,12 @@ public class Paddle implements Sprite, Collidable {
                     case 4:
                         // Ball should bounce back with an angle of
                         // 30 degrees relative to the upwards direction with clockwise rotation (a little to the right)
-                        newVelocity = Velocity.fromAngleAndSpeed(30 - 90, PADDLE_SPEED);
+                        newVelocity = Velocity.fromAngleAndSpeed(30 - 90, BALL_SPEED);
                         break;
                     case 5:
                         // Ball should bounce back with an angle of
                         // 60 degrees relative to the upwards direction with clockwise rotation (a lot to the right)
-                        newVelocity = Velocity.fromAngleAndSpeed(60 - 90, PADDLE_SPEED);
+                        newVelocity = Velocity.fromAngleAndSpeed(60 - 90, BALL_SPEED);
                         break;
                     default:
                         newDy = -1 * newDy;
