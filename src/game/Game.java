@@ -196,20 +196,36 @@ public class Game {
             // Create the game ball and position it in the lower middle part of the screen
             Point gameBallCenterPoint = new Point(computeAverage(0, SCREEN_WIDTH), 0.7 * SCREEN_HEIGHT);
             Ball gameBall = new Ball(gameBallCenterPoint, BALL_SIZE, BALL_FILL_COLOR, this.environment);
-            // give the ball fixed speed and random direction
-            gameBall.setVelocity(animations.Velocity.fromAngleAndSpeed(
-                    RandomSingleton.myNextDouble(0, 360), BALL_SPEED));
+
+            // give the ball fixed speed and random direction such that it will also have a nonzero y velocity
+            double randomAngle = RandomSingleton.myNextDouble(1, 360);
+            gameBall.setVelocity(animations.Velocity.fromAngleAndSpeed(randomAngle, BALL_SPEED));
             gameBall.addToGame(this);
         }
 
         /*               PADDLE               */
+        final int separationFromBottom = 4;
         Rectangle gamePaddleRectangle = new Rectangle(
                 new Point(computeAverage(0 + MAIN_BLOCKS_HEIGHT, SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT),
-                        SCREEN_HEIGHT - 2 * MAIN_BLOCKS_HEIGHT + 4), PADDLE_WIDTH, PADDLE_HEIGHT);
+                        SCREEN_HEIGHT - 2 * MAIN_BLOCKS_HEIGHT + separationFromBottom), PADDLE_WIDTH, PADDLE_HEIGHT);
         Paddle gamePaddle = new Paddle(this.gui.getKeyboardSensor(), gamePaddleRectangle);
         gamePaddle.addToGame(this);
     }
 
+    /**
+     * Creates a line of blocks and adds them to the game.
+     *
+     * <p>This method creates a line of blocks starting from a given x-coordinate and at a fixed y-coordinate.
+     * The blocks are created with a specified color and are separated by a specified distance.
+     * The method continues to create blocks and add them to the game until
+     * the x-coordinate of the next block would exceed the width of the game screen.
+     *
+     * @param separationBetweenBlocks The distance between the blocks.
+     *                                This is added to the x-coordinate of each block after it is created.
+     * @param startXValue The x-coordinate of the first block to be created.
+     * @param blocksYValue The y-coordinate of the blocks. All blocks in the line will have this y-coordinate.
+     * @param color The color of the blocks. All blocks in the line will have this color.
+     */
     private void createLineOfBlocks(double separationBetweenBlocks, double startXValue,
                                     double blocksYValue, Color color) {
         while (startXValue < SCREEN_WIDTH - GameSettings.MAIN_BLOCKS_HEIGHT) {

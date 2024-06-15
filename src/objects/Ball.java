@@ -7,7 +7,6 @@ import biuoop.DrawSurface;
 import game.Game;
 import game.GameEnvironment;
 import game.CollisionInfo;
-import utils.Threshold;
 
 import static game.GameSettings.BALL_BORDER_COLOR;
 import static game.GameSettings.BALL_FILL_COLOR;
@@ -237,106 +236,5 @@ public class Ball implements Sprite {
 
         Velocity newVelocity = collisionInfo.collisionObject().hit(collisionInfo.collisionPoint(), this.getVelocity());
         this.setVelocity(newVelocity);
-    }
-
-    /**
-     * Handles the collision of the ball with the inside of a given frame.
-     * If the ball hits the frame, it changes its velocity accordingly to simulate a bounce.
-     * The function checks the ball's current position and velocity, and if a collision is detected,
-     * it flips the velocity in the appropriate direction.
-     *
-     * @param frame The frame within which the ball is moving
-     */
-    public void collideWithFrameInside(Rectangle frame) {
-        // Get the current velocity components of the ball
-        double dx = this.getVelocity().getDx();
-        double dy = this.getVelocity().getDy();
-
-        // Check if the ball is hitting the left or right side of the frame
-        // If it is, flip the x-component of the velocity
-        if ((this.getX() + (this.getSize() + dx) >= frame.getLowerRight().getX())
-                || (this.getX() - (this.getSize() - dx) <= frame.getUpperLeft().getX())) {
-            dx = -dx;
-        }
-
-        // Check if the ball is hitting the top or bottom side of the frame
-        // If it is, flip the y-component of the velocity
-        if ((this.getY() + (this.getSize() + dy) >= frame.getLowerRight().getY())
-                || (this.getY() - (this.getSize() - dy) <= frame.getUpperLeft().getY())) {
-            dy = -dy;
-        }
-
-        // Set the new velocity of the ball
-        this.setVelocity(dx, dy);
-    }
-
-    /**
-     * Collides the ball with the frame of the screen.
-     * If the ball hits the frame, it changes its flips its velocity accordingly.
-     * the function will check where the ball is coming from
-     * and will decide exactly how to rebound it off the frame.
-     *
-     * @param frame The frame of the screen
-     */
-    public void collideWithFrameOutside(Rectangle frame) {
-        Line leftLine = frame.getLeftLine();
-        Line topLine = frame.getTopLine();
-        Line rightLine = frame.getRightLine();
-        Line bottomLine = frame.getBottomLine();
-
-        // Treat balls with radius less than 10 as size 10 balls (in order to avoid jittering).
-        double size = Math.max(this.getSize(), 10);
-
-        Point ballEdgeBottomRight = new Point(this.getX() + size, this.getY() + size);
-        Point ballEdgeUpperRight = new Point(this.getX() + size, this.getY() - size);
-        Point ballEdgeBottomLeft = new Point(this.getX() - size, this.getY() + size);
-        Point ballEdgeUpperLeft = new Point(this.getX() - size, this.getY() - size);
-
-        Line ballEdgeBottomRightVector = new Line(this.center, ballEdgeBottomRight);
-        Line ballEdgeUpperRightVector = new Line(this.center, ballEdgeUpperRight);
-        Line ballEdgeBottomLeftVector = new Line(this.center, ballEdgeBottomLeft);
-        Line ballEdgeUpperLeftVector = new Line(this.center, ballEdgeUpperLeft);
-
-        // https://docs.flatredball.com/flatredball/tutorials/code-tutorials/collision-jitter
-        boolean isNearCenter;
-        // Collision with the left side of the frame
-        if (leftLine.isIntersecting(ballEdgeBottomRightVector) || leftLine.isIntersecting(ballEdgeUpperRightVector)) {
-            isNearCenter = this.center.getX()
-                    - (frame.getUpperLeft().getX() + frame.getLowerRight().getX()) / 2 < Threshold.TOLERANCE;
-            this.center.setX(
-                    isNearCenter ? frame.getUpperLeft().getX() - size
-                            : frame.getLowerRight().getX() + size);
-            this.setVelocity(-this.getVelocity().getDx(), this.getVelocity().getDy());
-        }
-
-        // Collision with the upper side of the frame
-        if (topLine.isIntersecting(ballEdgeBottomLeftVector) || topLine.isIntersecting(ballEdgeBottomRightVector)) {
-            isNearCenter = this.center.getY()
-                    - (frame.getUpperLeft().getY() + frame.getLowerRight().getY()) / 2 < Threshold.TOLERANCE;
-            this.center.setY(
-                    isNearCenter ? frame.getUpperLeft().getY() - size
-                            : frame.getLowerRight().getY() + size);
-            this.setVelocity(this.getVelocity().getDx(), -this.getVelocity().getDy());
-        }
-
-        // Collision with the right side of the frame
-        if (rightLine.isIntersecting(ballEdgeUpperLeftVector) || rightLine.isIntersecting(ballEdgeBottomLeftVector)) {
-            isNearCenter = this.center.getX()
-                    - (frame.getUpperLeft().getX() + frame.getLowerRight().getX()) / 2 < Threshold.TOLERANCE;
-            this.center.setX(
-                    isNearCenter ? frame.getUpperLeft().getX() - size
-                            : frame.getLowerRight().getX() + size);
-            this.setVelocity(-this.getVelocity().getDx(), this.getVelocity().getDy());
-        }
-
-        // Collision with the lower side of the frame
-        if (bottomLine.isIntersecting(ballEdgeUpperLeftVector) || bottomLine.isIntersecting(ballEdgeUpperRightVector)) {
-            isNearCenter = this.center.getY()
-                    - (frame.getUpperLeft().getY() + frame.getLowerRight().getY()) / 2 < Threshold.TOLERANCE;
-            this.center.setY(
-                    isNearCenter ? frame.getUpperLeft().getY() - size
-                            : frame.getLowerRight().getY() + size);
-            this.setVelocity(this.getVelocity().getDx(), -this.getVelocity().getDy());
-        }
     }
 }
