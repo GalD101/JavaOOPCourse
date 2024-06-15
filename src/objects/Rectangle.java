@@ -67,16 +67,10 @@ public class Rectangle {
     }
 
     /**
-     * Calculates the intersection points between the rectangle and a given line.
-     *
-     * <p>This method creates an array of the four lines that make up the rectangle (top, bottom, left, right).
-     * It then iterates over these lines, checking for an intersection with the provided line.
-     * If an intersection is found, it is added to a list of intersection points.
-     * Once all lines have been checked, the method returns the list of intersection points.
+     * Calculates the intersection points between this rectangle and a given line.
      *
      * @param line The line to check for intersections with. Must not be null.
-     * @return A list of points where the line intersects the rectangle.
-     * If there are no intersections, an empty list is returned.
+     * @return A list of intersection points. If no intersection points are found, the list will be empty.
      * @throws IllegalArgumentException if the line is null.
      */
     public java.util.List<Point> intersectionPoints(Line line) {
@@ -98,7 +92,48 @@ public class Rectangle {
                 }
             }
         }
+
+        if (intersectionPoints.isEmpty()) {
+            Point leftSideMid = new Point(utils.MathUtils.computeAverage(
+                    this.getLeftLine().start().getX(), this.getLeftLine().end().getX()),
+                    utils.MathUtils.computeAverage(
+                            this.getLeftLine().start().getY(), this.getLeftLine().end().getY()));
+            Point rightSideMid = new Point(utils.MathUtils.computeAverage(
+                    this.getRightLine().start().getX(), this.getRightLine().end().getX()),
+                    utils.MathUtils.computeAverage(
+                            this.getRightLine().start().getY(), this.getRightLine().end().getY()));
+            if (this.isPointInside(line.start())) {
+                if (line.start().distance(leftSideMid) < line.start().distance(this.getRightLine().start())) {
+                    intersectionPoints.add(leftSideMid);
+                } else {
+                    intersectionPoints.add(rightSideMid);
+                }
+            }
+        }
         return intersectionPoints;
+    }
+
+    /**
+     * Checks if a given point is inside the rectangle.
+     *
+     * <p>This method checks if the x-coordinate of the point is greater than or equal to
+     * the x-coordinate of the upper left point of the rectangle
+     * and less than or equal to the x-coordinate of the lower right point of the rectangle.
+     * It also checks if the y-coordinate of the point is greater than or equal to
+     * the y-coordinate of the upper left point of the rectangle
+     * and less than or equal to the y-coordinate of the lower right point of the rectangle.
+     * If both conditions are met, the point is considered to be inside the rectangle.
+     *
+     * @param point The point to check. Must not be null.
+     * @return true if the point is inside the rectangle, false otherwise.
+     * @throws IllegalArgumentException if the point is null.
+     */
+    private boolean isPointInside(Point point) {
+        if (point == null) {
+            throw new IllegalArgumentException("The point must not be null.");
+        }
+        return point.getX() >= this.getUpperLeft().getX() && point.getX() <= this.getLowerRight().getX()
+                && point.getY() >= this.getUpperLeft().getY() && point.getY() <= this.getLowerRight().getY();
     }
 
     /**

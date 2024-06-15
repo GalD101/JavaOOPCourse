@@ -12,6 +12,7 @@ import utils.Threshold;
 import static game.GameSettings.BALL_BORDER_COLOR;
 import static game.GameSettings.BALL_FILL_COLOR;
 import static game.GameSettings.BALL_CENTER_POINT_COLOR;
+import static game.GameSettings.BALL_MAX_SIZE;
 
 /**
  * Ball class represents a ball object in a 2D space.
@@ -215,9 +216,25 @@ public class Ball implements Sprite {
         }
 
         // There is a hit!
-        // Move the ball to "almost" the hit point
-        this.setCenter(new Point(collisionInfo.collisionPoint().getX() - this.getVelocity().getDx() / 2,
-                collisionInfo.collisionPoint().getY() - this.getVelocity().getDy() / 2));
+        // Fix the position of the ball in case it hits the moving paddle on the sides
+        if (collisionInfo.collisionObject().getClass().getName().equals("objects.Paddle")) {
+            final int reposition = 3 * BALL_MAX_SIZE;
+            Rectangle rect = collisionInfo.collisionObject().getCollisionRectangle();
+            Point collisionPoint = collisionInfo.collisionPoint();
+            if (rect.getLeftLine().isPointOnLine(collisionPoint)) {
+                this.setCenter(new Point(rect.getUpperLeft().getX() - reposition,
+                        collisionPoint.getY()));
+            } else if (rect.getRightLine().isPointOnLine(collisionPoint)) {
+                this.setCenter(new Point(rect.getLowerRight().getX() + reposition,
+                        collisionPoint.getY()));
+            }
+        } else {
+            // Normal collision
+            // Move the ball to "almost" the hit point
+            this.setCenter(new Point(collisionInfo.collisionPoint().getX() - this.getVelocity().getDx() / 2,
+                    collisionInfo.collisionPoint().getY() - this.getVelocity().getDy() / 2));
+        }
+
         Velocity newVelocity = collisionInfo.collisionObject().hit(collisionInfo.collisionPoint(), this.getVelocity());
         this.setVelocity(newVelocity);
     }
