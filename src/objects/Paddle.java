@@ -110,6 +110,7 @@ public class Paddle implements Sprite, Collidable {
      * If the Paddle's speed is negative, it moves the Paddle to the left.
      * If the Paddle reaches the edge of the screen, it moves to the other side in a circular fashion.
      */
+    @Override
     public void timePassed() {
         // Check if the left or right keys are pressed and move the paddle accordingly use KeyboardSensor
         boolean moveRight = this.speed > 0;
@@ -152,6 +153,7 @@ public class Paddle implements Sprite, Collidable {
      *
      * @param d The DrawSurface on which this Paddle is to be drawn
      */
+    @Override
     public void drawOn(DrawSurface d) {
         d.setColor(PADDLE_FILL_COLOR);
         d.fillRectangle(
@@ -175,6 +177,7 @@ public class Paddle implements Sprite, Collidable {
      *
      * @return A new Rectangle object that represents the collision rectangle of this Paddle
      */
+    @Override
     public Rectangle getCollisionRectangle() {
         return new Rectangle(this.collisionRectangle.getUpperLeft(), this.collisionRectangle.getLowerRight());
     }
@@ -192,6 +195,7 @@ public class Paddle implements Sprite, Collidable {
      * @param currentVelocity The current velocity of the object that collided with the Paddle
      * @return The new velocity of the object after the collision
      */
+    @Override
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
         if (collisionPoint == null || currentVelocity == null) {
             return currentVelocity;
@@ -294,6 +298,7 @@ public class Paddle implements Sprite, Collidable {
      *
      * @param game The Game object to which this Paddle is to be added
      */
+    @Override
     public void addToGame(Game game) {
         game.addSprite(this);
         game.addCollidable(this);

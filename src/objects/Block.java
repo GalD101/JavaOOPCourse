@@ -46,6 +46,7 @@ public class Block implements Collidable, Sprite {
      *
      * @return A new Rectangle object that represents the block's collision shape.
      */
+    @Override
     public Rectangle getCollisionRectangle() {
         return new Rectangle(this.collisionRectangle.getUpperLeft(), this.collisionRectangle.getLowerRight());
     }
@@ -59,6 +60,7 @@ public class Block implements Collidable, Sprite {
      *
      * @param game The game to which the block is to be added
      */
+    @Override
     public void addToGame(Game game) {
         game.addCollidable(this);
         game.addSprite(this);
@@ -84,17 +86,17 @@ public class Block implements Collidable, Sprite {
      * then fills a rectangle on the DrawSurface with the dimensions and position of this block.
      * After that, it sets the color of the DrawSurface to black and draws the outline of the rectangle.
      *
-     * @param surface The DrawSurface on which this block is to be drawn
+     * @param d The DrawSurface on which this block is to be drawn
      */
-    public void drawOn(DrawSurface surface) {
-        surface.setColor(this.color);
-        surface.fillRectangle((int) this.collisionRectangle.getUpperLeft().getX(),
+    public void drawOn(DrawSurface d) {
+        d.setColor(this.color);
+        d.fillRectangle((int) this.collisionRectangle.getUpperLeft().getX(),
                 (int) this.collisionRectangle.getUpperLeft().getY(),
                 (int) this.collisionRectangle.getWidth(),
                 (int) this.collisionRectangle.getHeight());
-        surface.setColor(Color.black);
+        d.setColor(Color.black);
 
-        surface.drawRectangle((int) this.collisionRectangle.getUpperLeft().getX(),
+        d.drawRectangle((int) this.collisionRectangle.getUpperLeft().getX(),
                 (int) this.collisionRectangle.getUpperLeft().getY(),
                 (int) this.collisionRectangle.getWidth(),
                 (int) this.collisionRectangle.getHeight());
@@ -104,6 +106,7 @@ public class Block implements Collidable, Sprite {
      * This method is called every time a time unit passes in the game.
      * Currently, it does not perform any action.
      */
+    @Override
     public void timePassed() {
         // currently do nothing
     }
@@ -125,6 +128,7 @@ public class Block implements Collidable, Sprite {
      * @return The new velocity after the collision,
      * or the current velocity if the collision point or the current velocity is null.
      */
+    @Override
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
         if (collisionPoint == null || currentVelocity == null) {
             return currentVelocity;

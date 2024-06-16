@@ -82,6 +82,7 @@ public class Ball implements Sprite {
      *
      * @param game The game to which the ball is to be added
      */
+    @Override
     public void addToGame(Game game) {
         game.addSprite(this);
     }
@@ -150,21 +151,23 @@ public class Ball implements Sprite {
     /**
      * Draws the ball on the given DrawSurface.
      *
-     * @param surface The surface on which the ball is to be drawn
+     * @param d The surface on which the ball is to be drawn
      */
-    public void drawOn(DrawSurface surface) {
-        surface.setColor(BALL_FILL_COLOR);
-        surface.fillCircle(this.getX(), this.getY(), this.getSize());
-        surface.setColor(BALL_BORDER_COLOR);
-        surface.drawCircle(this.getX(), this.getY(), this.getSize());
-        surface.setColor(BALL_CENTER_POINT_COLOR);
-        surface.fillCircle(this.getX(), this.getY(), 2);
+    @Override
+    public void drawOn(DrawSurface d) {
+        d.setColor(BALL_FILL_COLOR);
+        d.fillCircle(this.getX(), this.getY(), this.getSize());
+        d.setColor(BALL_BORDER_COLOR);
+        d.drawCircle(this.getX(), this.getY(), this.getSize());
+        d.setColor(BALL_CENTER_POINT_COLOR);
+        d.fillCircle(this.getX(), this.getY(), 2);
     }
 
     /**
      * This method is called every time a time unit passes in the game.
      * It triggers the ball to move one step based on its current velocity.
      */
+    @Override
     public void timePassed() {
         this.moveOneStep();
     }
