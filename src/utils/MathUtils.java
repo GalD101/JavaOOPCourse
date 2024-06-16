@@ -5,7 +5,14 @@ package utils;
 /**
  * This class provides utility methods for mathematical operations.
  */
-public class MathUtils {
+public final class MathUtils {
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
+    private MathUtils() {
+        // private constructor to prevent instantiation
+    }
+
     /**
      * Calculates the average of two numbers in a way that prevents overflow.
      * If a > b, calculates (a - b) / 2 + b.
