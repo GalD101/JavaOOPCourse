@@ -10,7 +10,14 @@ package utils;
  * or if it contains non-numeric characters, the method returns 0.
  * If the string represents a number that is too large to be represented as an integer, the method also returns 0.
  */
-public class InputValidator {
+public final class InputValidator {
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
+    private InputValidator() {
+        // private constructor to prevent instantiation
+    }
+
     /**
      * Converts a string to an integer.
      * Handles cases where the string starts with a "+" sign or contains non-numeric characters.
