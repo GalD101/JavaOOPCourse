@@ -56,6 +56,7 @@ public class Game {
     private Counter remainingBalls;
     private Counter score;
     private ScoreIndicator scoreIndicator;
+    private boolean gameOver = false;
 
     /**
      * Constructor for the Game class with parameters.
@@ -172,11 +173,10 @@ public class Game {
         /*               EVENT LISTENERS               */
         BlockRemover blockRemover = new BlockRemover(this, this.remainingBlocks);
         BallRemover ballRemover = new BallRemover(this, this.remainingBalls);
-        ScoreTrackingListener scoreTrackingListener = new ScoreTrackingListener(this.score);
+//        ScoreTrackingListener scoreTrackingListener = new ScoreTrackingListener(this.score);
         this.hitListeners.add(blockRemover);
         this.hitListeners.add(ballRemover);
-        this.hitListeners.add();
-
+//        this.hitListeners.add(scoreTrackingListener);
 
         /*               SIDE BLOCKS               */
         Block leftSideBlock = new Block(new Rectangle(
@@ -213,6 +213,7 @@ public class Game {
 
         double x = MAIN_BLOCKS_HEIGHT + separationStart;
         final double numOfRows = 6;
+
         for (int i = 0; i < numOfRows; i++) {
             createLineOfBlocks(separationBetweenBlocks, x + i * MAIN_BLOCKS_WIDTH,
                     blocksYValue + i * MAIN_BLOCKS_HEIGHT, MAIN_BLOCKS_FILL_COLOR[i]);
@@ -256,12 +257,14 @@ public class Game {
      */
     private void createLineOfBlocks(double separationBetweenBlocks, double startXValue,
                                     double blocksYValue, Color color) {
+        ScoreTrackingListener scoreTracker = new ScoreTrackingListener(this.score);
         while (startXValue < SCREEN_WIDTH - GameSettings.MAIN_BLOCKS_HEIGHT) {
             Block block = new Block(new Rectangle(
                     new Point(startXValue, blocksYValue), MAIN_BLOCKS_WIDTH, GameSettings.MAIN_BLOCKS_HEIGHT), color);
             startXValue += MAIN_BLOCKS_WIDTH + separationBetweenBlocks;
             block.addToGame(this);
-            block.addHitListener(this.hitListeners.get(0)); //TODO: Temp
+            block.addHitListener(this.hitListeners.get(0)); //TODO: CHANGE THIS, THIS MUST BE CHANGED!!!!
+            block.addHitListener(scoreTracker);
             this.remainingBlocks.increase(1);
         }
     }
@@ -302,6 +305,11 @@ public class Game {
             this.gui.show(d);
             this.sprites.notifyAllTimePassed();
 
+            if (this.gameOver) {
+                sleeper.sleepFor(3000);
+                this.gui.close();
+                return;
+            }
             // Timing
             long usedTime = System.currentTimeMillis() - startTime;
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
@@ -310,16 +318,11 @@ public class Game {
             }
 
             if (this.remainingBlocks.getValue() == 0) {
-                this.score.increase(100); // You won!!! +100 points!
-                this.scoreIndicator.updateScore(this.score.getValue()); //TODO
-                this.sleeper.sleepFor(7000); // you won! (sleep for 7 seconds before closing the gui)
-                this.gui.close();
-                return;
+                this.scoreIndicator.updateScore(100); // You won!!! +100 points! // TODO: I dont know if there is really a todo here
+                this.gameOver = true;
             }
             if (this.remainingBalls.getValue() == 0) {
-                this.sleeper.sleepFor(7000); // you lost! (sleep for 7 seconds before closing the gui)
-                this.gui.close();
-                return;
+                this.gameOver = true;
             }
         }
     }
