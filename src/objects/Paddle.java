@@ -106,32 +106,22 @@ public class Paddle implements Sprite, Collidable {
         boolean moveRight = this.speed > 0;
         boolean moveLeft = this.speed < 0;
 
-        // Check if there is a collision with the right/left block and invert the velocity
-        if (this.getCollisionRectangle().getLowerRight().getX() >= SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT) {
-//            moveLeft();
-            // Make the paddle "teleport" to the other side of the screen
-            // Calculate the portion of the paddle that is outside the screen
-            double difference = this.getCollisionRectangle().getLowerRight().getX() - (SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT);
-
-            // Move the paddle to the other side of the screen
+        if (this.getCollisionRectangle().getLowerRight().getX() > SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT) {
+            // set the collision rectangle position to the left of the screen
             this.setCollisionRectangle(new Rectangle(
-                    new Point(SIDE_BLOCKS_LEFT_WIDTH,
+                    new Point(MAIN_BLOCKS_HEIGHT,
                             this.getCollisionRectangle().getUpperLeft().getY()),
-                    new Point(PADDLE_WIDTH + SIDE_BLOCKS_LEFT_WIDTH,
+                    new Point(MAIN_BLOCKS_HEIGHT + PADDLE_WIDTH,
                             this.getCollisionRectangle().getLowerRight().getY())));
             return;
         }
-        if (this.getCollisionRectangle().getUpperLeft().getX() <= MAIN_BLOCKS_HEIGHT) {
-//            moveRight();
-            // Make the paddle "teleport" to the other side of the screen
-            // Calculate the portion of the paddle that is outside the screen
-            double difference = this.getCollisionRectangle().getLowerRight().getX() - (SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT);
 
-            // Move the paddle to the other side of the screen
+        if (this.getCollisionRectangle().getUpperLeft().getX() < MAIN_BLOCKS_HEIGHT) {
+            // set the collision rectangle position to the right of the screen
             this.setCollisionRectangle(new Rectangle(
-                    new Point(SCREEN_WIDTH - SIDE_BLOCKS_LEFT_WIDTH - PADDLE_WIDTH,
+                    new Point(800 - 25 - 100,
                             this.getCollisionRectangle().getUpperLeft().getY()),
-                    new Point(SCREEN_WIDTH - SIDE_BLOCKS_LEFT_WIDTH,
+                    new Point(SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT,
                             this.getCollisionRectangle().getLowerRight().getY())));
             return;
         }
