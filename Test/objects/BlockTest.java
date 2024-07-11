@@ -21,7 +21,7 @@ class BlockTest {
         Block block = new Block(new Rectangle(new Point(0, 0), new Point(10, 10)), Color.RED);
         Velocity currentVelocity = new Velocity(5, 5);
 
-        Velocity newVelocity = block.hit(null, currentVelocity);
+        Velocity newVelocity = block.hit(null, null, currentVelocity);
 
         assertEquals(currentVelocity, newVelocity);
     }
@@ -31,7 +31,7 @@ class BlockTest {
         Block block = new Block(new Rectangle(new Point(0, 0), new Point(10, 10)), Color.RED);
         Point collisionPoint = new Point(5, 5);
 
-        Velocity newVelocity = block.hit(collisionPoint, null);
+        Velocity newVelocity = block.hit(null, collisionPoint, null);
 
         assertNull(newVelocity);
     }
@@ -42,7 +42,7 @@ class BlockTest {
         Point collisionPoint = new Point(0, 5);  // On the left side
         Velocity currentVelocity = new Velocity(5, 5);
 
-        Velocity newVelocity = block.hit(collisionPoint, currentVelocity);
+        Velocity newVelocity = block.hit(null, collisionPoint, currentVelocity);
 
         assertEquals(-5, newVelocity.getDx());
         assertEquals(5, newVelocity.getDy());
@@ -54,7 +54,7 @@ class BlockTest {
         Point collisionPoint = new Point(5, 0);  // On the top side
         Velocity currentVelocity = new Velocity(5, 5);
 
-        Velocity newVelocity = block.hit(collisionPoint, currentVelocity);
+        Velocity newVelocity = block.hit(null, collisionPoint, currentVelocity);
 
         assertEquals(5, newVelocity.getDx());
         assertEquals(-5, newVelocity.getDy());
@@ -67,25 +67,25 @@ class BlockTest {
 
         // Check upper left corner
         Point collisionPoint = new Point(0, 0);
-        Velocity newVelocity = block.hit(collisionPoint, currentVelocity);
+        Velocity newVelocity = block.hit(null, collisionPoint, currentVelocity);
         assertEquals(-5, newVelocity.getDx());
         assertEquals(-5, newVelocity.getDy());
 
         // Check lower right corner
         collisionPoint = new Point(10, 10);
-        newVelocity = block.hit(collisionPoint, currentVelocity);
+        newVelocity = block.hit(null, collisionPoint, currentVelocity);
         assertEquals(-5, newVelocity.getDx());
         assertEquals(-5, newVelocity.getDy());
 
         // Check upper right corner
         collisionPoint = new Point(10, 0);
-        newVelocity = block.hit(collisionPoint, currentVelocity);
+        newVelocity = block.hit(null, collisionPoint, currentVelocity);
         assertEquals(-5, newVelocity.getDx());
         assertEquals(-5, newVelocity.getDy());
 
         // Check lower left corner
         collisionPoint = new Point(0, 10);
-        newVelocity = block.hit(collisionPoint, currentVelocity);
+        newVelocity = block.hit(null, collisionPoint, currentVelocity);
         assertEquals(-5, newVelocity.getDx());
         assertEquals(-5, newVelocity.getDy());
     }

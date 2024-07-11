@@ -13,7 +13,7 @@ import objects.Sprite;
  * update the state of all sprites, and draw all sprites on a given DrawSurface.
  */
 public class SpriteCollection {
-    private java.util.List<Sprite> spriteList;
+    private java.util.List<Sprite> spriteList; //TODO change this
 
     /**
      * Default constructor for the SpriteCollection class.
@@ -23,7 +23,7 @@ public class SpriteCollection {
      */
     public SpriteCollection() {
         this.spriteList = new java.util.ArrayList<Sprite>();
-    }
+    } //TODO: Change this
 
     /**
      * Adds a Sprite object to the spriteList.
@@ -41,13 +41,33 @@ public class SpriteCollection {
     }
 
     /**
+     * Removes a Sprite object from the spriteList.
+     *
+     * <p>This method takes a Sprite object as an argument and removes it from the spriteList.
+     * If the provided Sprite object is null, the method simply returns without making any changes.
+     *
+     * @param s The Sprite object to be removed from the spriteList
+     */
+    public void removeSprite(Sprite s) {
+        if (s == null) {
+            return;
+        }
+        // check if s is in the list before attempting to remove it
+        if (this.spriteList.contains(s)) { // TODO: Check if this is necessary
+            this.spriteList.remove(s);
+        }
+    }
+
+    /**
      * Calls the timePassed() method on all sprites in the spriteList.
      *
      * <p>This method iterates over all the Sprite objects in the spriteList and calls their timePassed method.
      * This is typically used to update the state of each Sprite for the next frame of the game's animation.
      */
     public void notifyAllTimePassed() {
-        for (Sprite s : this.spriteList) {
+        java.util.List<Sprite> spritesCopy = new java.util.ArrayList<Sprite>(this.spriteList);
+
+        for (Sprite s : spritesCopy) {
             s.timePassed();
         }
     }

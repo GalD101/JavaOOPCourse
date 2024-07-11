@@ -36,6 +36,21 @@ public class GameEnvironment {
     }
 
     /**
+     * Removes a given Collidable object from the game environment.
+     *
+     * @param c The Collidable object to be removed from the game environment.
+     */
+    public void removeCollidable(Collidable c) {
+        if (c == null) {
+            return;
+        }
+        // check if c is in the list before attempting to remove it
+        if (this.collidableList.contains(c)) { // TODO: Check if this is necessary
+            this.collidableList.remove(c);
+        }
+    }
+
+    /**
      * return the collidable list.
      *
      * @return the collidable list.

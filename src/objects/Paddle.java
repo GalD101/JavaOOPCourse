@@ -8,18 +8,7 @@ import biuoop.KeyboardSensor;
 import game.Game;
 import utils.RandomSingleton;
 
-import static game.GameSettings.IS_FUN_MODE;
-import static game.GameSettings.PADDLE_REGION_ONE;
-import static game.GameSettings.PADDLE_REGION_TWO;
-import static game.GameSettings.PADDLE_REGION_THREE;
-import static game.GameSettings.PADDLE_REGION_FOUR;
-import static game.GameSettings.PADDLE_REGION_FIVE;
-import static game.GameSettings.PADDLE_SPEED;
-import static game.GameSettings.PADDLE_FILL_COLOR;
-import static game.GameSettings.PADDLE_BORDER_COLOR;
-import static game.GameSettings.SCREEN_WIDTH;
-import static game.GameSettings.MAIN_BLOCKS_HEIGHT;
-import static game.GameSettings.BALL_SPEED;
+import static game.GameSettings.*;
 
 /**
  * The Collidable interface represents objects that can participate in collisions.
@@ -94,6 +83,7 @@ public class Paddle implements Sprite, Collidable {
     private void move() {
         double newUpperLeft = this.getCollisionRectangle().getUpperLeft().getX() + this.speed;
         double newLowerRight = this.getCollisionRectangle().getLowerRight().getX() + this.speed;
+
         this.setCollisionRectangle(new Rectangle(
                 new Point(newUpperLeft, this.getCollisionRectangle().getUpperLeft().getY()),
                 new Point(newLowerRight, this.getCollisionRectangle().getLowerRight().getY())));
@@ -118,11 +108,31 @@ public class Paddle implements Sprite, Collidable {
 
         // Check if there is a collision with the right/left block and invert the velocity
         if (this.getCollisionRectangle().getLowerRight().getX() >= SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT) {
-            moveLeft();
+//            moveLeft();
+            // Make the paddle "teleport" to the other side of the screen
+            // Calculate the portion of the paddle that is outside the screen
+            double difference = this.getCollisionRectangle().getLowerRight().getX() - (SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT);
+
+            // Move the paddle to the other side of the screen
+            this.setCollisionRectangle(new Rectangle(
+                    new Point(SIDE_BLOCKS_LEFT_WIDTH,
+                            this.getCollisionRectangle().getUpperLeft().getY()),
+                    new Point(PADDLE_WIDTH + SIDE_BLOCKS_LEFT_WIDTH,
+                            this.getCollisionRectangle().getLowerRight().getY())));
             return;
         }
         if (this.getCollisionRectangle().getUpperLeft().getX() <= MAIN_BLOCKS_HEIGHT) {
-            moveRight();
+//            moveRight();
+            // Make the paddle "teleport" to the other side of the screen
+            // Calculate the portion of the paddle that is outside the screen
+            double difference = this.getCollisionRectangle().getLowerRight().getX() - (SCREEN_WIDTH - MAIN_BLOCKS_HEIGHT);
+
+            // Move the paddle to the other side of the screen
+            this.setCollisionRectangle(new Rectangle(
+                    new Point(SCREEN_WIDTH - SIDE_BLOCKS_LEFT_WIDTH - PADDLE_WIDTH,
+                            this.getCollisionRectangle().getUpperLeft().getY()),
+                    new Point(SCREEN_WIDTH - SIDE_BLOCKS_LEFT_WIDTH,
+                            this.getCollisionRectangle().getLowerRight().getY())));
             return;
         }
         if (this.keyboard.isPressed(KeyboardSensor.RIGHT_KEY)) {
@@ -196,7 +206,7 @@ public class Paddle implements Sprite, Collidable {
      * @return The new velocity of the object after the collision
      */
     @Override
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
         if (collisionPoint == null || currentVelocity == null) {
             return currentVelocity;
         }

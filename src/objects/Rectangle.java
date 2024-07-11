@@ -26,7 +26,7 @@ public class Rectangle {
         }
         if (upperLeft.getX() > lowerRight.getX() || upperLeft.getY() > lowerRight.getY()) {
             throw new IllegalArgumentException("The upper left point must be"
-                    + "above and to the left of the lower right point.");
+                    + " above and to the left of the lower right point.");
         }
         if (upperLeft.equals(lowerRight)) {
             throw new IllegalArgumentException("The upper left and lower right points must not be the same.");

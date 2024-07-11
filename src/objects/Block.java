@@ -4,18 +4,23 @@ package objects;
 
 import animations.Velocity;
 import biuoop.DrawSurface;
+import events.HitListener;
+import events.HitNotifier;
 import game.Game;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Block class represents a block in a game. It implements the Collidable interface,
  * meaning it can participate in collisions with other game objects.
  * Each block has a rectangular shape and a color.
  */
-public class Block implements Collidable, Sprite {
+public class Block implements Collidable, Sprite, HitNotifier {
     private Rectangle collisionRectangle;
     private Color color;
+    private List<HitListener> hitListeners;
 
     /**
      * Constructs a new Block object.
@@ -35,6 +40,29 @@ public class Block implements Collidable, Sprite {
         this.collisionRectangle = new Rectangle(collisionRectangle.getUpperLeft(),
                 collisionRectangle.getLowerRight());
         this.color = color == null ? Color.BLACK : color;
+        this.hitListeners = new ArrayList<>();
+    }
+
+    @Override
+    public void addHitListener(HitListener hl) {
+        this.hitListeners.add(hl);
+    }
+
+    @Override
+    public void removeHitListener(HitListener hl) {
+        // check if hl is in the list before attempting to remove it
+        if (this.hitListeners.contains(hl)) { // TODO: Check if this is necessary
+            this.hitListeners.remove(hl);
+        }
+    }
+
+    private void notifyHit(Ball hitter) {
+        // Make a copy of the hitListeners before iterating over them.
+        List<HitListener> listeners = new ArrayList<HitListener>(this.hitListeners);
+        // Notify all listeners about a hit event:
+        for (HitListener hl : listeners) {
+            hl.hitEvent(this, hitter);
+        }
     }
 
     /**
@@ -129,7 +157,13 @@ public class Block implements Collidable, Sprite {
      * or the current velocity if the collision point or the current velocity is null.
      */
     @Override
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
+        if (!this.ballColorMatch(hitter)) {
+            if (!this.getColor().equals(Color.GRAY)) { //TODO temp
+                hitter.setColor(this.getColor());
+            }
+            this.notifyHit(hitter);
+        }
         if (collisionPoint == null || currentVelocity == null) {
             return currentVelocity;
         }
@@ -149,5 +183,14 @@ public class Block implements Collidable, Sprite {
             newDy = -1 * newDy;
         }
         return new Velocity(newDx, newDy);
+    }
+
+    public boolean ballColorMatch(Ball ball) {
+        return ball.getColor().equals(this.color);
+    }
+
+    public void removeFromGame(Game game) {
+        game.removeCollidable(this);
+        game.removeSprite(this);
     }
 }

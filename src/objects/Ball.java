@@ -4,10 +4,14 @@ package objects;
 
 import animations.Velocity;
 import biuoop.DrawSurface;
+import events.HitListener;
+import events.HitNotifier;
 import game.Game;
 import game.GameEnvironment;
 import game.CollisionInfo;
 import utils.Threshold;
+
+import java.util.List;
 
 import static game.GameSettings.BALL_BORDER_COLOR;
 import static game.GameSettings.BALL_FILL_COLOR;
@@ -18,12 +22,13 @@ import static game.GameSettings.BALL_MAX_SIZE;
  * Ball class represents a ball object in a 2D space.
  * It has properties like center, radius, color and velocity.
  */
-public class Ball implements Sprite {
+public class Ball implements Sprite, HitNotifier {
     private Point center; // The center point of the ball
     private int r; // The radius of the ball
     private java.awt.Color color; // The color of the ball
     private Velocity velocity; // The velocity of the ball
     private GameEnvironment gameEnvironment; // The game environment in which the ball moves
+    private List<HitListener> hitListeners; // The list of hit listeners for the ball
 
     /**
      * Constructor that initializes a new Ball object with a center point, radius and color.
@@ -75,6 +80,17 @@ public class Ball implements Sprite {
      */
     public Ball(double centerX, double centerY, int r, java.awt.Color color) {
         this(new Point(centerX, centerY), r, color, null);
+    }
+
+    /**
+     * Sets the color of the ball.
+     * This method allows changing the color of the ball to the specified color.
+     * It can be used to visually differentiate balls or indicate a change in state (e.g., after a collision).
+     *
+     * @param color The new color for the ball, not null.
+     */
+    public void setColor(java.awt.Color color) {
+        this.color = color;
     }
 
     /**
@@ -155,7 +171,7 @@ public class Ball implements Sprite {
      */
     @Override
     public void drawOn(DrawSurface d) {
-        d.setColor(BALL_FILL_COLOR);
+        d.setColor(this.getColor());
         d.fillCircle(this.getX(), this.getY(), this.getSize());
         d.setColor(BALL_BORDER_COLOR);
         d.drawCircle(this.getX(), this.getY(), this.getSize());
@@ -238,7 +254,7 @@ public class Ball implements Sprite {
                     collisionInfo.collisionPoint().getY() - this.getVelocity().getDy() / 2));
         }
 
-        Velocity newVelocity = collisionInfo.collisionObject().hit(collisionInfo.collisionPoint(), this.getVelocity());
+        Velocity newVelocity = collisionInfo.collisionObject().hit(this, collisionInfo.collisionPoint(), this.getVelocity());
         this.setVelocity(newVelocity);
     }
 
@@ -341,5 +357,22 @@ public class Ball implements Sprite {
                             : frame.getLowerRight().getY() + size);
             this.setVelocity(this.getVelocity().getDx(), -this.getVelocity().getDy());
         }
+    }
+
+    @Override
+    public void addHitListener(HitListener hl) {
+        this.hitListeners.add(hl);
+    }
+
+    @Override
+    public void removeHitListener(HitListener hl) {
+        // check if hl is in the list before attempting to remove it
+        if (this.hitListeners.contains(hl)) { // TODO: Check if this is necessary
+            this.hitListeners.remove(hl);
+        }
+    }
+
+    public void removeFromGame(Game game) {
+        game.removeSprite(this);
     }
 }

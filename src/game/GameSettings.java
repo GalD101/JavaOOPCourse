@@ -30,11 +30,14 @@ public class GameSettings {
 
     public static final double BALL_SPEED = 5;
 
-    public static final Color BALL_FILL_COLOR = Color.WHITE;
+    public static final Color BALL_COLOR = Color.BLUE;
+    public static final Color BALL_FILL_COLOR = BALL_COLOR;
+
+    // DECORATING COLORS:
     public static final Color BALL_BORDER_COLOR = Color.BLACK;
     public static final Color BALL_CENTER_POINT_COLOR = Color.RED;
 
-    public static final int NUM_OF_BALLS = 2;
+    public static final int NUM_OF_BALLS = 3;
 
 
     /*                              PADDLE                              */

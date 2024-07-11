@@ -5,16 +5,16 @@ package game;
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
-import objects.Collidable;
-import objects.Point;
-import objects.Rectangle;
-import objects.Block;
-import objects.Ball;
-import objects.Paddle;
-import objects.Sprite;
+import events.BallRemover;
+import events.BlockRemover;
+import events.HitListener;
+import events.ScoreTrackingListener;
+import objects.*;
+import utils.Counter;
 import utils.RandomSingleton;
 
 import java.awt.Color;
+import java.util.List;
 
 import static game.GameSettings.SCREEN_WIDTH;
 import static game.GameSettings.SCREEN_HEIGHT;
@@ -51,6 +51,11 @@ public class Game {
     private GameEnvironment environment;
     private GUI gui;
     private Sleeper sleeper;
+    private List<HitListener> hitListeners; //TODO: Change this
+    private Counter remainingBlocks;
+    private Counter remainingBalls;
+    private Counter score;
+    private ScoreIndicator scoreIndicator;
 
     /**
      * Constructor for the Game class with parameters.
@@ -67,6 +72,10 @@ public class Game {
     public Game(SpriteCollection sprites, GameEnvironment environment) {
         this.sprites = sprites;
         this.environment = environment;
+        this.hitListeners = new java.util.ArrayList<>();
+        this.remainingBlocks = new Counter();
+        this.remainingBalls = new Counter(NUM_OF_BALLS);
+        this.score = new Counter();
     }
 
     /**
@@ -81,6 +90,10 @@ public class Game {
     public Game() {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
+        this.hitListeners = new java.util.ArrayList<>();
+        this.remainingBlocks = new Counter();
+        this.remainingBalls = new Counter(NUM_OF_BALLS);
+        this.score = new Counter();
     }
 
     /**
@@ -156,6 +169,15 @@ public class Game {
         this.gui = new GUI("G.L.D.223", SCREEN_WIDTH, SCREEN_HEIGHT);
         this.sleeper = new Sleeper();
 
+        /*               EVENT LISTENERS               */
+        BlockRemover blockRemover = new BlockRemover(this, this.remainingBlocks);
+        BallRemover ballRemover = new BallRemover(this, this.remainingBalls);
+        ScoreTrackingListener scoreTrackingListener = new ScoreTrackingListener(this.score);
+        this.hitListeners.add(blockRemover);
+        this.hitListeners.add(ballRemover);
+        this.hitListeners.add();
+
+
         /*               SIDE BLOCKS               */
         Block leftSideBlock = new Block(new Rectangle(
                 new Point(0, 0 + SIDE_BLOCKS_TOP_HEIGHT),
@@ -169,15 +191,20 @@ public class Game {
                 new Point(SCREEN_WIDTH - SIDE_BLOCKS_RIGHT_WIDTH, SIDE_BLOCKS_TOP_HEIGHT),
                 SIDE_BLOCKS_RIGHT_WIDTH, SIDE_BLOCKS_RIGHT_HEIGHT),
                 SIDE_BLOCKS_FILL_COLOR);
+        // Death block!
         Block bottomSideBlock = new Block(new Rectangle(
                 new Point(SIDE_BLOCKS_LEFT_WIDTH, SCREEN_HEIGHT - SIDE_BLOCKS_BOTTOM_HEIGHT),
                 SIDE_BLOCKS_BOTTOM_WIDTH, SIDE_BLOCKS_BOTTOM_HEIGHT),
                 SIDE_BLOCKS_FILL_COLOR);
+        bottomSideBlock.addHitListener(ballRemover);
 
         leftSideBlock.addToGame(this);
         topSideBlock.addToGame(this);
         rightSideBlock.addToGame(this);
         bottomSideBlock.addToGame(this);
+
+        this.scoreIndicator = new ScoreIndicator(this.score);
+        scoreIndicator.addToGame(this);
 
         /*               MAIN_BLOCKS               */
         final double separationBetweenBlocks = 0;
@@ -198,7 +225,8 @@ public class Game {
             Ball gameBall = new Ball(gameBallCenterPoint, BALL_SIZE, BALL_FILL_COLOR, this.environment);
 
             // give the ball fixed speed and random direction such that it will also have a nonzero y velocity
-            double randomAngle = RandomSingleton.myNextDouble(1, 360);
+            // and move upwards so the player will have a chance to react
+            double randomAngle = RandomSingleton.myNextDouble(180, 360);
             gameBall.setVelocity(animations.Velocity.fromAngleAndSpeed(randomAngle, BALL_SPEED));
             gameBall.addToGame(this);
         }
@@ -233,6 +261,8 @@ public class Game {
                     new Point(startXValue, blocksYValue), MAIN_BLOCKS_WIDTH, GameSettings.MAIN_BLOCKS_HEIGHT), color);
             startXValue += MAIN_BLOCKS_WIDTH + separationBetweenBlocks;
             block.addToGame(this);
+            block.addHitListener(this.hitListeners.get(0)); //TODO: Temp
+            this.remainingBlocks.increase(1);
         }
     }
 
@@ -278,6 +308,27 @@ public class Game {
             if (milliSecondLeftToSleep > 0) {
                 this.sleeper.sleepFor(milliSecondLeftToSleep);
             }
+
+            if (this.remainingBlocks.getValue() == 0) {
+                this.score.increase(100); // You won!!! +100 points!
+                this.scoreIndicator.updateScore(this.score.getValue()); //TODO
+                this.sleeper.sleepFor(7000); // you won! (sleep for 7 seconds before closing the gui)
+                this.gui.close();
+                return;
+            }
+            if (this.remainingBalls.getValue() == 0) {
+                this.sleeper.sleepFor(7000); // you lost! (sleep for 7 seconds before closing the gui)
+                this.gui.close();
+                return;
+            }
         }
+    }
+
+    public void removeCollidable(Collidable c) {
+        this.environment.removeCollidable(c);
+    }
+
+    public void removeSprite(Sprite s) {
+        this.sprites.removeSprite(s);
     }
 }
