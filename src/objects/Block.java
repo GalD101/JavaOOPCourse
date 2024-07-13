@@ -21,6 +21,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
     private Rectangle collisionRectangle;
     private Color color;
     private List<HitListener> hitListeners;
+    private boolean isSideBlock = false;
 
     /**
      * Constructs a new Block object.
@@ -41,6 +42,22 @@ public class Block implements Collidable, Sprite, HitNotifier {
                 collisionRectangle.getLowerRight());
         this.color = color == null ? Color.BLACK : color;
         this.hitListeners = new ArrayList<>();
+        this.isSideBlock = false;
+    }
+
+    /**
+     * Constructs a new Block object with a specified collision rectangle, color, and side block flag.
+     * This constructor delegates to the primary constructor to initialize the block with a collision rectangle and color,
+     * and then sets the isSideBlock flag to indicate whether the block is positioned at the side of the game area.
+     * Side blocks may have different behaviors or properties in the game.
+     *
+     * @param collisionRectangle The rectangle that represents the size and position of the block. Must not be null.
+     * @param color              The color of the block. If null, defaults to black in the primary constructor.
+     * @param isSideBlock        A boolean flag indicating if the block is a side block, affecting its behavior.
+     */
+    public Block(Rectangle collisionRectangle, Color color, boolean isSideBlock) {
+        this(collisionRectangle, color);
+        this.isSideBlock = isSideBlock;
     }
 
     @Override
@@ -159,7 +176,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
     @Override
     public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
         if (!this.ballColorMatch(hitter)) {
-            if (!this.getColor().equals(Color.GRAY)) { //TODO temp
+            if (!this.isSideBlock) {
                 hitter.setColor(this.getColor());
             }
             this.notifyHit(hitter);

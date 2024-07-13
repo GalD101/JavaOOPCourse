@@ -11,7 +11,7 @@ public class ScoreTrackingListener implements HitListener {
      * Constructs a new ScoreTrackingListener object.
      *
      * <p>This constructor creates a new ScoreTrackingListener object with a specified counter.
-     * The counter is directly assigned. //TODO: Maybe make a copy of the counter?
+     * The counter is directly assigned.
      *
      * @param scoreCounter The counter to increment when a hit occurs. Must not be null.
      * @throws IllegalArgumentException if scoreCounter is null.

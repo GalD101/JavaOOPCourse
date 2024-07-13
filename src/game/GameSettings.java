@@ -18,8 +18,8 @@ public class GameSettings {
 
 
     /*                              SCREEN                              */
-    public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 600;
+    public static final int SCREEN_WIDTH = 800;
 
     public static final java.awt.Color SCREEN_BACKGROUND_COLOR = Color.DARK_GRAY;
 
@@ -35,7 +35,7 @@ public class GameSettings {
 
     // DECORATING COLORS:
     public static final Color BALL_BORDER_COLOR = Color.BLACK;
-    public static final Color BALL_CENTER_POINT_COLOR = Color.RED;
+    public static final Color BALL_CENTER_POINT_COLOR = Color.BLACK;
 
     public static final int NUM_OF_BALLS = 3;
 

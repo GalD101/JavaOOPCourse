@@ -182,21 +182,22 @@ public class Game {
         Block leftSideBlock = new Block(new Rectangle(
                 new Point(0, 0 + SIDE_BLOCKS_TOP_HEIGHT),
                 SIDE_BLOCKS_LEFT_WIDTH, SIDE_BLOCKS_LEFT_HEIGHT),
-                SIDE_BLOCKS_FILL_COLOR);
+                SIDE_BLOCKS_FILL_COLOR, true);
         Block topSideBlock = new Block(new Rectangle(
                 new Point(0, 0),
                 SIDE_BLOCKS_TOP_WIDTH, SIDE_BLOCKS_TOP_HEIGHT),
-                SIDE_BLOCKS_FILL_COLOR);
+                SIDE_BLOCKS_FILL_COLOR, true);
         Block rightSideBlock = new Block(new Rectangle(
                 new Point(SCREEN_WIDTH - SIDE_BLOCKS_RIGHT_WIDTH, SIDE_BLOCKS_TOP_HEIGHT),
                 SIDE_BLOCKS_RIGHT_WIDTH, SIDE_BLOCKS_RIGHT_HEIGHT),
-                SIDE_BLOCKS_FILL_COLOR);
-        // Death block!
+                SIDE_BLOCKS_FILL_COLOR, true);
         Block bottomSideBlock = new Block(new Rectangle(
                 new Point(SIDE_BLOCKS_LEFT_WIDTH, SCREEN_HEIGHT - SIDE_BLOCKS_BOTTOM_HEIGHT),
                 SIDE_BLOCKS_BOTTOM_WIDTH, SIDE_BLOCKS_BOTTOM_HEIGHT),
-                SIDE_BLOCKS_FILL_COLOR);
-        bottomSideBlock.addHitListener(ballRemover);
+                SIDE_BLOCKS_FILL_COLOR, true);
+
+        // Death block!
+//        bottomSideBlock.addHitListener(ballRemover);
 
         leftSideBlock.addToGame(this);
         topSideBlock.addToGame(this);
