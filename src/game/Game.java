@@ -9,7 +9,14 @@ import events.BallRemover;
 import events.BlockRemover;
 import events.HitListener;
 import events.ScoreTrackingListener;
-import objects.*;
+import objects.Block;
+import objects.Rectangle;
+import objects.Point;
+import objects.Ball;
+import objects.Collidable;
+import objects.Paddle;
+import objects.ScoreIndicator;
+import objects.Sprite;
 import utils.Counter;
 import utils.RandomSingleton;
 
@@ -51,7 +58,7 @@ public class Game {
     private GameEnvironment environment;
     private GUI gui;
     private Sleeper sleeper;
-    private List<HitListener> hitListeners; //TODO: Change this
+    private List<HitListener> hitListeners;
     private Counter remainingBlocks;
     private Counter remainingBalls;
     private Counter score;
@@ -170,13 +177,6 @@ public class Game {
         this.gui = new GUI("G.L.D.223", SCREEN_WIDTH, SCREEN_HEIGHT);
         this.sleeper = new Sleeper();
 
-        /*               EVENT LISTENERS               */
-        BlockRemover blockRemover = new BlockRemover(this, this.remainingBlocks);
-        BallRemover ballRemover = new BallRemover(this, this.remainingBalls);
-//        ScoreTrackingListener scoreTrackingListener = new ScoreTrackingListener(this.score);
-        this.hitListeners.add(blockRemover);
-        this.hitListeners.add(ballRemover);
-//        this.hitListeners.add(scoreTrackingListener);
 
         /*               SIDE BLOCKS               */
         Block leftSideBlock = new Block(new Rectangle(
@@ -197,7 +197,9 @@ public class Game {
                 SIDE_BLOCKS_FILL_COLOR, true);
 
         // Death block!
-//        bottomSideBlock.addHitListener(ballRemover);
+        BallRemover ballRemover = new BallRemover(this, this.remainingBalls);
+        this.hitListeners.add(ballRemover);
+        bottomSideBlock.addHitListener(ballRemover);
 
         leftSideBlock.addToGame(this);
         topSideBlock.addToGame(this);
@@ -252,20 +254,24 @@ public class Game {
      *
      * @param separationBetweenBlocks The distance between the blocks.
      *                                This is added to the x-coordinate of each block after it is created.
-     * @param startXValue The x-coordinate of the first block to be created.
-     * @param blocksYValue The y-coordinate of the blocks. All blocks in the line will have this y-coordinate.
-     * @param color The color of the blocks. All blocks in the line will have this color.
+     * @param startXValue             The x-coordinate of the first block to be created.
+     * @param blocksYValue            The y-coordinate of the blocks.
+     *                                All blocks in the line will have this y-coordinate.
+     * @param color                   The color of the blocks. All blocks in the line will have this color.
      */
     private void createLineOfBlocks(double separationBetweenBlocks, double startXValue,
                                     double blocksYValue, Color color) {
         ScoreTrackingListener scoreTracker = new ScoreTrackingListener(this.score);
+        BlockRemover blockRemover = new BlockRemover(this, this.remainingBlocks);
         while (startXValue < SCREEN_WIDTH - GameSettings.MAIN_BLOCKS_HEIGHT) {
             Block block = new Block(new Rectangle(
                     new Point(startXValue, blocksYValue), MAIN_BLOCKS_WIDTH, GameSettings.MAIN_BLOCKS_HEIGHT), color);
             startXValue += MAIN_BLOCKS_WIDTH + separationBetweenBlocks;
             block.addToGame(this);
-            block.addHitListener(this.hitListeners.get(0)); //TODO: CHANGE THIS, THIS MUST BE CHANGED!!!!
+            block.addHitListener(blockRemover);
             block.addHitListener(scoreTracker);
+            this.hitListeners.add(blockRemover);
+            this.hitListeners.add(scoreTracker);
             this.remainingBlocks.increase(1);
         }
     }
@@ -307,7 +313,7 @@ public class Game {
             this.sprites.notifyAllTimePassed();
 
             if (this.gameOver) {
-                sleeper.sleepFor(3000);
+                sleeper.sleepFor(1000);
                 this.gui.close();
                 return;
             }
@@ -319,19 +325,37 @@ public class Game {
             }
 
             if (this.remainingBlocks.getValue() == 0) {
-                this.scoreIndicator.updateScore(100); // You won!!! +100 points! // TODO: I dont know if there is really a todo here
+                this.scoreIndicator.updateScore(100); // You won!!! +100 points!
                 this.gameOver = true;
             }
             if (this.remainingBalls.getValue() == 0) {
-                this.gameOver = true;
+                this.gameOver = true; // You lost :(
             }
         }
     }
 
+    /**
+     * Removes a Collidable object from the game's environment.
+     * This method is used to remove a Collidable from the game's GameEnvironment,
+     * effectively excluding it from future collision detection and resolution processes.
+     * It is useful for removing objects that are no longer needed in the game,
+     * such as blocks that have been destroyed.
+     *
+     * @param c The Collidable object to be removed from the game's environment.
+     */
     public void removeCollidable(Collidable c) {
         this.environment.removeCollidable(c);
     }
 
+    /**
+     * Removes a Sprite object from the game.
+     * This method is used to remove a Sprite from the game's SpriteCollection,
+     * effectively stopping its drawing and updates during the game loop.
+     * It is useful for removing objects that are no longer needed in the game,
+     * such as a ball that has fallen out of the play area or a block that has been destroyed.
+     *
+     * @param s The Sprite object to be removed from the game.
+     */
     public void removeSprite(Sprite s) {
         this.sprites.removeSprite(s);
     }

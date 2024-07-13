@@ -35,7 +35,6 @@ public class GameSettings {
 
     // DECORATING COLORS:
     public static final Color BALL_BORDER_COLOR = Color.BLACK;
-    public static final Color BALL_CENTER_POINT_COLOR = Color.BLACK;
 
     public static final int NUM_OF_BALLS = 3;
 

@@ -13,7 +13,7 @@ import objects.Sprite;
  * update the state of all sprites, and draw all sprites on a given DrawSurface.
  */
 public class SpriteCollection {
-    private java.util.List<Sprite> spriteList; //TODO change this
+    private java.util.List<Sprite> spriteList;
 
     /**
      * Default constructor for the SpriteCollection class.
@@ -23,7 +23,7 @@ public class SpriteCollection {
      */
     public SpriteCollection() {
         this.spriteList = new java.util.ArrayList<Sprite>();
-    } //TODO: Change this
+    }
 
     /**
      * Adds a Sprite object to the spriteList.
@@ -53,7 +53,7 @@ public class SpriteCollection {
             return;
         }
         // check if s is in the list before attempting to remove it
-        if (this.spriteList.contains(s)) { // TODO: Check if this is necessary
+        if (this.spriteList.contains(s)) {
             this.spriteList.remove(s);
         }
     }

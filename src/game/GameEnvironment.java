@@ -45,7 +45,7 @@ public class GameEnvironment {
             return;
         }
         // check if c is in the list before attempting to remove it
-        if (this.collidableList.contains(c)) { // TODO: Check if this is necessary
+        if (this.collidableList.contains(c)) {
             this.collidableList.remove(c);
         }
     }

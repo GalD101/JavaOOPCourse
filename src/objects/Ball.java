@@ -14,8 +14,6 @@ import utils.Threshold;
 import java.util.List;
 
 import static game.GameSettings.BALL_BORDER_COLOR;
-import static game.GameSettings.BALL_FILL_COLOR;
-import static game.GameSettings.BALL_CENTER_POINT_COLOR;
 import static game.GameSettings.BALL_MAX_SIZE;
 
 /**
@@ -175,8 +173,6 @@ public class Ball implements Sprite, HitNotifier {
         d.fillCircle(this.getX(), this.getY(), this.getSize());
         d.setColor(BALL_BORDER_COLOR);
         d.drawCircle(this.getX(), this.getY(), this.getSize());
-        d.setColor(BALL_CENTER_POINT_COLOR);
-        d.fillCircle(this.getX(), this.getY(), 2);
     }
 
     /**
@@ -254,7 +250,8 @@ public class Ball implements Sprite, HitNotifier {
                     collisionInfo.collisionPoint().getY() - this.getVelocity().getDy() / 2));
         }
 
-        Velocity newVelocity = collisionInfo.collisionObject().hit(this, collisionInfo.collisionPoint(), this.getVelocity());
+        Velocity newVelocity = collisionInfo.collisionObject().hit(
+                this, collisionInfo.collisionPoint(), this.getVelocity());
         this.setVelocity(newVelocity);
     }
 
@@ -367,11 +364,20 @@ public class Ball implements Sprite, HitNotifier {
     @Override
     public void removeHitListener(HitListener hl) {
         // check if hl is in the list before attempting to remove it
-        if (this.hitListeners.contains(hl)) { // TODO: Check if this is necessary
+        if (this.hitListeners.contains(hl)) {
             this.hitListeners.remove(hl);
         }
     }
 
+    /**
+     * Removes this ball from the specified game.
+     * This method delegates the removal process to the game's removeSprite method,
+     * effectively detaching the ball from the game's list of sprites. This is typically
+     * used when the ball is no longer needed in the game, such as when it goes out of bounds
+     * or when the game is resetting its state.
+     *
+     * @param game The game instance from which the ball is to be removed.
+     */
     public void removeFromGame(Game game) {
         game.removeSprite(this);
     }

@@ -21,7 +21,7 @@
     </target>
 
     <target name="run" depends="compile" >
-        <java classname="Ass3Game" classpath="${classpath}" fork="true"/>
+        <java classname="Ass5Game" classpath="${classpath}" fork="true"/>
     </target>
 
     <!-- Run checkstyle on all our source files -->

@@ -3,10 +3,10 @@
 import game.Game;
 
 /**
- * The Ass3Game class serves as the entry point for the application.
+ * The Ass5Game class serves as the entry point for the application.
  * It contains the main method which creates a new Game instance, initializes it, and starts the game loop.
  */
-public class Ass3Game {
+public class Ass5Game {
 
     /**
      * The main entry point for the application.

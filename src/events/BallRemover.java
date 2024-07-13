@@ -5,6 +5,10 @@ import objects.Ball;
 import objects.Block;
 import utils.Counter;
 
+/**
+ * The BallRemover class is responsible for removing balls from the game when they hit a block.
+ * It implements the HitListener interface to listen for hit events.
+ */
 public class BallRemover implements HitListener {
     private Game game;
     private Counter remainingBalls;
@@ -14,7 +18,7 @@ public class BallRemover implements HitListener {
      *
      * <p>This constructor creates a new BallRemover object with a specified game and counter.
      * The game is directly assigned.
-     * The counter is directly assigned. //TODO: Maybe make a copy of the counter?
+     * The counter is directly assigned.
      *
      * @param game           The game to remove balls from. Must not be null.
      * @param remainingBalls  The counter to decrement when a ball is removed.

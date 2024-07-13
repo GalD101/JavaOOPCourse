@@ -8,7 +8,19 @@ import biuoop.KeyboardSensor;
 import game.Game;
 import utils.RandomSingleton;
 
-import static game.GameSettings.*;
+import static game.GameSettings.PADDLE_SPEED;
+import static game.GameSettings.PADDLE_WIDTH;
+import static game.GameSettings.PADDLE_FILL_COLOR;
+import static game.GameSettings.PADDLE_BORDER_COLOR;
+import static game.GameSettings.IS_FUN_MODE;
+import static game.GameSettings.BALL_SPEED;
+import static game.GameSettings.PADDLE_REGION_ONE;
+import static game.GameSettings.PADDLE_REGION_TWO;
+import static game.GameSettings.PADDLE_REGION_THREE;
+import static game.GameSettings.PADDLE_REGION_FOUR;
+import static game.GameSettings.PADDLE_REGION_FIVE;
+import static game.GameSettings.SCREEN_WIDTH;
+import static game.GameSettings.MAIN_BLOCKS_HEIGHT;
 
 /**
  * The Collidable interface represents objects that can participate in collisions.

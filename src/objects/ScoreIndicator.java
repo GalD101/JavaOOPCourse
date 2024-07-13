@@ -4,6 +4,12 @@ import biuoop.DrawSurface;
 import utils.Counter;
 import game.Game;
 
+/**
+ * Represents the score indicator in the game.
+ * This class is responsible for displaying the current score in the game. It implements the Sprite interface,
+ * allowing it to be drawn on the game's draw surface. The score is managed using a Counter object, which
+ * tracks the numerical value of the score.
+ */
 public class ScoreIndicator implements Sprite {
     private Counter score;
 
@@ -11,7 +17,7 @@ public class ScoreIndicator implements Sprite {
      * Constructs a new ScoreIndicator object.
      *
      * <p>This constructor creates a new ScoreIndicator object with a specified counter.
-     * The counter is directly assigned. //TODO: Maybe make a copy of the counter?
+     * The counter is directly assigned.
      *
      * @param scoreCounter The counter to display. Must not be null.
      * @throws IllegalArgumentException if scoreCounter is null.
@@ -23,6 +29,13 @@ public class ScoreIndicator implements Sprite {
         this.score = scoreCounter;
     }
 
+    /**
+     * Updates the score by a specified number of points.
+     * This method increases the current score by the given amount. It is typically called
+     * when the player achieves a score-worthy event, such as destroying a block or completing a level.
+     *
+     * @param points The number of points to add to the current score. Can be positive or negative.
+     */
     public void updateScore(int points) {
         this.score.increase(points);
     }

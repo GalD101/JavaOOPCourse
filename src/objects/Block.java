@@ -47,7 +47,8 @@ public class Block implements Collidable, Sprite, HitNotifier {
 
     /**
      * Constructs a new Block object with a specified collision rectangle, color, and side block flag.
-     * This constructor delegates to the primary constructor to initialize the block with a collision rectangle and color,
+     * This constructor delegates to the primary constructor
+     * to initialize the block with a collision rectangle and color,
      * and then sets the isSideBlock flag to indicate whether the block is positioned at the side of the game area.
      * Side blocks may have different behaviors or properties in the game.
      *
@@ -68,7 +69,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
     @Override
     public void removeHitListener(HitListener hl) {
         // check if hl is in the list before attempting to remove it
-        if (this.hitListeners.contains(hl)) { // TODO: Check if this is necessary
+        if (this.hitListeners.contains(hl)) {
             this.hitListeners.remove(hl);
         }
     }
@@ -202,10 +203,28 @@ public class Block implements Collidable, Sprite, HitNotifier {
         return new Velocity(newDx, newDy);
     }
 
+    /**
+     * Checks if the color of the ball matches the color of this block.
+     * This method compares the color of the specified ball with the color of this block.
+     * It returns true if the colors match, indicating that the ball and block have the same color.
+     * Otherwise, it returns false.
+     *
+     * @param ball The ball whose color is to be compared with this block's color.
+     * @return true if the ball's color matches this block's color, false otherwise.
+     */
     public boolean ballColorMatch(Ball ball) {
         return ball.getColor().equals(this.color);
     }
 
+    /**
+     * Removes this block from the specified game.
+     * This method ensures that the block is no longer part of the game by removing it from both
+     * the list of collidables and the list of sprites within the game. This is essential for when
+     * the block is destroyed or needs to be removed from the game for any reason, ensuring that it
+     * no longer participates in collision detection or rendering.
+     *
+     * @param game The game instance from which the block is to be removed.
+     */
     public void removeFromGame(Game game) {
         game.removeCollidable(this);
         game.removeSprite(this);
